@@ -8,3 +8,8 @@ todo EVERYONE:
 - open it with R Studio
 - small data exploration
 - first ideas and first sketches for visuals
+
+
+Questions:
+
+- will we only use the train data? 
