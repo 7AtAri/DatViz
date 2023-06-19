@@ -39,9 +39,11 @@ ColorLabels <- read_csv("petdata/PetFinder-ColorLabels.csv")
 StateLabels <- read_csv("petdata/PetFinder-StateLabels.csv")
 
 ?corrplot
-corr_mat=cor(train[, names_num], method="s") #create Spearman correlation matrix
+# corr_mat=cor(train[, names_num], method="s") #create Spearman correlation matrix
+
+corr_mat=cor(train[,c("Age","Breed1","Fee","Quantity","VideoAmt","PhotoAmt", "Health","Vaccinated")], method="s")
 
 corrplot(corr_mat, method = "color",
          type = "upper", order = "hclust", 
-         tl.col = "black", tl.cex=0.8) 
+         tl.col = "black", tl.cex=1) 
 

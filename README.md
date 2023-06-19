@@ -1,4 +1,4 @@
-# DatViz
+# DatViz - Pet Adoption Dataset
 
 our dataset:
 https://www.kaggle.com/competitions/petfinder-adoption-prediction/data
