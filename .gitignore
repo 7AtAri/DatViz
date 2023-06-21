@@ -47,3 +47,9 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# Data path
+petdata/
+
+# Misc Mac stuff
+.DS_Store
