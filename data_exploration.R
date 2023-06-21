@@ -93,6 +93,6 @@ for (json_file in json_files) {
 print("Document-level Sentiment:")
 print(document_sentiment_df)
 summary(document_sentiment_df)
-
-
-
+hist(document_sentiment_df$score, xlim=c(-1,1), ylim=c(0,2500))
+boxplot(document_sentiment_df$score)
+plot(document_sentiment_df$score,document_sentiment_df$magnitude, xlim=c(-1,1))

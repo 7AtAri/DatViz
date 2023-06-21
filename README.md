@@ -3,7 +3,7 @@
 our dataset:
 https://www.kaggle.com/competitions/petfinder-adoption-prediction/data
 
-+ sentiment analysis data as json files
++ sentiment analysis data as json files -> converted to data frame in the data_exploration.R file
 + images
 
 Data Fields in train and test data:
