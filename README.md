@@ -4,7 +4,7 @@ our dataset:
 https://www.kaggle.com/competitions/petfinder-adoption-prediction/data
 
 + sentiment analysis data as json files -> converted to data frame in the data_exploration.R file
-+ images
++ images -> neural network -> embedding -> find best cluster number (KNN?) -> visualize clusters with r-tsne
 
 Data Fields in train and test data:
 
