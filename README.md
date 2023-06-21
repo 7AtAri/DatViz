@@ -36,11 +36,10 @@ Data Fields in train and test data:
 
 todo EVERYONE:
 - clone the repository 
-- open it with R Studio
 - small data exploration
 - first ideas and first sketches for visuals
 
 
 Questions:
 
-- will we only use the train data? 
+- will we only use the train data? -> YES! (Because test data has no AdoptionSpeed column)
