@@ -88,9 +88,4 @@ for (json_file in json_files) {
 print("Document-level Sentiment:")
 print(document_sentiment_df)
 
-# quick look into the sentiment data:
-summary(document_sentiment_df)
-hist(document_sentiment_df$score, xlim=c(-1,1), ylim=c(0,2500))
-boxplot(document_sentiment_df$score)
-
 

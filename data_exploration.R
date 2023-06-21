@@ -31,3 +31,7 @@ corrplot(corr_mat, method = "color",
 
 hist(train$Breed1)
 
+# quick look into the sentiment data:
+summary(document_sentiment_df) 
+hist(document_sentiment_df$score, xlim=c(-1,1), ylim=c(0,2500))
+boxplot(document_sentiment_df$score)
