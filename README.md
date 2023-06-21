@@ -3,7 +3,10 @@
 our dataset:
 https://www.kaggle.com/competitions/petfinder-adoption-prediction/data
 
-Data Fields
++ sentiment analysis data as json files
++ images
+
+Data Fields in train and test data:
 
 * PetID - Unique hash ID of pet profile
 * AdoptionSpeed - Categorical speed of adoption. Lower is faster.
