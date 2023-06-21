@@ -1,13 +1,6 @@
+# ---- Load the libraries -----------------------------------------------------
 
-# ---- Set up: -----------------------------------------------------------------
 
-
-# Get the current working directory
-wd <- getwd()
-# Print the current working directory
-print(wd)
-
-# Libraries
 library("jsonlite")
 library(readr)
 library(corrplot)
@@ -15,40 +8,35 @@ library(ggplot2)
 library(stringr)
 
 
-# ----- Descriptions: ----------------------------------------------------------
+# ---- Descriptions -----------------------------------------------------------
 
 
 # AdoptionSpeed
-# The value is determined by how quickly, if at all, a pet is adopted. 
-# The values are determined in the following way: 
-# 0 - Pet was adopted on the same day as it was listed. 
-# 1 - Pet was adopted between 1 and 7 days (1st week) after being listed. 
-# 2 - Pet was adopted between 8 and 30 days (1st month) after being listed. 
-# 3 - Pet was adopted between 31 and 90 days (2nd & 3rd month) after being listed. 
-# 4 - No adoption after 100 days of being listed. 
+# The value is determined by how quickly, if at all, a pet is adopted.
+# The values are determined in the following way:
+# 0 - Pet was adopted on the same day as it was listed.
+# 1 - Pet was adopted between 1 and 7 days (1st week) after being listed.
+# 2 - Pet was adopted between 8 and 30 days (1st month) after being listed.
+# 3 - Pet was adopted between 31 and 90 days (2nd & 3rd month) after being listed.
+# 4 - No adoption after 100 days of being listed.
 # (There are no pets in this dataset that waited between 90 and 100 days).
 
 
-# ---- Data import: ------------------------------------------------------------
+# ---- Data import ------------------------------------------------------------
 
 
-# Training data:
-train <- read_csv("petdata/train/train.csv") 
-View(train)
+# Use only the train data because test data does not include AdoptionSpeed
+petdata <- read_csv("petdata/train/train.csv", show_col_types = FALSE)
 
-train$Description
-
-test <- read_csv("petdata/test/test.csv") 
-View(test)
-
-
-BreedLabels <- read_csv("petdata/PetFinder-BreedLabels.csv")
-ColorLabels <- read_csv("petdata/PetFinder-ColorLabels.csv")
-StateLabels <- read_csv("petdata/PetFinder-StateLabels.csv")
+breed_lab <- subset(read_csv("petdata/PetFinder-BreedLabels.csv",
+                    show_col_types = FALSE), select = -c(Type))
+color_lab <- read_csv("petdata/PetFinder-ColorLabels.csv",
+                    show_col_types = FALSE)
+state_lab <- read_csv("petdata/PetFinder-StateLabels.csv",
+                    show_col_types = FALSE)
 
 
-
-# ---- extracting sentiment analysis data to the dataframe:-----------------------------------------------------
+# ---- Extract sentiment analysis data to the dataframe -----------------------
 
 
 # Path to the folder containing JSON files
@@ -57,35 +45,100 @@ folder_path <- "petdata/train_sentiment"
 # Get a list of JSON file names in the folder
 json_files <- list.files(folder_path, pattern = ".json$", full.names = TRUE)
 
-json_files
 # Create an empty data frame with columns for "score" and "magnitude"
-document_sentiment_df <- data.frame(score = numeric(),
-                                    magnitude = numeric(),
-                                    pet_id = character(),
-                                    stringsAsFactors = FALSE)
+sentiment_df <- data.frame(
+  SentimentScore = numeric(),
+  SentimentMagnitude = numeric(),
+  PetID = character(),
+  stringsAsFactors = FALSE
+)
 
-
-# Process the JSON data as needed
+# Process each JSON file
 for (json_file in json_files) {
-  # Process each JSON file:
   # Read the JSON file as text
   json_text <- readLines(json_file, warn = FALSE)
-  # 2. Parse the JSON text:
+  # Parse the JSON text:
   json_data <- fromJSON(txt = json_text)
+
   # Extract document-level sentiment
   score <- json_data$documentSentiment$score
   magnitude <- json_data$documentSentiment$magnitude
-  #extract the file name:
+
+  # Extract the file name:
   file_name <- basename(json_file)
   pattern <- str_extract(file_name, "[A-Za-z0-9]+")
+
   # Create a data frame for document-level sentiment
-  df_new_row <- data.frame(score = score, magnitude = magnitude, pet_id=pattern)
-  document_sentiment_df<-rbind(document_sentiment_df, df_new_row)
-  
+  df_new_row <- data.frame(SentimentScore = score,
+                          SentimentMagnitude = magnitude,
+                          PetID = pattern)
+  sentiment_df <- rbind(sentiment_df, df_new_row)
 }
 
-# Print the document-level sentiment data frame
-print("Document-level Sentiment:")
-print(document_sentiment_df)
+
+# ---- Merge the labels and sentiment analysis data to the petdata ------------
 
 
+# Add the sentiment score and maginitude to the petdata
+petdata <- merge(petdata, sentiment_df, by = "PetID",
+                all.x = TRUE, sort = FALSE)
+
+# Merge the breed, color, and state labels to the petdata
+petdata <- merge(petdata, breed_lab, by.x = "Breed1", by.y = "BreedID",
+                all.x = TRUE, sort = FALSE)
+names(petdata)[names(petdata) == "Breed1"] <- "BreedID1"
+names(petdata)[names(petdata) == "BreedName"] <- "Breed1"
+
+petdata <- merge(petdata, breed_lab, by.x = "Breed2", by.y = "BreedID",
+                all.x = TRUE, sort = FALSE)
+names(petdata)[names(petdata) == "Breed2"] <- "BreedID2"
+names(petdata)[names(petdata) == "BreedName"] <- "Breed2"
+
+petdata <- merge(petdata, color_lab, by.x = "Color1", by.y = "ColorID",
+                all.x = TRUE, sort = FALSE)
+names(petdata)[names(petdata) == "Color1"] <- "ColorID1"
+names(petdata)[names(petdata) == "ColorName"] <- "Color1"
+
+petdata <- merge(petdata, color_lab, by.x = "Color2", by.y = "ColorID",
+                all.x = TRUE, sort = FALSE)
+names(petdata)[names(petdata) == "Color2"] <- "ColorID2"
+names(petdata)[names(petdata) == "ColorName"] <- "Color2"
+
+petdata <- merge(petdata, color_lab, by.x = "Color3", by.y = "ColorID",
+                all.x = TRUE, sort = FALSE)
+names(petdata)[names(petdata) == "Color3"] <- "ColorID3"
+names(petdata)[names(petdata) == "ColorName"] <- "Color3"
+
+petdata <- merge(petdata, state_lab, by.x = "State", by.y = "StateID",
+                all.x = TRUE, sort = FALSE)
+names(petdata)[names(petdata) == "State"] <- "StateID"
+names(petdata)[names(petdata) == "StateName"] <- "State"
+
+
+# ---- Split data for dogs and cats -------------------------------------------
+
+
+dogs <- subset(petdata[petdata$Type == 1, ], select = -c(Type))
+cats <- subset(petdata[petdata$Type == 2, ], select = -c(Type))
+
+
+# ---- Clean up the environment -----------------------------------------------
+
+
+rm(breed_lab, color_lab, state_lab, folder_path, json_files, json_text,
+  json_file, json_data, score, magnitude, file_name, pattern, df_new_row,
+  sentiment_df)
+
+
+# ---- Breed check ------------------------------------------------------------
+
+
+# par(mar = c(5, 4, 4, 2) + 10)
+# barplot(table(petdata$Breed1), xlab = "Breed1", las=2, cex.lab=0.5, horiz=TRUE)
+# dim(table(petdata$Breed1))
+# count <- sum(petdata$BreedID1 != 0)
+# count
+# library(dplyr)
+
+# # Count the number of distinct non-zero BreedIDs
+# count <- petdata %>% filter(BreedID1 != 0) %>% distinct(BreedID1) %>% nrow(); count
