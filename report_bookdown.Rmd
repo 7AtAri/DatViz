@@ -16,33 +16,78 @@ output:
     toc: false
     keep_tex: true
 ---
-
-
-
 ```{r setup, include=FALSE}
 params <- list(html=knitr::is_html_output())
 knitr::opts_chunk$set(echo = params$html)
-
 rm(list = ls(all.names = TRUE)) # reset the environment
-
-# load libraries:
-library(readr)
-library(corrplot)
-library(ggplot2)
-# library(stargazer)
-
-# load the data:
-train <- read_csv("petdata/train/train.csv") # we only use the training set?
-BreedLabels <- read_csv("petdata/PetFinder-BreedLabels.csv")
-ColorLabels <- read_csv("petdata/PetFinder-ColorLabels.csv")
-StateLabels <- read_csv("petdata/PetFinder-StateLabels.csv")
-
+source("Setup.R")
 ```
 
 
 (ref:latexInCaption) A caption can contain _underscores_ and $\sqrt v$ formulae.
 
-# First chapter
+# Introduction
+
+For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge.
+
+# The Dataset
+
+todo: describe the dataset:
+
+- number and properties of variables
+- for our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
+- amount of data points 
+- When accessing the dataset, we realized it also already had sentiment analysis data  included, that was run on the description column.
+- necessary preprocessing
+
+```{r pet summary, echo=FALSE}
+summary(petdata) # basic data statistics
+# sum(is.na(petdata)==TRUE) # sum of NAs in data
+# (dim(petdata)[1]*dim(petdata)[2]) # Sum of all datapoints
+na_ratio<-sum(is.na(petdata)==TRUE)/(dim(petdata)[1]*dim(petdata)[2])# ratio of NAs among all datapoints
+print(na_ratio*100)
+print("% of NAs among all datapoints")# percentage of NAs in data
+
+```
+
+# Data Exploration
+
+- distributions of variables / summary
+- pairs plot
+- correlation plot
+- distributions of sentiment scores
+
+
+```{r, corr plot, echo=FALSE}
+
+#names_num <- names(which(sapply(petdata, is.numeric)))
+
+#pairs(petdata[, names_num[1:10]])
+#pairs(petdata[, names_num[11:20]])
+
+#pairs(petdata[c("Age","Breed1","Fee","Quantity","VideoAmt","PhotoAmt")])
+pairs(petdata[c("Age","Fee","Quantity","VideoAmt","PhotoAmt","SentimentScore","AdoptionSpeed", "Health","Vaccinated","ColorID1")])
+
+petdata_reduced<-na.omit(petdata) # for the correlation plot, all NAs need to be removed
+
+corr_mat=cor(petdata_reduced[,c("Age","Fee","Quantity","VideoAmt","PhotoAmt","SentimentScore","AdoptionSpeed", "Health","Vaccinated","ColorID1")], method="s") #create Spearman correlation matrix
+
+corrplot(corr_mat, method = "color",
+     type = "upper", order = "hclust", 
+     tl.col = "black", tl.cex=0.8) 
+
+```
+
+# Key Visuals
+
+- compare cats and dogs...
+- visualize sentiment analysis
+- sentiment analysis vs adoption speed
+- r-tsne of neural net embedding vectors for images
+
+# Summary/Findings
+
+# References
 
 The R package **bookdown** is documented in an online book by its author Yihui Xie (2023). In this brief demo, I demonstrate some basic aspects of the use of the R package **bookdown** that took me some more time to figure out from that documentation. The package **bookdown** is based on the package **knitr** (see, e.g., https://yihui.org/knitr/), and the possibilities of that package can also be used. For example, it is possible to incorporate not only R code (like in this demo), but also, e.g., Python or Julia code with the respective code chunks.
 
@@ -50,36 +95,11 @@ In Chapter&nbsp;\@ref(sec:meinreflabel2) you find a figure with a simple caption
 
 You can have unnumbered chapters (while most chapters are numbered), see the appendix.
 
-```{r, corr plot, echo=FALSE}
-
-names_num <- names(which(sapply(train, is.numeric)))
-
-#pairs(train[, names_num[1:10]])
-#pairs(train[, names_num[11:20]])
-
-#pairs(train[c("Age","Breed1","Fee","Quantity","VideoAmt","PhotoAmt")])
-#pairs(train[c("Age","Breed1","Fee","Quantity","VideoAmt","PhotoAmt", "Health","Vaccinated")])
-
-corr_mat=cor(train[,c("Age","Breed1","Fee","Quantity","VideoAmt","PhotoAmt", "Health","Vaccinated")], method="s") #create Spearman correlation matrix
-
-
-corrplot(corr_mat, method = "color",
-     type = "upper", order = "hclust", 
-     tl.col = "black", tl.cex=0.8) 
-
-```
  
 With the **bookdown** package, it is easy to reference back an forth between sections, and to figures or tables that were created from code chunks. References to figures start with "fig:", references to tables with "tab:", and section references are entirely defined in the curly brackets after the heading, starting with "#".  The syntax for **bookdown** references is "\@ref(your reference target)",  see examples in this file. They are translated to the appropriate way of referencing for pdf or html files, as appropriate.
 
 
-```{r pet summary, include=FALSE}
-summary(train) # kurzer Einblick in Daten und bzgl. Datentypen
-sum(is.na(train)==TRUE) # Die Summe der NAs im Datensatz
 
-na_ratio<-sum(is.na(train)==TRUE)/dim(train)[1]# ratio of NAs among all datapoints
-na_ratio*100 # percentage of NAs in data
-# str(train)
-```
 
 
 # Second chapter{#sec:meinreflabel2}

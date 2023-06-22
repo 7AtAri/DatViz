@@ -1,11 +1,12 @@
 # ---- Load the libraries -----------------------------------------------------
 
 
-library("jsonlite")
+library(jsonlite)
 library(readr)
 library(corrplot)
 library(ggplot2)
 library(stringr)
+library(dplyr)
 
 
 # ---- Descriptions -----------------------------------------------------------
@@ -76,6 +77,7 @@ for (json_file in json_files) {
 }
 
 
+
 # ---- Merge the labels and sentiment analysis data to the petdata ------------
 
 
@@ -125,7 +127,7 @@ cats <- subset(petdata[petdata$Type == 2, ], select = -c(Type))
 # ---- Clean up the environment -----------------------------------------------
 
 
-rm(breed_lab, color_lab, state_lab, folder_path, json_files, json_text,
+rm(breed_lab, state_lab, folder_path, json_files, json_text,
   json_file, json_data, score, magnitude, file_name, pattern, df_new_row,
   sentiment_df)
 
@@ -142,3 +144,31 @@ rm(breed_lab, color_lab, state_lab, folder_path, json_files, json_text,
 
 # # Count the number of distinct non-zero BreedIDs
 # count <- petdata %>% filter(BreedID1 != 0) %>% distinct(BreedID1) %>% nrow(); count
+
+
+# ---- check number of animals that have pictures ------------------------
+
+## Path to the folder containing JSON files
+# folder_path2 <- "petdata/train_images"
+
+## Get a list of JSON file names in the folder
+# image_files <- list.files(folder_path2, pattern = ".jpg$", full.names = TRUE)
+
+# pet_images<-list()
+# for (image_file in image_files) {
+#  # Process each image file name:
+  
+#  #extract the pet_ID:
+#  file_name <- basename(image_file)
+#  pattern <- str_extract(file_name, "[A-Za-z0-9]+")
+#    # Create a data frame for document-level sentiment
+#    pet_images<-append(pet_images, pattern)
+    
+#  }
+  
+#  # number of distinct pet_ids that have an image:
+#  
+  # create df with pet_ids and image count
+#  pet_images_df<-data.frame("Pet_id"=unlist(pet_images,use.names=FALSE )) 
+#  pet_images_df<-add_count(pet_images_df, Pet_id) # add a group count column based on Pet_id
+#  pet_images_df<-unique(pet_images_df)
