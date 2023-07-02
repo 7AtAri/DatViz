@@ -111,7 +111,19 @@ g <- make_gradient(
   deg = -180, n = 500, cols = brewer.pal(9, "RdBu")
 )
 
-ggplot(petdata, aes(factor(SentimentScore))) +
+ggplot(data=subset(petdata, !is.na(SentimentScore)), aes(SentimentScore)) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  geom_bar()
+
+ggplot(data=subset(dogs, !is.na(SentimentScore)), aes(SentimentScore)) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  geom_bar()
+
+ggplot(data=subset(cats, !is.na(SentimentScore)), aes(SentimentScore)) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 

@@ -22,6 +22,11 @@ library(dplyr)
 # 4 - No adoption after 100 days of being listed.
 # (There are no pets in this dataset that waited between 90 and 100 days).
 
+# c("same day","1 to 7 days", "8 to 30 days", "31 to 90 days", "+90 days")
+
+# ---- clean the workspace: ------------------------------------
+
+rm(list = ls(all.names = TRUE))
 
 # ---- Data import ------------------------------------------------------------
 
@@ -116,12 +121,37 @@ petdata <- merge(petdata, state_lab, by.x = "State", by.y = "StateID",
 names(petdata)[names(petdata) == "State"] <- "StateID"
 names(petdata)[names(petdata) == "StateName"] <- "State"
 
+# ---- factorize categorical variables ----------------------------------------
+
+petdata$SentimentScore<-as.factor(petdata$SentimentScore)
+petdata$ColorID1<-as.factor(petdata$ColorID1)
+petdata$ColorID2<-as.factor(petdata$ColorID2)
+petdata$ColorID3<-as.factor(petdata$ColorID3)
+petdata$StateID<-as.factor(petdata$StateID)
+petdata$Type<-as.factor(petdata$Type)
+levels(petdata$Type)<-c("Dog","Cat")
+petdata$AdoptionSpeed<-as.factor(petdata$AdoptionSpeed)
+levels(petdata$AdoptionSpeed)<-c("same day","1 to 7 days", "8 to 30 days", "31 to 90 days", "+90 days")
+petdata$Dewormed<-as.factor(petdata$Dewormed)
+levels(petdata$Dewormed)<-c("Yes","No","Not Sure")
+petdata$Sterilized<-as.factor(petdata$Sterilized)
+levels(petdata$Sterilized)<-c("Yes","No","Not Sure")
+petdata$Vaccinated<-as.factor(petdata$Vaccinated)
+levels(petdata$Vaccinated)<-c("Yes","No","Not Sure")
+petdata$Health<-as.factor(petdata$Health)
+levels(petdata$Health)<-c("Healthy", "Minor Injury", "Serious Injury")
+petdata$MaturitySize<-as.factor(petdata$MaturitySize)
+levels(petdata$MaturitySize)<-c("Small", "Medium", "Large", "Extra Large")
+petdata$FurLength<-as.factor(petdata$FurLength)
+levels(petdata$FurLength)<-c("Small", "Medium", "Long")
+petdata$Gender<-as.factor(petdata$Gender)
+levels(petdata$Gender)<-c("Male", "Female", "Mixed/Group")
 
 # ---- Split data for dogs and cats -------------------------------------------
 
 
-dogs <- subset(petdata[petdata$Type == 1, ], select = -c(Type))
-cats <- subset(petdata[petdata$Type == 2, ], select = -c(Type))
+dogs <- subset(petdata[petdata$Type == "Dog", ], select = -c(Type))
+cats <- subset(petdata[petdata$Type == "Cat", ], select = -c(Type))
 
 
 # ---- Clean up the environment -----------------------------------------------
