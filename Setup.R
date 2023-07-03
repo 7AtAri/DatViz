@@ -124,15 +124,15 @@ names(petdata)[names(petdata) == "StateName"] <- "State"
 
 # ---- factorize categorical variables ----------------------------------------
 
-petdata$SentimentScore<-as.factor(petdata$SentimentScore)
+petdata$SentimentScore_fac<-as.factor(petdata$SentimentScore)
 petdata$ColorID1<-as.factor(petdata$ColorID1)
 petdata$ColorID2<-as.factor(petdata$ColorID2)
 petdata$ColorID3<-as.factor(petdata$ColorID3)
 petdata$StateID<-as.factor(petdata$StateID)
 petdata$Type<-as.factor(petdata$Type)
 levels(petdata$Type)<-c("Dog","Cat")
-petdata$AdoptionSpeed<-as.factor(petdata$AdoptionSpeed)
-levels(petdata$AdoptionSpeed)<-c("same day","1 to 7 days", "8 to 30 days", "31 to 90 days", "+90 days")
+petdata$AdoptionSpeed_fac<-as.factor(petdata$AdoptionSpeed)
+levels(petdata$AdoptionSpeed_fac)<-c("same day","1 to 7 days", "8 to 30 days", "31 to 90 days", "+90 days")
 petdata$Dewormed<-as.factor(petdata$Dewormed)
 levels(petdata$Dewormed)<-c("Yes","No","Not Sure")
 petdata$Sterilized<-as.factor(petdata$Sterilized)

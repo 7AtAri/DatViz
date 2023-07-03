@@ -8,34 +8,62 @@ source("Setup.R")
 # ---- plots and visualizations -----------
 hist(as.numeric(petdata$AdoptionSpeed))
 
-names_num <- names(which(sapply(petdata, is.numeric)))
-names_num
-length(names_num)
+#names_num <- names(which(sapply(petdata, is.numeric)))
+#names_num
+#length(names_num)
 
 hist(petdata$Age)
 summary(petdata)
 
-par(mgp=c(3,1,0),mar=c(5,4,4,2)+0.1)
-pairs.panels(petdata[names_num], 
+petdata$ColorID1_num<-as.numeric(petdata$ColorID1)
+
+# --- pairs and corr plot for numeric variables -----
+par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
+pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
+                       "SentimentMagnitude", "AdoptionSpeed", "SentimentScore", "ColorID1_num")], 
              hist.col="darkblue",
              pch=23,
-             main = "Pairs Plot of Numeric Variables",
+             main = "Pairs and Correlation Plot of Numeric Variables",
              cex.cor=0.6, 
              cex=0.5, 
+             jiggle=TRUE,
+             factor=1,
              ellipses = FALSE,
              smooth= FALSE,
              density = FALSE,
              rug=FALSE,
              stars=TRUE, 
-             #bg="red",
+             #bg=c("yellow","orange","red","purple","blue")[petdata$AdoptionSpeed],
+             bg=c("red","green")[petdata$Type],
+             #bg=c("green","red","yellow")[petdata$Gender],
              lwd=0.2,
              cex.axis = 0.9,
-             mar=0.1)
+             mar=0.1,
+             tck=-0.05,
+             las=1)
+#par(no.readonly = TRUE)
+legend(x = "bottom",
+       fill = c("red","green")[petdata$Type], 
+       legend = c(levels(petdata$Type)), 
+       horiz =TRUE,
+       xpd = TRUE,
+       inset=c(-4,0),
+       yjust=5, 
+       xjust=5,
+       adj=0)
 
-
-pairs(petdata[names_num],col="orange", pch = 19, main = "Pairs Plot of Numeric Variables", label.pos = 0.5, cex.labels=0.8)
-pairs(petdata[c("Age", "BreedID1", "Fee", "Quantity", "VideoAmt", "PhotoAmt")])
-
+# --- pairs plot numeric variables -----------
+par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
+pairs(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt", "SentimentMagnitude")],
+      col="orange",
+      pch = 21, 
+      main = "Pairs Plot of Numeric Variables", 
+      label.pos = 0.5, 
+      cex.labels=1,
+      cex.axis=0.8,
+      tck=-0.04,
+      las = 1)
+#pairs(petdata[names_num],col="orange", pch = 19, main = "Pairs Plot of Numeric Variables", label.pos = 0.5, cex.labels=0.8)
 
 # corr_mat=cor(train[, names_num], method="s") #create Spearman correlation matrix
 ?cor()
@@ -217,5 +245,6 @@ ggplot() +
   geom_jitter(data=petdata, aes(x=SentimentScore, y=Age, size=PhotoAmt, color=AdoptionSpeed, shape=factor(Health)))+
   theme_minimal()
   
+
 
 
