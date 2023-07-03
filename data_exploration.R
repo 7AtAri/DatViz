@@ -78,10 +78,10 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"
         #cex.main=1,
         #main="Frequencies (>5) of Dog Breeds in the Petdata Dataset")
 )
-title(main = "Dog Breeds Frequencies (>5 and without 'Mixed Breed')", 
+title(main = "Dog Breeds - Frequencies (>5 and without 'Mixed Breed')", 
       line = -2.5, 
-      cex.main=1.19,
-      font.main=1,
+      cex.main=1.09,
+      font.main=2,
       #col.main="darkorange",
       outer = TRUE)
 axis(1, at = seq(0, 200, by = 25), labels = FALSE, tick = TRUE)
@@ -89,7 +89,7 @@ axis(1, at = seq(0, 200, by = 25), labels = TRUE, las = 1, cex.axis= 0.7)
 
 # ---- cat-breeds plot ------------------
 
-par(mar = c(2, 8, 1.5, 2)+1, mgp=c(0,0.3,-0.2), oma = c(0, 0, 0, 1))
+par(mar = c(2, 8, 1.7, 2)+1.5, mgp=c(0,0.3,-0.2), oma = c(0, 0, 0, 1))
 
 df_catbreeds<-data.frame(table(cats$Breed1))
 max_breed_cats<-max(table(cats$Breed1))
@@ -106,13 +106,12 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5],
         #main="Frequencies (>5) of Cat Breeds in the Petdata Dataset")
 )
 
-title(main = "Cat Breeds Frequencies (>3)", 
-      line = -2.5, 
-      cex.main=1.2,
-      font.main=1,
+title(main = "Cat Breeds - Frequencies (>3) for each Breed", 
+      line = -3, 
+      cex.main=1.32,
+      font.main=2,
       #col.main="darkorange",
-      outer = TRUE,
-      adj=0)
+      outer = TRUE)
 #axis(1, at = seq(0, 200, by = 25), labels = FALSE, tick = TRUE)
 #axis(1, at = seq(0, 200, by = 25), labels = TRUE, las = 1, cex.axis= 0.7)
 
