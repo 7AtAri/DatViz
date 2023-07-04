@@ -252,11 +252,12 @@ p1<-ggplot(data=subset(petdata, !is.na(SentimentScore)), aes(SentimentScore, fct
   ylab("Health")+
   xlab("Sentiment Score")+
   theme(
+    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
     plot.title = element_text(color="black", size=10, face="bold"),
     axis.title.x = element_text(color="black", size=8, face="bold"),
     axis.title.y = element_text(color="black", size=8, face="bold")
   )
-p1
+
 
 p2<-ggplot(data=subset(petdata, !is.na(SentimentScore)), aes(SentimentScore, fct_rev(AdoptionSpeed_fac))) +
   annotation_custom(
@@ -267,11 +268,12 @@ p2<-ggplot(data=subset(petdata, !is.na(SentimentScore)), aes(SentimentScore, fct
   ylab("Adoption Speed")+
   xlab("Sentiment Score")+
   theme(
+    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
     plot.title = element_text(color="black", size=10, face="bold"),
     axis.title.x = element_text(color="black", size=8, face="bold"),
     axis.title.y = element_text(color="black", size=8, face="bold")
   )
-p2
+
   
 p3<-ggplot(data=subset(dogs, !is.na(SentimentScore)), aes(SentimentScore)) +
   annotation_custom(
@@ -280,6 +282,7 @@ p3<-ggplot(data=subset(dogs, !is.na(SentimentScore)), aes(SentimentScore)) +
   ggtitle("Dogs - Sentiment Scores Frequencies") +
   geom_bar()+
   theme(
+    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
     plot.title = element_text(color="black", size=10, face="bold"),
     axis.title.x = element_text(color="black", size=8, face="bold"),
     axis.title.y = element_text(color="black", size=8, face="bold")
@@ -292,12 +295,15 @@ p4<-ggplot(data=subset(cats, !is.na(SentimentScore)), aes(SentimentScore)) +
   ggtitle("Cats - Sentiment Scores Frequencies") +
   geom_bar()+
   theme(
+    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
     plot.title = element_text(color="black", size=10, face="bold"),
     axis.title.x = element_text(color="black", size=8, face="bold"),
     axis.title.y = element_text(color="black", size=8, face="bold")
   )
 
-?grid.arrange
+#margin = theme(plot.margin = unit(c(2,2,2,2), "cm"))
+#grid.arrange(grobs = lapply(pl, "+", margin))
+
 
 grid.arrange(p4, p1, p3, p2,
              nrow=2, ncol=2, 
