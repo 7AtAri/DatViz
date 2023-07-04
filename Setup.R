@@ -8,6 +8,7 @@ library(ggplot2)
 library(stringr)
 library(dplyr)
 library(psych)
+library(inspectdf)
 
 
 # ---- Descriptions -----------------------------------------------------------
@@ -144,7 +145,7 @@ levels(petdata$Health)<-c("Healthy", "Minor Injury", "Serious Injury")
 petdata$MaturitySize<-as.factor(petdata$MaturitySize)
 levels(petdata$MaturitySize)<-c("Small", "Medium", "Large", "Extra Large")
 petdata$FurLength<-as.factor(petdata$FurLength)
-levels(petdata$FurLength)<-c("Small", "Medium", "Long")
+levels(petdata$FurLength)<-c("Short", "Medium", "Long")
 petdata$Gender<-as.factor(petdata$Gender)
 levels(petdata$Gender)<-c("Male", "Female", "Mixed/Group")
 

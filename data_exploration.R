@@ -4,7 +4,6 @@
 source("Setup.R")
 
 
-
 # ---- plots and visualizations -----------
 hist(as.numeric(petdata$AdoptionSpeed))
 
@@ -14,11 +13,22 @@ hist(as.numeric(petdata$AdoptionSpeed))
 
 hist(petdata$Age)
 summary(petdata)
+inspect_types(petdata)%>% show_plot()
+inspect_mem(petdata)%>% show_plot()
+inspect_na(petdata)%>% show_plot()
+inspect_imb(petdata)%>% show_plot()
+inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID"))])%>% show_plot()
+
 
 petdata$ColorID1_num<-as.numeric(petdata$ColorID1)
+# --- inspect categorical variables --------------------------------------------
 
-# --- pairs and corr plot for numeric variables -----
+
+
+
+# --- pairs and corr plot for numeric variables --------------------------------
 par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
+
 pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
                        "SentimentMagnitude", "AdoptionSpeed", "SentimentScore", "ColorID1_num")], 
              hist.col="darkblue",
@@ -38,19 +48,9 @@ pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
              #bg=c("green","red","yellow")[petdata$Gender],
              lwd=0.2,
              cex.axis = 0.9,
-             mar=0.1,
              tck=-0.05,
              las=1)
-#par(no.readonly = TRUE)
-legend(x = "bottom",
-       fill = c("red","green")[petdata$Type], 
-       legend = c(levels(petdata$Type)), 
-       horiz =TRUE,
-       xpd = TRUE,
-       inset=c(-4,0),
-       yjust=5, 
-       xjust=5,
-       adj=0)
+
 
 # --- pairs plot numeric variables -----------
 par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
@@ -76,7 +76,8 @@ corrplot(corr_mat,
 )
 
 # ---- dog-breeds plot ------------------
-par(mar = c(2, 8, 1.5, 2)+1, mgp=c(0,0.3,-0.2), oma = c(0, 0, 0, 1))
+par(mfrow=c(1,2))
+par(mar = c(3, 5, 3, 3)+0.1, mgp=c(0,0.3,-0.2), oma = c(1, 5, 1, 1))
 
 df_dogbreeds<-data.frame(table(dogs$Breed1))
 max_table<-max(table(dogs$Breed1))
@@ -86,19 +87,19 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5],
         cex.lab = 1,
         horiz = TRUE, 
         cex.names=0.6, 
-        xlim = c(0, 6000),
+        xlim = c(0, 7000),
         cex.axis=0.7,
         names=df_dogbreeds$Var1[df_dogbreeds$Freq>5],
         col="darkred",
-        main="Frequencies (>5) of Dog Breeds in the Petdata Dataset")
-
+        #main="Frequencies (>5) of Dog Breeds in the Petdata Dataset"
+)
 # dogbreeds without mixed breed
 barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"],
         las = 1,
         #cex.lab = 1,
         horiz = TRUE, 
         cex.names=0.6, 
-        #xlim = c(0, 230),
+        xlim = c(0, 250),
         cex.axis=0.7,
         bg="lightgrey",
         names=df_dogbreeds$Var1[df_dogbreeds$Freq>5& df_dogbreeds$Var1!="Mixed Breed"],
@@ -106,18 +107,19 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"
         #cex.main=1,
         #main="Frequencies (>5) of Dog Breeds in the Petdata Dataset")
 )
-title(main = "Dog Breeds - Frequencies (>5 and without 'Mixed Breed')", 
-      line = -2.5, 
-      cex.main=1.09,
+title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'", 
+      line = -2.7, 
+      cex.main=1.39,
       font.main=2,
       #col.main="darkorange",
-      outer = TRUE)
-axis(1, at = seq(0, 200, by = 25), labels = FALSE, tick = TRUE)
-axis(1, at = seq(0, 200, by = 25), labels = TRUE, las = 1, cex.axis= 0.7)
+      outer = TRUE,
+      adj=0.28)
+#axis(1, at = seq(0, 200, by = 25), labels = FALSE, tick = TRUE)
+#axis(1, at = seq(0, 200, by = 25), labels = TRUE, las = 1, cex.axis= 0.7)
 
 # ---- cat-breeds plot ------------------
 
-par(mar = c(2, 8, 1.7, 2)+1.5, mgp=c(0,0.3,-0.2), oma = c(0, 0, 0, 1))
+par(mar = c(3, 5, 3, 3)+0.1, mgp=c(0,0.3,-0.2), oma = c(1, 5, 1, 1))
 
 df_catbreeds<-data.frame(table(cats$Breed1))
 max_breed_cats<-max(table(cats$Breed1))
@@ -127,19 +129,32 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5],
         #cex.lab = 1,
         horiz = TRUE, 
         cex.names=0.6, 
-        #xlim = c(0, 6000),
+        xlim = c(0, 4000),
         cex.axis=0.7,
         names=df_catbreeds$Var1[df_catbreeds$Freq>5],
         col="darkred",
         #main="Frequencies (>5) of Cat Breeds in the Petdata Dataset")
 )
 
-title(main = "Cat Breeds - Frequencies (>3) for each Breed", 
+barplot(df_catbreeds$Freq[df_catbreeds$Freq>5 & df_catbreeds$Var1!="Domestic Short Hair" & df_catbreeds$Var1!="Domestic Medium Hair"& df_catbreeds$Var1!="Domestic Long Hair"],
+        las = 1,
+        #cex.lab = 1,
+        horiz = TRUE, 
+        cex.names=0.6, 
+        xlim = c(0, 400),
+        cex.axis=0.7,
+        names=df_catbreeds$Var1[df_catbreeds$Freq>5& df_catbreeds$Var1!="Domestic Short Hair" & df_catbreeds$Var1!="Domestic Medium Hair"& df_catbreeds$Var1!="Domestic Long Hair"],
+        col="darkred",
+        #main="Frequencies (>5) of Cat Breeds in the Petdata Dataset")
+)
+
+title(main = "Cat Breeds - Frequencies (>3) per Breed / and without Domestic Breeds", 
       line = -3, 
       cex.main=1.32,
       font.main=2,
       #col.main="darkorange",
-      outer = TRUE)
+      outer = TRUE,
+      adj=0.395)
 #axis(1, at = seq(0, 200, by = 25), labels = FALSE, tick = TRUE)
 #axis(1, at = seq(0, 200, by = 25), labels = TRUE, las = 1, cex.axis= 0.7)
 
@@ -154,7 +169,6 @@ boxplot(petdata$SentimentScore)
 # Add a new column with row numbers
 petdata$index <- seq_along(petdata$PetID)
 
-library(ggplot2)
 library(RColorBrewer)
 library(grid) 
 library(ggplotify)
@@ -189,7 +203,7 @@ ggplot(petdata) +
   geom_histogram(aes(x = SentimentScore),binwidth = 0.1, bins = 20)
 
 
-# -- alternative fading option ---- 
+# -- better fading option ---- 
 # reference:
 # https://stackoverflow.com/questions/30136725/plot-background-colour-in-gradient
 
