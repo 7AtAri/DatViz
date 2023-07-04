@@ -4,26 +4,27 @@
 source("Setup.R")
 
 
-# ---- plots and visualizations -----------
-hist(as.numeric(petdata$AdoptionSpeed))
-
-#names_num <- names(which(sapply(petdata, is.numeric)))
-#names_num
-#length(names_num)
-
-hist(petdata$Age)
+# --- summaries -----------------------------------------------------------
 summary(petdata)
-skim(petdata)
-inspect_types(petdata)%>% show_plot()
-inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID"))])%>% show_plot()
-inspect_imb(petdata)%>% show_plot()
-inspect_na(petdata)%>% show_plot()
+skim(petdata) # nicer summary
 
-petdata$ColorID1_num<-as.numeric(petdata$ColorID1)
+
+#inspect_types(petdata)%>% show_plot()
+#inspect_na(petdata)%>% show_plot()
+
+
 # --- inspect categorical variables --------------------------------------------
 
+inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID"))])%>% 
+  show_plot(col_palette=4,label_color="black")
+inspect_cat(cats[,!(names(cats)%in%c("ColorID1","ColorID2","ColorID3","PetID"))])%>% 
+  show_plot(col_palette=1)
+inspect_cat(dogs[,!(names(dogs)%in%c("ColorID1","ColorID2","ColorID3","PetID"))])%>% 
+  show_plot(col_palette=1)
+inspect_imb(petdata)%>% show_plot(col_palette=2)
 
-
+# --- add a numeric color column for pairs plot ----------------------------
+petdata$ColorID1_num<-as.numeric(petdata$ColorID1)
 
 # --- pairs and corr plot for numeric variables --------------------------------
 par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
