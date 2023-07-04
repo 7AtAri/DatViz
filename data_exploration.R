@@ -241,48 +241,90 @@ g <- make_gradient(
 # ----plots with gradient ---------------------
 library(forcats)
 library(gridExtra)
+library(viridis)
 
 p1<-ggplot(data=subset(petdata, !is.na(SentimentScore)), aes(SentimentScore, fct_rev(Health))) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
+  ggtitle("Pets Health Status for Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Health")+
-  xlab("Sentiment Score")
+  xlab("Sentiment Score")+
+  theme(
+    plot.title = element_text(color="black", size=10, face="bold"),
+    axis.title.x = element_text(color="black", size=8, face="bold"),
+    axis.title.y = element_text(color="black", size=8, face="bold")
+  )
 p1
 
 p2<-ggplot(data=subset(petdata, !is.na(SentimentScore)), aes(SentimentScore, fct_rev(AdoptionSpeed_fac))) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
+  ggtitle("Pets Adoption Speed for Sentiment Score") +
   geom_violin(alpha=0)+
   ylab("Adoption Speed")+
-  xlab("Sentiment Score")
+  xlab("Sentiment Score")+
+  theme(
+    plot.title = element_text(color="black", size=10, face="bold"),
+    axis.title.x = element_text(color="black", size=8, face="bold"),
+    axis.title.y = element_text(color="black", size=8, face="bold")
+  )
 p2
   
 p3<-ggplot(data=subset(dogs, !is.na(SentimentScore)), aes(SentimentScore)) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
-  geom_bar()
+  ggtitle("Dogs - Sentiment Scores Frequencies") +
+  geom_bar()+
+  theme(
+    plot.title = element_text(color="black", size=10, face="bold"),
+    axis.title.x = element_text(color="black", size=8, face="bold"),
+    axis.title.y = element_text(color="black", size=8, face="bold")
+  )
 
 p4<-ggplot(data=subset(cats, !is.na(SentimentScore)), aes(SentimentScore)) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
-  geom_bar()
+  ggtitle("Cats - Sentiment Scores Frequencies") +
+  geom_bar()+
+  theme(
+    plot.title = element_text(color="black", size=10, face="bold"),
+    axis.title.x = element_text(color="black", size=8, face="bold"),
+    axis.title.y = element_text(color="black", size=8, face="bold")
+  )
 
 ?grid.arrange
 
-grid.arrange(p1, p2, p3, p4,nrow=2, ncol=2)
+grid.arrange(p4, p1, p3, p2,
+             nrow=2, ncol=2, 
+             top = "Exploring Sentiment Data",
+             vp=viewport(width=0.9, height=0.9))
+
 
 # --- sentiment + other variables -----
+
+custom.col <- c("black", "#C4961A", "#F4EDCA", 
+                "#FFDB6D",  "darkgrey",
+               "lightgrey","yellow")
+
 ggplot() +
-  geom_jitter(data=petdata, aes(x=SentimentScore, y=Age, size=PhotoAmt, color=AdoptionSpeed, shape=factor(Health)))+
+  geom_jitter(data=dogs,
+              aes(x=SentimentScore,
+                  y=PhotoAmt, 
+                  color=Color1, 
+                  shape=Health, 
+                  size=Age))+
+  scale_colour_manual(values= custom.col)+
   theme_minimal()
-  
+
+
 
 # --- Show the pet locations on a interactive map -----------------------------
 
 
 source("leaflet_petlocations.R")
+
