@@ -260,5 +260,7 @@ ggplot() +
   theme_minimal()
   
 
+# --- Show the pet locations on a interactive map -----------------------------
 
 
+source("leaflet_petlocations.R")
