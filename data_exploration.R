@@ -13,12 +13,11 @@ hist(as.numeric(petdata$AdoptionSpeed))
 
 hist(petdata$Age)
 summary(petdata)
+skim(petdata)
 inspect_types(petdata)%>% show_plot()
-inspect_mem(petdata)%>% show_plot()
-inspect_na(petdata)%>% show_plot()
-inspect_imb(petdata)%>% show_plot()
 inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID"))])%>% show_plot()
-
+inspect_imb(petdata)%>% show_plot()
+inspect_na(petdata)%>% show_plot()
 
 petdata$ColorID1_num<-as.numeric(petdata$ColorID1)
 # --- inspect categorical variables --------------------------------------------

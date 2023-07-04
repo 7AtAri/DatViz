@@ -9,6 +9,7 @@ library(stringr)
 library(dplyr)
 library(psych)
 library(inspectdf)
+library(skimr)
 
 
 # ---- Descriptions -----------------------------------------------------------
