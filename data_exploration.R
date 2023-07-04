@@ -65,8 +65,9 @@ pairs(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt", "SentimentMagn
       las = 1)
 #pairs(petdata[names_num],col="orange", pch = 19, main = "Pairs Plot of Numeric Variables", label.pos = 0.5, cex.labels=0.8)
 
+# ------ corr plot --------------------------------------------------------
 # corr_mat=cor(train[, names_num], method="s") #create Spearman correlation matrix
-?cor()
+
 corr_mat <- cor(petdata[, c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt")], method = "s")
 
 corrplot(corr_mat,
@@ -75,9 +76,9 @@ corrplot(corr_mat,
   tl.col = "black", tl.cex = 1
 )
 
-# ---- dog-breeds plot ------------------
+# ---- dog-breeds plot ---------------------------------------------------
 par(mfrow=c(1,2))
-par(mar = c(3, 5, 3, 3)+0.1, mgp=c(0,0.3,-0.2), oma = c(1, 5, 1, 1))
+par(mar = c(3, 5, 3, 3)+0.1, mgp=c(0,0.3,-0.2), oma = c(1, 7, 1, 2))
 
 df_dogbreeds<-data.frame(table(dogs$Breed1))
 max_table<-max(table(dogs$Breed1))
@@ -86,7 +87,7 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5],
         las = 1,
         cex.lab = 1,
         horiz = TRUE, 
-        cex.names=0.6, 
+        cex.names=0.7, 
         xlim = c(0, 7000),
         cex.axis=0.7,
         names=df_dogbreeds$Var1[df_dogbreeds$Freq>5],
@@ -98,7 +99,7 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"
         las = 1,
         #cex.lab = 1,
         horiz = TRUE, 
-        cex.names=0.6, 
+        cex.names=0.7, 
         xlim = c(0, 250),
         cex.axis=0.7,
         bg="lightgrey",
@@ -108,18 +109,18 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"
         #main="Frequencies (>5) of Dog Breeds in the Petdata Dataset")
 )
 title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'", 
-      line = -2.7, 
-      cex.main=1.39,
+      line = -2.4, 
+      cex.main=1.1,
       font.main=2,
       #col.main="darkorange",
       outer = TRUE,
-      adj=0.28)
+      adj=0.4)
 #axis(1, at = seq(0, 200, by = 25), labels = FALSE, tick = TRUE)
 #axis(1, at = seq(0, 200, by = 25), labels = TRUE, las = 1, cex.axis= 0.7)
 
-# ---- cat-breeds plot ------------------
+# ---- cat-breeds plot ---------------------------------------------------
 
-par(mar = c(3, 5, 3, 3)+0.1, mgp=c(0,0.3,-0.2), oma = c(1, 5, 1, 1))
+par(mar = c(3, 5, 3, 3)+0.1, mgp=c(0,0.3,-0.2), oma = c(1, 5, 1, 5))
 
 df_catbreeds<-data.frame(table(cats$Breed1))
 max_breed_cats<-max(table(cats$Breed1))
@@ -128,7 +129,7 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5],
         las = 1,
         #cex.lab = 1,
         horiz = TRUE, 
-        cex.names=0.6, 
+        cex.names=0.7, 
         xlim = c(0, 4000),
         cex.axis=0.7,
         names=df_catbreeds$Var1[df_catbreeds$Freq>5],
@@ -140,7 +141,7 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5 & df_catbreeds$Var1!="Domestic Sho
         las = 1,
         #cex.lab = 1,
         horiz = TRUE, 
-        cex.names=0.6, 
+        cex.names=0.7, 
         xlim = c(0, 400),
         cex.axis=0.7,
         names=df_catbreeds$Var1[df_catbreeds$Freq>5& df_catbreeds$Var1!="Domestic Short Hair" & df_catbreeds$Var1!="Domestic Medium Hair"& df_catbreeds$Var1!="Domestic Long Hair"],
@@ -148,15 +149,13 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5 & df_catbreeds$Var1!="Domestic Sho
         #main="Frequencies (>5) of Cat Breeds in the Petdata Dataset")
 )
 
-title(main = "Cat Breeds - Frequencies (>3) per Breed / and without Domestic Breeds", 
-      line = -3, 
-      cex.main=1.32,
+title(main = "Cat Breeds - Frequencies (>5) per Breed / and without Domestic Breeds", 
+      line = -2.3, 
+      cex.main=1.1,
       font.main=2,
       #col.main="darkorange",
       outer = TRUE,
-      adj=0.395)
-#axis(1, at = seq(0, 200, by = 25), labels = FALSE, tick = TRUE)
-#axis(1, at = seq(0, 200, by = 25), labels = TRUE, las = 1, cex.axis= 0.7)
+      adj=0.5)
 
 
 # --------- fading sentiment ----------
@@ -207,6 +206,8 @@ ggplot(petdata) +
 # reference:
 # https://stackoverflow.com/questions/30136725/plot-background-colour-in-gradient
 
+# gradient function:
+
 make_gradient <- function(deg = 45, n = 100, cols = blues9) {
   cols <- colorRampPalette(cols)(n + 1)
   rad <- deg / (180 / pi)
@@ -232,27 +233,48 @@ make_gradient <- function(deg = 45, n = 100, cols = blues9) {
   )
 }
 
+# make the gradient background:
 g <- make_gradient(
   deg = -180, n = 500, cols = brewer.pal(9, "RdBu")
 )
 
-ggplot(data=subset(petdata, !is.na(SentimentScore)), aes(SentimentScore)) +
+# ----plots with gradient ---------------------
+library(forcats)
+library(gridExtra)
+
+p1<-ggplot(data=subset(petdata, !is.na(SentimentScore)), aes(SentimentScore, fct_rev(Health))) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  geom_boxplot(alpha=0.2)+
+  ylab("Health")+
+  xlab("Sentiment Score")
+p1
+
+p2<-ggplot(data=subset(petdata, !is.na(SentimentScore)), aes(SentimentScore, fct_rev(AdoptionSpeed_fac))) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  geom_violin(alpha=0)+
+  ylab("Adoption Speed")+
+  xlab("Sentiment Score")
+p2
+  
+p3<-ggplot(data=subset(dogs, !is.na(SentimentScore)), aes(SentimentScore)) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
   geom_bar()
 
-ggplot(data=subset(dogs, !is.na(SentimentScore)), aes(SentimentScore)) +
+p4<-ggplot(data=subset(cats, !is.na(SentimentScore)), aes(SentimentScore)) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
   geom_bar()
 
-ggplot(data=subset(cats, !is.na(SentimentScore)), aes(SentimentScore)) +
-  annotation_custom(
-    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
-  ) + 
-  geom_bar()
+?grid.arrange
+
+grid.arrange(p1, p2, p3, p4,nrow=2, ncol=2)
 
 # --- sentiment + other variables -----
 ggplot() +
