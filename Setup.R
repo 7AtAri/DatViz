@@ -10,6 +10,13 @@ library(dplyr)
 library(psych)
 library(inspectdf)
 library(skimr)
+library(RColorBrewer)
+library(forcats)
+library(gridExtra)
+# not 100% sure if needed:
+library(grid) # needed?
+library(ggplotify) #needed?
+library(viridis) #needed?
 
 
 # ---- Descriptions -----------------------------------------------------------
@@ -126,7 +133,13 @@ names(petdata)[names(petdata) == "StateName"] <- "State"
 
 # ---- factorize categorical variables ----------------------------------------
 
-petdata$SentimentScore_fac<-as.factor(petdata$SentimentScore)
+#petdata$SentimentScore_fac<-as.factor(petdata$SentimentScore)
+
+petdata$SentimentScore_fac <- cut(petdata$SentimentScore,
+                      breaks = c(-1, -0.4, -0.1, 0.1, 0.4, 1),
+                      include.lowest = T,
+                      right = F)
+levels(petdata$SentimentScore_fac)<-c("negative", "moderately negative", "neutral", "moderately positive", "positive")
 petdata$ColorID1<-as.factor(petdata$ColorID1)
 petdata$ColorID2<-as.factor(petdata$ColorID2)
 petdata$ColorID3<-as.factor(petdata$ColorID3)
