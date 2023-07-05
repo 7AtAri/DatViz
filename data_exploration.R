@@ -15,27 +15,65 @@ skim(petdata) # nicer summary
 
 # --- inspect categorical variables --------------------------------------------
 
+labels=c("Adoption Speed", "Breed 1", "Breed 2", "Color 1",
+         "Color 2", "Color 3", "Dewormed", "Fur Length", "Gender",
+         "Health", "Maturity Size", "Sentiment Score", "State", 
+         "Sterilized", "Type", "Vaccinated")
+  
 inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID"))])%>% 
-  show_plot(col_palette=4,label_color="black")
+  show_plot(label_size=0.1, col_palette=2,label_color="black") +
+  labs(title = "Frequency in categorical levels in Petdata",
+       subtitle = "Grey segments are NAs") +
+  theme(plot.title = element_text(face = "bold"),
+    plot.background = element_rect(fill = "white"),
+    panel.grid.major = element_line(color = "white"),
+    #panel.border=element_rect(margin(0.9,0,0,0)),
+    strip.background = element_blank(),
+    axis.text.y.left=element_text(size = 11, hjust=1),
+    plot.margin = margin(21,17,17,17))
 inspect_cat(cats[,!(names(cats)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID"))])%>% 
-  show_plot(col_palette=1)
+  show_plot(col_palette=5, label_color="black")+
+  labs(title = "Frequency in categorical levels in cats data",
+       subtitle = "Grey segments are NAs") +
+  theme(plot.title = element_text(face = "bold"),
+        plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "white"),
+        #panel.border=element_rect(margin(0.9,0,0,0)),
+        strip.background = element_blank(), 
+        axis.text.y.left=element_text(size = 11, hjust=1),
+        plot.margin = margin(21,17,17,17))
 inspect_cat(dogs[,!(names(dogs)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID"))])%>% 
-  show_plot(col_palette=1)
+  show_plot(col_palette=5,label_color="black")+
+  labs(title = "Frequency in categorical levels in dogs data",
+       subtitle = "Grey segments are NAs") +
+  theme(plot.title = element_text(face = "bold"),
+        plot.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(color = "white"),
+        #panel.border=element_rect(margin(0.9,0,0,0)),
+        strip.background = element_blank(),
+        axis.text.y.left=element_text(size = 11, hjust=1),
+        plot.margin = margin(21,17,17,17))
+
+
 inspect_imb(petdata)%>% show_plot(col_palette=2)
 
 # --- add a numeric color column for pairs plot ----------------------------
 petdata$ColorID1_num<-as.numeric(petdata$ColorID1)
 
 # --- pairs and corr plot for numeric variables --------------------------------
-par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
 
+# save following plot in png format in current directory
+png(file="pairs_and_corr.png", width=1800, height=1200,res=200)
+
+par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
 pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
                        "SentimentMagnitude", "AdoptionSpeed", "SentimentScore", "ColorID1_num")], 
              hist.col="darkblue",
              pch=23,
              main = "Pairs and Correlation Plot of Numeric Variables",
-             cex.cor=0.6, 
-             cex=0.5, 
+             cex.cor=0.5, 
+             cex=0.45, 
+             cex.labels=0.7,
              jiggle=TRUE,
              factor=1,
              ellipses = FALSE,
@@ -44,13 +82,18 @@ pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
              rug=FALSE,
              stars=TRUE, 
              #bg=c("yellow","orange","red","purple","blue")[petdata$AdoptionSpeed],
-             bg=c("red","green")[petdata$Type],
+             bg=c("purple","orange")[petdata$Type],
              #bg=c("green","red","yellow")[petdata$Gender],
              lwd=0.2,
-             cex.axis = 0.9,
-             tck=-0.05,
-             las=1)
+             cex.axis = 0.6,
+             tck=-0.08,
+             las=1,
+             oma=c(3,3,8,3))
 
+# save the file:
+dev.off()
+getOption("device")
+dev.cur()
 
 # --- pairs plot numeric variables -----------
 par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
