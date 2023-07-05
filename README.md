@@ -8,6 +8,8 @@ TODOs:
 * 3d plot of tsne datapoints with clickable information
 * refine maps -> add population and/or income data -> log scale to numbers -> hover info
 * take the highest influencing variables from regression summary to do some interesting stuff with them
+* maybe also visualize interactions between variables (check regression output)
+* develop a narrative / story through our data and plots for presentation
 
 our dataset:
 https://www.kaggle.com/competitions/petfinder-adoption-prediction/data
