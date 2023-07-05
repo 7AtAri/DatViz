@@ -1,5 +1,14 @@
 # DatViz - Pet Adoption Dataset
 
+TODOs:
+
+* Legend for pairs.panel plot -> orange: cats, purple: dogs
+(steps: reimport the png -> make grid -> 1 panel with png + 1 panel with legend)
+* make bars in sentiment plots more visible
+* 3d plot of tsne datapoints with clickable information
+* refine maps -> add population and/or income data -> log scale to numbers -> hover info
+* take the highest influencing variables from regression summary to do some interesting stuff with them
+
 our dataset:
 https://www.kaggle.com/competitions/petfinder-adoption-prediction/data
 
