@@ -4,7 +4,7 @@ our dataset:
 https://www.kaggle.com/competitions/petfinder-adoption-prediction/data
 
 + sentiment analysis data as json files -> converted to data frame in the data_exploration.R file
-+ images -> neural network -> embedding -> find best cluster number (KNN?) -> visualize clusters with r-tsne
++ images -> neural network -> embedding -> visualize clusters with r-tsne
 
 Data Fields in train and test data:
 
@@ -32,12 +32,6 @@ Data Fields in train and test data:
 * VideoAmt - Total uploaded videos for this pet
 * PhotoAmt - Total uploaded photos for this pet
 * Description - Profile write-up for this pet. The primary language used is English, with some in Malay or Chinese.
-
-
-todo EVERYONE:
-- clone the repository 
-- small data exploration
-- first ideas and first sketches for visuals
 
 
 Questions:
