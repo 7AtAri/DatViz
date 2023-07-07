@@ -9,6 +9,7 @@ date: "`r Sys.Date()`"
 encoding: utf8
 output: 
   bookdown::html_document2:
+    css: style.css
     toc: true
     toc_float: yes
     code_folding: hide
@@ -37,55 +38,348 @@ todo: describe the dataset:
 - number and properties of variables
 - for our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
 - amount of data points 
-- When accessing the dataset, we realized it also already had sentiment analysis data  included, that was run on the description column.
+- When accessing the dataset, we realized it also already had sentiment analysis data which was run on the description column.
 - necessary preprocessing
 
-```{r pet summary, echo=FALSE}
-summary(petdata) # basic data statistics
-# sum(is.na(petdata)==TRUE) # sum of NAs in data
-# (dim(petdata)[1]*dim(petdata)[2]) # Sum of all datapoints
+
+```{r variables overview, echo=FALSE}
 na_ratio<-sum(is.na(petdata)==TRUE)/(dim(petdata)[1]*dim(petdata)[2])# ratio of NAs among all datapoints
 print(na_ratio*100)
 print("% of NAs among all datapoints")# percentage of NAs in data
 
 ```
+# Distribution of Variables and their Correlations 
+
+To get an overview, we used a frequency plot for the levels of categorical variables and a pairs plot with scatterplots and correlations, as well as histograms on the 
+diagonal. 
+
+```{r categorical variables frequencies, fig.width=10, fig.height=8, echo= FALSE}
+
+inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID"))])%>% 
+  show_plot(label_size=0.1, col_palette=5,label_color="black") +
+  labs(title = "Frequency in categorical levels in Petdata",
+       subtitle = "Grey segments are NAs") +
+  theme(plot.title = element_text(face = "bold"),
+    plot.background = element_rect(fill = "white"),
+    panel.grid.major = element_line(color = "white"),
+    #panel.border=element_rect(margin(0.9,0,0,0)),
+    strip.background = element_blank(),
+    axis.text.y.left=element_text(size = 11, hjust=1),
+    plot.margin = margin(21,17,17,17))
+```
+Therefore the Sentiment Scores and the Adoption Speed variable were factorized, and in the case of the Sentiment Scores also binned (see source file) from 0.1 steps to the five factors negative, moderately negative, neutral, moderately positive, and positive.
+Categorical variables that contain IDs and names as well as descriptions were dropped.  
+```{r numerical variables pairs plot,fig.width=10, fig.height=8, echo= FALSE}
+
+petdata$ColorID1_num<-as.numeric(petdata$ColorID1)
+
+# save following plot in png format in current directory
+#png(file="pairs_and_corr.png", width=1800, height=1200,res=200)
+
+par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
+pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
+                       "SentimentMagnitude", "AdoptionSpeed", "SentimentScore", "ColorID1_num")], 
+             hist.col="darkblue",
+             pch=23,
+             main = "Pairs and Correlation Plot of Numeric Variables",
+             cex.cor=0.6, 
+             cex=0.6, 
+             cex.labels=0.85,
+             jiggle=TRUE,
+             factor=1,
+             ellipses = FALSE,
+             smooth= FALSE,
+             density = FALSE,
+             rug=FALSE,
+             stars=TRUE, 
+             #bg=c("yellow","orange","red","purple","blue")[petdata$AdoptionSpeed],
+             bg=c("purple","#FFDB6D")[petdata$Type], #
+             #bg=c("green","red","yellow")[petdata$Gender],
+             lwd=0.2,
+             cex.axis = 0.8,
+             tck=-0.08,
+             las=1,
+             oma=c(3,1.5,8,2))
+
+# save the file:
+#dev.off()
+#getOption("device")
+#dev.cur()
+
+```
+Some categorical variables were used with their numeric representations, since these can be read numerically. For example Adoption Speed, that is an ordinal variable with 5 factors and Color ID1, since the color scale goes from dark to light colors. 
+
+We can see the correlations of the numerical variables with their significance levels displayed as stars next to the numbers. On the diagonal, we see the histograms of the displayed variables. Most of them seem to be power law distributions. The pairs plots in the lower half are displaying scatterplots. Its purple points are the dogs, while the orange points are the cats. This makes it possible to see some differences between the two pet types of our dataset, for example that the cats seem to not get as old as the dogs. Also we can see some structural conspicuities between some variables, for example that the fee gets lower if the animals are older. Or that animals with a very fast adoption speed have almost no negative sentiment scores. 
+
 
 # Data Exploration
 
-- distributions of variables / summary
-- pairs plot
-- correlation plot
-- distributions of sentiment scores
+## Distribution of Catbreeds
+```{r catbreeds, fig.width=10, fig.height=6, echo=FALSE}
+par(mfrow=c(1,2))
+par(mar = c(1, 7, 1, 1)+0.1, mgp=c(0,0.3,-0.2), oma = c(1, 1, 1, 1))
 
+table_catbreeds<-(table(cats$Breed1))
+table_catbreeds<-table_catbreeds[order(table_catbreeds)]
+df_catbreeds<-data.frame(table_catbreeds)
 
-```{r, corr plot, echo=FALSE}
+max_breed_cats<-max(table(cats$Breed1))
 
-#names_num <- names(which(sapply(petdata, is.numeric)))
+barplot(df_catbreeds$Freq[df_catbreeds$Freq>5],
+        las = 1,
+        #cex.lab = 1,
+        horiz = TRUE, 
+        cex.names=0.7, 
+        xlim = c(0, 4000),
+        cex.axis=0.7,
+        names=df_catbreeds$Var1[df_catbreeds$Freq>5],
+        col="darkred",
+        #main="Frequencies (>5) of Cat Breeds in the Petdata Dataset")
+)
 
-#pairs(petdata[, names_num[1:10]])
-#pairs(petdata[, names_num[11:20]])
+barplot(df_catbreeds$Freq[df_catbreeds$Freq>5 & df_catbreeds$Var1!="Domestic Short Hair" & df_catbreeds$Var1!="Domestic Medium Hair"],
+        las = 1,
+        #cex.lab = 1,
+        horiz = TRUE, 
+        cex.names=0.7, 
+        xlim = c(0, 400),
+        cex.axis=0.7,
+        names=df_catbreeds$Var1[df_catbreeds$Freq>5& df_catbreeds$Var1!="Domestic Short Hair"& df_catbreeds$Var1!="Domestic Medium Hair"],
+        col="darkred",
+        #main="Frequencies (>5) of Cat Breeds in the Petdata Dataset")
+)
 
-#pairs(petdata[c("Age","Breed1","Fee","Quantity","VideoAmt","PhotoAmt")])
-pairs(petdata[c("Age","Fee","Quantity","VideoAmt","PhotoAmt","SentimentScore","AdoptionSpeed", "Health","Vaccinated","ColorID1")])
-
-petdata_reduced<-na.omit(petdata) # for the correlation plot, all NAs need to be removed
-
-corr_mat=cor(petdata_reduced[,c("Age","Fee","Quantity","VideoAmt","PhotoAmt","SentimentScore","AdoptionSpeed", "Health","Vaccinated","ColorID1")], method="s") #create Spearman correlation matrix
-
-corrplot(corr_mat, method = "color",
-     type = "upper", order = "hclust", 
-     tl.col = "black", tl.cex=0.8) 
+title(main = "Cat Breeds - Frequencies (>5) and without Domestic Short and Medium Hair", 
+      line = -1, 
+      cex.main=1,
+      font.main=2,
+      #col.main="darkorange",
+      outer = TRUE,
+      adj=0.6)
 
 ```
 
-# Key Visuals
+## Distribution of Dogbreeds
 
-- compare cats and dogs...
-- visualize sentiment analysis
-- sentiment analysis vs adoption speed
+```{r dogbreeds,fig.width=10, fig.height=6,echo=FALSE}
+par(mfrow=c(1,2))
+par(mar = c(1, 7, 1, 1)+0.1, mgp=c(0,0.3,-0.2), oma = c(1, 1, 1, 1))
+
+table_dogbreeds<-(table(dogs$Breed1))
+table_dogbreeds<-table_dogbreeds[order(table_dogbreeds)]
+df_dogbreeds<-data.frame(table_dogbreeds)
+
+max_table<-max(table(dogs$Breed1))
+
+barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5],
+        las = 1,
+        cex.lab = 1,
+        horiz = TRUE, 
+        cex.names=0.7, 
+        xlim = c(0, 7000),
+        cex.axis=0.7,
+        names=df_dogbreeds$Var1[df_dogbreeds$Freq>5],
+        col="darkred",
+        #main="Frequencies (>5) of Dog Breeds in the Petdata Dataset"
+)
+# dogbreeds without mixed breed
+barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"],
+        las = 1,
+        #cex.lab = 1,
+        horiz = TRUE, 
+        cex.names=0.7, 
+        xlim = c(0, 250),
+        cex.axis=0.7,
+        #bg="lightgrey",
+        names=df_dogbreeds$Var1[df_dogbreeds$Freq>5& df_dogbreeds$Var1!="Mixed Breed"],
+        col="darkred",
+        #cex.main=1,
+        #main="Frequencies (>5) of Dog Breeds in the Petdata Dataset")
+)
+title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'", 
+      line = -1, 
+      cex.main=1.1,
+      font.main=2,
+      #col.main="darkorange",
+      outer = TRUE,
+      adj=0.38)
+```
+
+
+## Maps for Locations of the Animals
+
+
+## Sentiment Scores Exploration
+
+
+```{r, sentiment scores, fig.width=10, fig.height=10, echo=FALSE}
+# make the gradient background:
+g <- make_gradient(
+  deg = -180, n = 500, cols = brewer.pal(9, "RdBu")
+)
+
+# ----plots with gradient ---------------------
+
+
+p2<-ggplot(data=subset(petdata, !is.na(SentimentScore)), 
+           aes(SentimentScore, fct_rev(Health))) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  ggtitle("Pets Health Status for Sentiment Score") +
+  geom_boxplot(alpha=0.2)+
+  ylab("Health")+
+  xlab("Sentiment Score")+
+  xlim(-1.0,1.0)+
+  theme(
+    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
+    plot.title = element_text(color="black", size=10, face="bold"),
+    axis.title.x = element_text(color="black", size=8),
+    axis.title.y = element_text(color="black", size=8)
+  )
+
+
+p4<-ggplot(data=subset(petdata, !is.na(SentimentScore)), 
+           aes(SentimentScore, fct_rev(AdoptionSpeed_fac))) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  ggtitle("Pets Adoption Speed for Sentiment Score") +
+  geom_violin(alpha=0)+
+  ylab("Adoption Speed")+
+  xlab("Sentiment Score")+
+  xlim(-1.0,1.0)+
+  theme(
+    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
+    plot.title = element_text(color="black", size=10, face="bold"),
+    axis.title.x = element_text(color="black", size=8),
+    axis.title.y = element_text(color="black", size=8)
+  )
+
+  
+p3<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
+           aes(SentimentScore)) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  ggtitle("Dogs - Sentiment Scores Frequencies") +
+  geom_bar()+
+  xlab("Sentiment Score")+
+  theme(
+    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
+    plot.title = element_text(color="black", size=10, face="bold"),
+    axis.title.x = element_text(color="black", size=8,),
+    axis.title.y = element_text(color="black", size=8,)
+  )
+
+p1<-ggplot(data=subset(cats, !is.na(SentimentScore)),
+           aes(SentimentScore))+
+               #fill=Gender,
+               #group=Gender)) +
+  #scale_fill_brewer(palette="Greys")+
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  ggtitle("Cats - Sentiment Scores Frequencies") +
+  geom_bar()+
+  xlab("Sentiment Score")+
+  labs(fill = "Gender")+
+  theme(
+    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
+    plot.title = element_text(color="black", size=10, face="bold"),
+    axis.title.x = element_text(color="black", size=8),
+    axis.title.y = element_text(color="black", size=8),
+    legend.key.size = unit(0.5, 'cm'), #change legend key size
+    legend.key.height = unit(0.5, 'cm'), #change legend key height
+    legend.key.width = unit(0.5, 'cm'), #change legend key width
+    legend.title = element_text(size=7), #change legend title font size
+    legend.text = element_text(size=7), #change legend text font size
+    legend.direction = "horizontal",
+    legend.position = "bottom"
+  )
+
+
+p5<-ggplot(data=subset(petdata, !is.na(SentimentScore)), 
+           aes(SentimentScore, MaturitySize)) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  ggtitle("Pets Maturity Size for Sentiment Score") +
+  geom_violin(alpha=0)+
+  ylab("Maturity Size")+
+  xlab("Sentiment Score")+
+  xlim(-1.0,1.0)+
+  theme(
+    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
+    plot.title = element_text(color="black", size=10, face="bold"),
+    axis.title.x = element_text(color="black", size=8),
+    axis.title.y = element_text(color="black", size=8),
+  )
+
+p6<-ggplot(data=subset(petdata, !is.na(SentimentScore)), 
+           aes(SentimentScore, Age)) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  ggtitle("Pets Age for Sentiment Score") +
+  geom_jitter(alpha=0.3)+
+  ylab("Age in Months")+
+  xlab("Sentiment Score")+
+  theme(
+    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
+    plot.title = element_text(color="black", size=10, face="bold"),
+    axis.title.x = element_text(color="black", size=8),
+    axis.title.y = element_text(color="black", size=8)
+  )
+
+
+p7<-ggplot(data=subset(petdata, !is.na(SentimentScore)), 
+  aes(SentimentScore, State)) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  ggtitle("Pet's State for Sentiment Score") +
+  geom_boxplot(alpha=0)+
+  ylab("State")+
+  xlab("Sentiment Score")+
+  xlim(-1.0,1.0)+
+  theme(
+    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
+    plot.title = element_text(color="black", size=10, face="bold"),
+    axis.title.x = element_text(color="black", size=8),
+    axis.title.y = element_text(color="black", size=8)
+  )
+
+grid.arrange(p1, p2, p3, p5, p6, p7,
+             nrow=3, ncol=2, 
+             top = "Exploring Sentiment in Descriptions",
+             vp=viewport(width=0.9, height=0.9))
+```
+
+# Cluster Visuals
+
+- clustering (hierarchical for categorical variables)
+
+
 - r-tsne of neural net embedding vectors for images
 
+
 # Summary/Findings
+
+
+
+
+
+
+
+
+
+
+
+------------- THE REST IS ONLY FOR KNOW HOW ON R-MARKDOWN ----------------------
+
+
+
 
 # References
 

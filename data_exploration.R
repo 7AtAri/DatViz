@@ -31,6 +31,7 @@ inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","Pet
     strip.background = element_blank(),
     axis.text.y.left=element_text(size = 11, hjust=1),
     plot.margin = margin(21,17,17,17))
+
 inspect_cat(cats[,!(names(cats)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID"))])%>% 
   show_plot(col_palette=5, label_color="black")+
   labs(title = "Frequency in categorical levels in cats data",
@@ -42,6 +43,7 @@ inspect_cat(cats[,!(names(cats)%in%c("ColorID1","ColorID2","ColorID3","PetID", "
         strip.background = element_blank(), 
         axis.text.y.left=element_text(size = 11, hjust=1),
         plot.margin = margin(21,17,17,17))
+
 inspect_cat(dogs[,!(names(dogs)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID"))])%>% 
   show_plot(col_palette=5,label_color="black")+
   labs(title = "Frequency in categorical levels in dogs data",
@@ -215,7 +217,7 @@ hist(petdata$SentimentScore, xlim = c(-1, 1), ylim = c(0, 2500))
 boxplot(petdata$SentimentScore)
 
 
-# -- better fading option ---- 
+# -- fading option ---- 
 # reference:
 # https://stackoverflow.com/questions/30136725/plot-background-colour-in-gradient
 
@@ -390,9 +392,7 @@ grid.arrange(p1, p2, p3, p5, p6, p7,
 
 # --- sentiment + other variables -----
 
-custom.col <- c("black", "#C4961A", "#F4EDCA", 
-                "#FFDB6D",  "darkgrey",
-               "lightgrey","yellow")
+custom.col <- c("black", "#C4961A", "#FFDB6D","yellow" ,"#F4EDCA", "darkgrey","lightgrey")
 
 ggplot() +
   geom_jitter(data=dogs,
