@@ -3,7 +3,6 @@
 # ---- Load data and libraries from Setup.R file -------------------------------
 source("Setup.R")
 
-
 # --- summaries -----------------------------------------------------------
 summary(petdata)
 skim(petdata) # nicer summary
@@ -55,7 +54,7 @@ pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
 # --- pairs plot numeric variables -----------
 par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
 pairs(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt", "SentimentMagnitude")],
-      col="orange",
+        col="orange",
       pch = 21, 
       main = "Pairs Plot of Numeric Variables", 
       label.pos = 0.5, 
@@ -368,3 +367,4 @@ ggplot() +
 
 source("leaflet_petlocations.R")
 
+head(cats)
