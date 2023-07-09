@@ -202,7 +202,7 @@ make_gradient <- function(deg = 45, n = 100, cols = blues9) {
 }
 
 
-
+?colorRampPalette
 # ---- Clean up the environment -----------------------------------------------
 
 

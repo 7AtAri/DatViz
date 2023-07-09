@@ -99,7 +99,7 @@ pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
              cex.axis = 0.8,
              tck=-0.08,
              las=1,
-             oma=c(3,1.5,8,2))
+             oma=c(1,1.5,8,2))
 
 # save the file:
 #dev.off()
@@ -107,6 +107,15 @@ pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
 #dev.cur()
 
 ```
+
+```{r legend, fig.width=10, fig.height=1, echo=FALSE}
+par(mgp=c(0,0,0),mar=c(0,1,0.8,0)+0.1)
+plot(NULL ,xaxt='n',yaxt='n',bty='n',ylab='',xlab='', xlim=0:1, ylim=0:1)
+legend("topleft", legend =c('Dogs', 'Cats'), pch=16, pt.cex=1.5, cex=0.8, bty='n',
+   col = c('#FFDB6D', 'purple'), horiz = TRUE)
+```
+
+
 Some categorical variables were used with their numeric representations, since these can be read numerically. For example Adoption Speed, that is an ordinal variable with 5 factors and Color ID1, since the color scale goes from dark to light colors. 
 
 We can see the correlations of the numerical variables with their significance levels displayed as stars next to the numbers. On the diagonal, we see the histograms of the displayed variables. Most of them seem to be power law distributions. The pairs plots in the lower half are displaying scatterplots. Its purple points are the dogs, while the orange points are the cats. This makes it possible to see some differences between the two pet types of our dataset, for example that the cats seem to not get as old as the dogs. Also we can see some structural conspicuities between some variables, for example that the fee gets lower if the animals are older. Or that animals with a very fast adoption speed have almost no negative sentiment scores. 
@@ -115,7 +124,7 @@ We can see the correlations of the numerical variables with their significance l
 # Data Exploration
 
 ## Distribution of Catbreeds
-```{r catbreeds, fig.width=10, fig.height=6, echo=FALSE}
+```{r catbreeds, fig.width=10, fig.height=8, echo=FALSE}
 par(mfrow=c(1,2))
 par(mar = c(1, 7, 1, 1)+0.1, mgp=c(0,0.3,-0.2), oma = c(1, 1, 1, 1))
 
@@ -161,7 +170,7 @@ title(main = "Cat Breeds - Frequencies (>5) and without Domestic Short and Mediu
 
 ## Distribution of Dogbreeds
 
-```{r dogbreeds,fig.width=10, fig.height=6,echo=FALSE}
+```{r dogbreeds,fig.width=10, fig.height=10,echo=FALSE}
 par(mfrow=c(1,2))
 par(mar = c(1, 7, 1, 1)+0.1, mgp=c(0,0.3,-0.2), oma = c(1, 1, 1, 1))
 
@@ -177,7 +186,7 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5],
         horiz = TRUE, 
         cex.names=0.7, 
         xlim = c(0, 7000),
-        cex.axis=0.7,
+        cex.axis=0.75,
         names=df_dogbreeds$Var1[df_dogbreeds$Freq>5],
         col="darkred",
         #main="Frequencies (>5) of Dog Breeds in the Petdata Dataset"
@@ -189,7 +198,7 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"
         horiz = TRUE, 
         cex.names=0.7, 
         xlim = c(0, 250),
-        cex.axis=0.7,
+        cex.axis=0.8,
         #bg="lightgrey",
         names=df_dogbreeds$Var1[df_dogbreeds$Freq>5& df_dogbreeds$Var1!="Mixed Breed"],
         col="darkred",
@@ -214,6 +223,7 @@ title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'",
 
 ```{r, sentiment scores, fig.width=10, fig.height=10, echo=FALSE}
 # make the gradient background:
+library(leaflet)
 g <- make_gradient(
   deg = -180, n = 500, cols = brewer.pal(9, "RdBu")
 )
@@ -263,7 +273,7 @@ p3<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
   ggtitle("Dogs - Sentiment Scores Frequencies") +
-  geom_bar()+
+  geom_bar(fill='black')+  #949996 ##838785 '#7c8781' , colour="black"
   xlab("Sentiment Score")+
   theme(
     plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
@@ -281,7 +291,7 @@ p1<-ggplot(data=subset(cats, !is.na(SentimentScore)),
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
   ggtitle("Cats - Sentiment Scores Frequencies") +
-  geom_bar()+
+  geom_bar(fill='black')+
   xlab("Sentiment Score")+
   labs(fill = "Gender")+
   theme(
