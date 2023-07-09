@@ -21,7 +21,7 @@ source('Setup.R')
 glimpse(cats)
 summary(cats) #%>% kable()# %>% kable_styling()
 
-cats_numeric <-cats[c('Age','Quantity','Fee','PhotoAmt','AdoptionSpeed')]
+cats_numeric <-cats[c('Age','PhotoAmt','AdoptionSpeed')]
   
  cats_numeric %>% 
   gather(Attributes, value, 1:5) %>% 
@@ -29,7 +29,7 @@ cats_numeric <-cats[c('Age','Quantity','Fee','PhotoAmt','AdoptionSpeed')]
   geom_histogram(fill = "lightblue2", color = "black") + 
   facet_wrap(~Attributes, scales = "free_x") +
   labs(x = "Value", y = "Frequency")
-
+corrplot(cor(cats), type = "upper", method = "ellipse", tl.cex = 0.9)
 corrplot(cor(cats_numeric), type = "upper", method = "ellipse", tl.cex = 0.9)
 cats_scaled <- scale(cats_numeric)
 cats_scaled
@@ -38,7 +38,7 @@ res.pca <- PCA(cats_scaled,  graph = FALSE)
 # Visualize eigenvalues/variances
 fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50))
 
-
+res.pca
 # Extract the results for variables
 var <- get_pca_var(res.pca)
 
@@ -107,3 +107,7 @@ plot_grid(p1, labels = c("k2"))
 colSums(is.na(cats_numeric))
 cats_numeric[c('BreedID2','BreedID1')]
 head(cats_scaled)
+
+#7, 9, 20, 22, 27, 28, 29, 30, 31, 32
+colnames(petdata)
+  
