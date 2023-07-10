@@ -17,7 +17,14 @@ library(gridExtra)
 library(grid) # needed?
 library(ggplotify) #needed?
 library(viridis) #needed?
+library(plyr) #needed?
 
+# For the map
+library(rgdal)
+library(sp)
+library(leaflet)
+library(sf)
+library(base64enc)
 
 # ---- Descriptions -----------------------------------------------------------
 
