@@ -93,7 +93,7 @@ pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
              rug=FALSE,
              stars=TRUE, 
              #bg=c("yellow","orange","red","purple","blue")[petdata$AdoptionSpeed],
-             bg=c("#f76060","#3f8ded")[petdata$Type], 
+             bg=c("#f76060","blue")[petdata$Type], # #f76060","#3f8ded
              #bg=c("green","red","yellow")[petdata$Gender],
              lwd=0.2,
              cex.axis = 0.8,
@@ -112,7 +112,7 @@ pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
 par(mgp=c(0,0,0),mar=c(0,1,0.8,0)+0.1)
 plot(NULL ,xaxt='n',yaxt='n',bty='n',ylab='',xlab='', xlim=0:1, ylim=0:1)
 legend("topleft", legend =c('Dogs', 'Cats'), pch=16, pt.cex=1.5, cex=0.8, bty='n',
-   col = c('#f76060', '#3f8ded'), horiz = TRUE)
+   col = c('#f76060', 'blue'), horiz = TRUE)
 ```
 
 Some categorical variables were used with their numeric representations, since these can be read numerically. For example Adoption Speed, that is an ordinal variable with 5 factors and Color ID1, since the color scale goes from dark to light colors.
