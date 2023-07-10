@@ -6,6 +6,7 @@ library(readr)
 library(corrplot)
 library(ggplot2)
 library(stringr)
+library(plyr)
 library(dplyr)
 library(psych)
 library(inspectdf)
@@ -17,8 +18,7 @@ library(gridExtra)
 library(grid) # needed?
 library(ggplotify) #needed?
 library(viridis) #needed?
-library(plyr) #needed?
-
+ 
 # For the map
 library(rgdal)
 library(sp)
