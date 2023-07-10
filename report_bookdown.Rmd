@@ -388,7 +388,8 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5],
         xlim = c(0, 4000),
         cex.axis=0.7,
         names=df_catbreeds$Var1[df_catbreeds$Freq>5],
-        col="darkred",
+        col="#3f8ded",
+        border="#3f8ded",
         #main="Frequencies (>5) of Cat Breeds in the Petdata Dataset")
 )
 
@@ -400,7 +401,8 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5 & df_catbreeds$Var1!="Domestic Sho
         xlim = c(0, 400),
         cex.axis=0.7,
         names=df_catbreeds$Var1[df_catbreeds$Freq>5& df_catbreeds$Var1!="Domestic Short Hair"& df_catbreeds$Var1!="Domestic Medium Hair"],
-        col="darkred",
+        col="#3f8ded",
+        border="#3f8ded",
         #main="Frequencies (>5) of Cat Breeds in the Petdata Dataset")
 )
 
@@ -434,7 +436,8 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5],
         xlim = c(0, 7000),
         cex.axis=0.75,
         names=df_dogbreeds$Var1[df_dogbreeds$Freq>5],
-        col="darkred",
+        col="#f76060",
+        border="#f76060",
         #main="Frequencies (>5) of Dog Breeds in the Petdata Dataset"
 )
 # dogbreeds without mixed breed
@@ -447,7 +450,8 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"
         cex.axis=0.8,
         #bg="lightgrey",
         names=df_dogbreeds$Var1[df_dogbreeds$Freq>5& df_dogbreeds$Var1!="Mixed Breed"],
-        col="darkred",
+        col="#f76060",
+        border= "#f76060",
         #cex.main=1,
         #main="Frequencies (>5) of Dog Breeds in the Petdata Dataset")
 )
@@ -470,7 +474,7 @@ title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'",
 # make the gradient background:
 
 # Define a custom palette:
-BuOr <- colorRampPalette(c("#01566e", "white", "#FF7F00"))(9)  #085794
+BuOr <- colorRampPalette(c("#014f6e", "white", "#FF7F00"))(9)  #085794 
 
 
 g <- make_gradient(
