@@ -366,12 +366,17 @@ grid.arrange(p1, p2, p3, p5, p6, p7,
              vp=viewport(width=0.9, height=0.9))
 ```
 
-# Cluster Visuals
+# Cluster and Neural Network Visuals
 
 - clustering (hierarchical for categorical variables)
 
 
 - r-tsne of neural net embedding vectors for images
+
+![R-TSNE plot for the petdata images.](plots/tsne-2000.png)
+
+We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with r-tsne. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even has captured some similarities that are common to both types in the middle, for example the spot where pictures of animals in cages are displayed. 
+
 
 
 # Summary/Findings
