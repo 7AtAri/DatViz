@@ -17,6 +17,7 @@ output:
     toc: false
     keep_tex: true
 ---
+
 ```{r setup, include=FALSE}
 params <- list(html=knitr::is_html_output())
 knitr::opts_chunk$set(echo = params$html)
@@ -24,8 +25,7 @@ rm(list = ls(all.names = TRUE)) # reset the environment
 source("Setup.R")
 ```
 
-
-(ref:latexInCaption) A caption can contain _underscores_ and $\sqrt v$ formulae.
+(ref:latexInCaption) A caption can contain *underscores* and $\sqrt v$ formulae.
 
 # Introduction
 
@@ -35,12 +35,11 @@ For our data visualization project we were searching for a dataset that not only
 
 todo: describe the dataset:
 
-- number and properties of variables
-- for our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
-- amount of data points 
-- When accessing the dataset, we realized it also already had sentiment analysis data which was run on the description column.
-- necessary preprocessing
-
+-   number and properties of variables
+-   for our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
+-   amount of data points
+-   When accessing the dataset, we realized it also already had sentiment analysis data which was run on the description column.
+-   necessary preprocessing
 
 ```{r variables overview, echo=FALSE}
 na_ratio<-sum(is.na(petdata)==TRUE)/(dim(petdata)[1]*dim(petdata)[2])# ratio of NAs among all datapoints
@@ -48,10 +47,10 @@ print(na_ratio*100)
 print("% of NAs among all datapoints")# percentage of NAs in data
 
 ```
-# Distribution of Variables and their Correlations 
 
-To get an overview, we used a frequency plot for the levels of categorical variables and a pairs plot with scatterplots and correlations, as well as histograms on the 
-diagonal. 
+# Distribution of Variables and their Correlations
+
+To get an overview, we used a frequency plot for the levels of categorical variables and a pairs plot with scatterplots and correlations, as well as histograms on the diagonal.
 
 ```{r categorical variables frequencies, fig.width=10, fig.height=8, echo= FALSE}
 
@@ -67,8 +66,9 @@ inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","Pet
     axis.text.y.left=element_text(size = 11, hjust=1),
     plot.margin = margin(21,17,17,17))
 ```
-Therefore the Sentiment Scores and the Adoption Speed variable were factorized, and in the case of the Sentiment Scores also binned (see source file) from 0.1 steps to the five factors negative, moderately negative, neutral, moderately positive, and positive.
-Categorical variables that contain IDs and names as well as descriptions were dropped.  
+
+Therefore the Sentiment Scores and the Adoption Speed variable were factorized, and in the case of the Sentiment Scores also binned (see source file) from 0.1 steps to the five factors negative, moderately negative, neutral, moderately positive, and positive. Categorical variables that contain IDs and names as well as descriptions were dropped.
+
 ```{r numerical variables pairs plot,fig.width=10, fig.height=8, echo= FALSE}
 
 petdata$ColorID1_num<-as.numeric(petdata$ColorID1)
@@ -115,15 +115,14 @@ legend("topleft", legend =c('Dogs', 'Cats'), pch=16, pt.cex=1.5, cex=0.8, bty='n
    col = c('#FFDB6D', 'purple'), horiz = TRUE)
 ```
 
+Some categorical variables were used with their numeric representations, since these can be read numerically. For example Adoption Speed, that is an ordinal variable with 5 factors and Color ID1, since the color scale goes from dark to light colors.
 
-Some categorical variables were used with their numeric representations, since these can be read numerically. For example Adoption Speed, that is an ordinal variable with 5 factors and Color ID1, since the color scale goes from dark to light colors. 
-
-We can see the correlations of the numerical variables with their significance levels displayed as stars next to the numbers. On the diagonal, we see the histograms of the displayed variables. Most of them seem to be power law distributions. The pairs plots in the lower half are displaying scatterplots. Its purple points are the dogs, while the orange points are the cats. This makes it possible to see some differences between the two pet types of our dataset, for example that the cats seem to not get as old as the dogs. Also we can see some structural conspicuities between some variables, for example that the fee gets lower if the animals are older. Or that animals with a very fast adoption speed have almost no negative sentiment scores. 
-
+We can see the correlations of the numerical variables with their significance levels displayed as stars next to the numbers. On the diagonal, we see the histograms of the displayed variables. Most of them seem to be power law distributions. The pairs plots in the lower half are displaying scatterplots. Its purple points are the dogs, while the orange points are the cats. This makes it possible to see some differences between the two pet types of our dataset, for example that the cats seem to not get as old as the dogs. Also we can see some structural conspicuities between some variables, for example that the fee gets lower if the animals are older. Or that animals with a very fast adoption speed have almost no negative sentiment scores.
 
 # Data Exploration
 
 ## Distribution of Catbreeds
+
 ```{r catbreeds, fig.width=10, fig.height=8, echo=FALSE}
 par(mfrow=c(1,2))
 par(mar = c(1, 7, 1, 1)+0.1, mgp=c(0,0.3,-0.2), oma = c(1, 1, 1, 1))
@@ -214,12 +213,251 @@ title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'",
       adj=0.38)
 ```
 
-
 ## Maps for Locations of the Animals
 
+```{r load_shape, include = FALSE}
+# Read shape here because output of the read should not be included
+
+# Read in shapefile and select only the columns nam and geometry
+malaysia_shape <- st_read(dsn = "misc/shape_data/polbnda_mys.shp")[, c("nam", "geometry")]
+```
+
+```{r maps, fig.width=9, fig.height=6, echo=FALSE, error = FALSE, warning=FALSE, message = FALSE, comment = FALSE}
+# Change nam WILAYAH PERSEKUTUAN LABUAN to LABUAN
+malaysia_shape$nam[malaysia_shape$nam == "WILAYAH PERSEKUTUAN LABUAN"] <- "LABUAN"
+
+# Change nam WILAYAH PERSEKUTUAN to KUALA LUMPUR
+malaysia_shape$nam[malaysia_shape$nam == "WILAYAH PERSEKUTUAN"] <- "KUALA LUMPUR"
+
+# Read in data
+pet_frequency <- setNames(data.frame(table(petdata$State)), c("state_name", "pets"))
+cat_freq <- setNames(data.frame(table(petdata[petdata$Type == "Cat", ]$State)), c("state_name", "cats"))
+dog_freq <- setNames(data.frame(table(petdata[petdata$Type == "Dog", ]$State)), c("state_name", "dogs"))
+
+# Merge cat and dog frequencies
+pet_frequency <- merge(pet_frequency, cat_freq, by = "state_name", all = TRUE)
+pet_frequency <- merge(pet_frequency, dog_freq, by = "state_name", all = TRUE)
+# To uppercase
+pet_frequency <- data.frame(apply(pet_frequency, 2, toupper))
+
+# Load population data: http://www.dosm.gov.my/portal-main/release-content/demographic-statistics-fourth-quarter-q4-2018-malaysia
+population_2018 <- data.frame(
+    state_name = c("JOHOR", "KEDAH", "KELANTAN", "MELAKA", "NEGERI SEMBILAN", "PAHANG", "PERAK", "PERLIS", "PULAU PINANG", "SABAH", "SARAWAK", "SELANGOR", "TERENGGANU", "KUALA LUMPUR", "LABUAN"),
+    population = c(3764800, 2173700, 1870700, 926800, 1138200, 1675000, 2510700, 254700, 1778200, 392100, 2804900, 6610400, 1241600, 1796200, 100000)
+)
+
+# Load gdp data per capita per state: https://en.wikipedia.org/wiki/List_of_Malaysian_states_by_GDP
+gdp_per_capita_2018_rm <- data.frame(
+    state_name = c("JOHOR", "KEDAH", "KELANTAN", "MELAKA", "NEGERI SEMBILAN", "PAHANG", "PERAK", "PERLIS", "PULAU PINANG", "SABAH", "SARAWAK", "SELANGOR", "TERENGGANU", "KUALA LUMPUR", "LABUAN"),
+    gdp = c(36394, 21410, 13668, 47960, 43047, 35577, 30303, 24442, 52397, 25861, 52301, 51528, 30216, 121293, 74337)
+)
+
+states <- unique(malaysia_shape$nam)
+number_states <- length(states)
+
+# Data frame with 5 columns
+choropleth_data <- data.frame(
+    state_name = states,
+    geometry = rep(NA, number_states),
+    petfreq = rep(0, number_states),
+    dogfreq = rep(0, number_states),
+    catfreq = rep(0, number_states),
+    population = rep(0, number_states),
+    gdp = rep(0, number_states)
+)
+pieplots <- data.frame(
+    row.names = states,
+    pieplot = rep("<strong>No pieplot available</strong>", number_states))
+
+for (i in seq_len(nrow(choropleth_data))) {
+    current_state <- choropleth_data$state_name[i]
+
+    # Add petfreq to choropleth_data
+    for (j in seq_len(nrow(pet_frequency))) {
+        if (current_state == pet_frequency[j, "state_name"]) {
+            choropleth_data$petfreq[i] <- pet_frequency[j, "pets"]
+            dogs_num <- as.numeric(pet_frequency[j, "dogs"])
+            cats_num <- as.numeric(pet_frequency[j, "cats"])
+            choropleth_data$dogfreq[i] <- dogs_num
+            choropleth_data$catfreq[i] <- cats_num
+
+            # Create pie chart
+            plot <- ggplot(data.frame(value = c(cats_num, dogs_num), Type = c("Cats", "Dogs")),
+                        aes(x = "", y = value, fill = Type)) +
+                    geom_col(color = "black") +
+                    geom_text(aes(label = value),
+                        position = position_stack(vjust = 0.5),
+                        size = 15,
+                        fontface = "bold"
+                        ) +
+                    coord_polar(theta = "y") +
+                    scale_fill_manual(values = c("#3f8ded", "#f76060")) +
+                    theme_void()  +
+                    theme(legend.key.size = unit(2, 'cm'), legend.text = element_text(size=40), legend.title = element_text(size=40))
+
+            png_file <- tempfile(fileext = ".png")
+            ggsave(png_file, plot)
+
+            # Encode png file to base64
+            encoded_png <- base64enc::base64encode(png_file)
+
+            pieplots[current_state, "pieplot"] <- paste0("<img src='data:image/png;base64,", encoded_png, "' />")
+        }
+    }
+    
+    # Add population to choropleth_data
+    for (j in seq_len(nrow(population_2018))) {
+        if (current_state == population_2018[j, "state_name"]) {
+            choropleth_data$population[i] <- population_2018[j, "population"]
+        }
+    }
+
+    # Add gdp to choropleth_data
+    for (j in seq_len(nrow(gdp_per_capita_2018_rm))) {
+        if (current_state == gdp_per_capita_2018_rm[j, "state_name"]) {
+            choropleth_data$gdp[i] <- gdp_per_capita_2018_rm[j, "gdp"]
+        }
+    }
+
+    # Collect all geometries for current_state
+    current_geoms <- st_geometry(malaysia_shape[malaysia_shape$nam == current_state, ])
+    choropleth_data$geometry[i] <- st_union(current_geoms)
+}
+
+choropleth_data <- choropleth_data %>% st_as_sf(sf_column_name = "geometry")
+
+# Convert to sf object
+choropleth_data <- st_as_sf(choropleth_data[, c("state_name", "petfreq", "dogfreq", "catfreq", "population", "gdp")], coords = choropleth_data$geometry)
+choropleth_data$petfreq <- as.numeric(choropleth_data$petfreq)
+choropleth_data$dogfreq <- as.numeric(choropleth_data$dogfreq)
+choropleth_data$catfreq <- as.numeric(choropleth_data$catfreq)
+choropleth_data$population <- as.numeric(choropleth_data$population)
+choropleth_data$gdp <- as.numeric(choropleth_data$gdp)
+
+# Create color palette
+max_petpalval <- 9001
+petpal <- colorNumeric("YlOrRd", domain = c(0, log(max_petpalval)))
+poppal <- colorNumeric("YlOrRd", domain = choropleth_data$population)
+gdppal <- colorNumeric("YlOrRd", domain = choropleth_data$gdp)
+legend_steps <- seq(0, 1, length.out = 8) * log(max_petpalval)
+
+popup <- ~paste0(
+    "<strong>", state_name, "</strong>",
+    "<br>Number of pets: ", format(petfreq, big.mark = ","),
+    "<br>Population: ", format(population, big.mark = ","),
+    "<br>GDP per capita: ", format(gdp, big.mark = ","), " [MYR]",
+    "<br><br> <u>Distribution of the pet types:</u>",
+    "<br>", pieplots[state_name, "pieplot"])
+
+highlight <- highlightOptions(
+        weight = 5,
+        color = "red",
+        dashArray = "",
+        bringToFront = TRUE
+    )
+
+petlab <- "Number of pets"
+poplab <- "Population"
+gdplab <- "GDP per capita"
+nonelab <- "None"
+
+# Create leaflet map
+leaflet(choropleth_data) %>%
+addTiles() %>%
+addLayersControl(baseGroups = c(petlab, poplab, gdplab, nonelab)) %>%
+addPolygons(
+    group = nonelab,
+    weight = 2,
+    opacity = 1,
+    color = "blue",
+    dashArray = "3",
+    fillOpacity = 0,
+    highlight = highlight,
+    popup = popup
+) %>%
+addPolygons(
+    group = petlab,
+    fillColor = ~petpal(log(petfreq + 1)),
+    fillOpacity = 0.7,
+    weight = 2,
+    opacity = 1,
+    color = "blue",
+    dashArray = "3",
+    highlight = highlight,
+    popup = popup
+) %>%
+addPolygons(
+    group = poplab,
+    fillColor = ~poppal(population),
+    fillOpacity = 0.7,
+    weight = 2,
+    opacity = 1,
+    color = "blue",
+    dashArray = "3",
+    highlight = highlight,
+    popup = popup
+) %>%
+addPolygons(
+    group = gdplab,
+    fillColor = ~gdppal(gdp),
+    fillOpacity = 0.7,
+    weight = 2,
+    opacity = 1,
+    color = "blue",
+    dashArray = "3",
+    highlight = highlight,
+    popup = popup
+) %>%
+addLegend(
+    pal = petpal,
+    values = c(0, log(max_petpalval)),
+    bins = legend_steps,
+    opacity = 0.7,
+    title = petlab,
+    position = "topright",
+    labFormat = labelFormat(transform = function(x) {
+         round_any(exp(x) - 1, 5, f = round)
+         })
+) %>%
+addLegend(
+    pal = poppal,
+    values = ~population,
+    opacity = 0.7,
+    title = poplab,
+    position = "topright"
+) %>%
+addLegend(
+    pal = gdppal,
+    values = ~gdp,
+    opacity = 0.7,
+    title = gdplab,
+    position = "topright",
+    labFormat = labelFormat(suffix = " [MYR]")
+) %>%
+htmlwidgets::onRender("
+    function(el, x) {
+      var updateLegend = function () {
+          var selectedGroup = document.querySelectorAll('input:checked')[0].nextSibling.innerText.substr(1);
+
+          document.querySelectorAll('.legend').forEach(a => a.hidden=true);
+          document.querySelectorAll('.legend').forEach(l => {
+            if (l.children[0].children[0].innerText == selectedGroup) l.hidden=false;
+          });
+      };
+      updateLegend();
+      this.on('baselayerchange', e => updateLegend());
+    }"
+)
+
+# Citation for the shape data
+
+# International Steering Committee for Global Mapping. Malaysia.
+# Jabatan Ukur dan Pemetaan. (2012). Districts, Malaysia, 2013.
+# [Shapefile]. International Steering Committee for Global Mapping.
+# Retrieved from https://earthworks.stanford.edu/catalog/stanford-zd362bc5680```
 
 ## Sentiment Scores Exploration
-
+```
 
 ```{r, sentiment scores, fig.width=10, fig.height=10, echo=FALSE}
 # make the gradient background:
@@ -368,75 +606,58 @@ grid.arrange(p1, p2, p3, p5, p6, p7,
 
 # Cluster Visuals
 
-- clustering (hierarchical for categorical variables)
+-   clustering (hierarchical for categorical variables)
 
-
-- r-tsne of neural net embedding vectors for images
-
+-   r-tsne of neural net embedding vectors for images
 
 # Summary/Findings
 
-
-
-
-
-
-
-
-
-
-
 ------------- THE REST IS ONLY FOR KNOW HOW ON R-MARKDOWN ----------------------
-
-
-
 
 # References
 
-The R package **bookdown** is documented in an online book by its author Yihui Xie (2023). In this brief demo, I demonstrate some basic aspects of the use of the R package **bookdown** that took me some more time to figure out from that documentation. The package **bookdown** is based on the package **knitr** (see, e.g., https://yihui.org/knitr/), and the possibilities of that package can also be used. For example, it is possible to incorporate not only R code (like in this demo), but also, e.g., Python or Julia code with the respective code chunks.
+The R package **bookdown** is documented in an online book by its author Yihui Xie (2023). In this brief demo, I demonstrate some basic aspects of the use of the R package **bookdown** that took me some more time to figure out from that documentation. The package **bookdown** is based on the package **knitr** (see, e.g., <https://yihui.org/knitr/>), and the possibilities of that package can also be used. For example, it is possible to incorporate not only R code (like in this demo), but also, e.g., Python or Julia code with the respective code chunks.
 
-In Chapter&nbsp;\@ref(sec:meinreflabel2) you find a figure with a simple caption that was created by the `fig.cap` entry in the chunk information, and a table that was created with function `knitr::kable`. In Chapter&nbsp;\@ref(sec:meinreflabel3) you find a figure whose caption contains underscores and a formula; because of these complications, the figure caption has to be defined as a reference (see above, "(ref:latexInCaption)") before it can be used in the chunk information; I have made it a personal convention to always define all such references at the top of the file. Such a reference can be used everywhere in the text. If you have more than one reference definition, always have an empty line between any two such definitions (there is only one here).
+In Chapter \@ref(sec:meinreflabel2) you find a figure with a simple caption that was created by the `fig.cap` entry in the chunk information, and a table that was created with function `knitr::kable`. In Chapter \@ref(sec:meinreflabel3) you find a figure whose caption contains underscores and a formula; because of these complications, the figure caption has to be defined as a reference (see above, "(ref:latexInCaption)") before it can be used in the chunk information; I have made it a personal convention to always define all such references at the top of the file. Such a reference can be used everywhere in the text. If you have more than one reference definition, always have an empty line between any two such definitions (there is only one here).
 
 You can have unnumbered chapters (while most chapters are numbered), see the appendix.
 
- 
-With the **bookdown** package, it is easy to reference back an forth between sections, and to figures or tables that were created from code chunks. References to figures start with "fig:", references to tables with "tab:", and section references are entirely defined in the curly brackets after the heading, starting with "#".  The syntax for **bookdown** references is "\@ref(your reference target)",  see examples in this file. They are translated to the appropriate way of referencing for pdf or html files, as appropriate.
+With the **bookdown** package, it is easy to reference back an forth between sections, and to figures or tables that were created from code chunks. References to figures start with "fig:", references to tables with "tab:", and section references are entirely defined in the curly brackets after the heading, starting with "\#". The syntax for **bookdown** references is "\@ref(your reference target)", see examples in this file. They are translated to the appropriate way of referencing for pdf or html files, as appropriate.
 
+# Second chapter {#sec:meinreflabel2}
 
-
-
-
-# Second chapter{#sec:meinreflabel2}
-
-Table&nbsp;\@ref(tab:cor) shows the correlations in the dataset `swiss`.
+Table \@ref(tab:cor) shows the correlations in the dataset `swiss`.
 
 ```{r cor}
 knitr::kable(round(cor(swiss),4), caption="The correlation matrix of the `swiss` data", booktabs=TRUE, linesep="")
 ```
 
-Figure&nbsp;\@ref(fig:kde) shows a kernel density estimate of the proportion of males involved in agricultural occupations.
+Figure \@ref(fig:kde) shows a kernel density estimate of the proportion of males involved in agricultural occupations.
 
 ```{r kde, fig.cap="Proportion of males involved in agricultural occupations in 47 French speaking swiss provinces (1888). Kernel density estimate.", fig.height=3, fig.width=4}
 plot(density(swiss$Agriculture), xlab="Agriculture")
 ```
 
-# Third chapter{#sec:meinreflabel3}
+# Third chapter {#sec:meinreflabel3}
 
-Figure&nbsp;\@ref(fig:scat) shows a scatter plot with a more demanding figure caption.
+Figure \@ref(fig:scat) shows a scatter plot with a more demanding figure caption.
 
 ```{r scat, fig.cap="(ref:latexInCaption)", fig.height=3, fig.width=4}
 plot(Fertility~Agriculture, swiss)
 ```
 
 # Final chapter
-Your final chapter \textendash&nbsp;like your introductury chapter \textendash&nbsp;will be read by every reader. Both these chapters are therefore particularly important. 
+
+Your final chapter \textendash like your introductury chapter \textendash will be read by every reader. Both these chapters are therefore particularly important.
 
 Please note that this brief text focused on how to implement a report with the help of R package **bookdown**. There was not content of specific relevance for data visualization.
 
-# References{-}
-Xie, Y. (2023). bookdown: Authoring Books and Technical Documents with R Mardown. https://bookdown.org/yihui/bookdown/ (Status: May 08, 2023).
+# References {.unnumbered}
 
-# Appendix A{-}
+Xie, Y. (2023). bookdown: Authoring Books and Technical Documents with R Mardown. <https://bookdown.org/yihui/bookdown/> (Status: May 08, 2023).
+
+# Appendix A {.unnumbered}
+
 Example for an appendix
 
 The following listing shows the data (do not do that with a large data set!).
@@ -444,4 +665,3 @@ The following listing shows the data (do not do that with a large data set!).
 ```{r printdat}
 print(swiss)
 ```
-
