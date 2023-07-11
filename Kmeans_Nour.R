@@ -167,12 +167,16 @@ p<-p+theme(axis.title.x=element_blank(),
          axis.ticks.x=element_blank(),
          axis.title.y=element_blank(),
          axis.text.y=element_blank(),
-         axis.ticks.y=element_blank())
+         axis.ticks.y=element_blank(),
+         panel.border = element_blank(),
+         panel.grid.major = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.position = "none")
 
 
 p
 
-ggplotly(ggplot(aes(x = X, y = Y, type=type,adoptionSpeed=adoptionSpeed, state=state ), data = tsne_data_
+  ggplotly(ggplot(aes(x = X, y = Y, type=type,adoptionSpeed=adoptionSpeed, state=state ), data = tsne_data_
                 , scale_fill_discrete(labels=c("1-Cats-multiple states","2-Dogs-multiple states","3-Dogs-multiple states","4-Cats-Kuala Lumpur","5-Dogs-Kuala Lumpur"))) +
            geom_point(aes(color = cluster)
           ))
@@ -184,14 +188,16 @@ petdata_cluster %>%
   mutate(cluster = pam_fit$clustering) 
 pam_fit$clustering
 
-
+colnames(cats)
 #cats clusters
 
 cats_cluster=filter(cats,Quantity==1)
 cats_cluster=cats_cluster[c('StateID','BreedID2','BreedID1','Gender',
                             'MaturitySize','FurLength','Vaccinated','Dewormed',
-                            'Sterilized','Health')]
-gower.dist.cats <- daisy(cats_cluster, metric = c("gower"))
+                            'Sterilized','Health','state','Breed1','Breed2','AdoptionSpeed')]
+gower.dist.cats <- daisy(cats_cluster[c('StateID','BreedID2','BreedID1','Gender',
+                                        'MaturitySize','FurLength','Vaccinated','Dewormed',
+                                        'Sterilized','Health')], metric = c("gower"))
 pam_fit_cats <- pam(gower.dist.cats, diss = TRUE, k =6 )
 pam_results_cats <- cats_cluster %>%
   mutate(cluster = pam_fit_cats$clustering) %>%
@@ -214,6 +220,13 @@ p_cats<-ggplot(aes(x = X, y = Y, Vaccinated=Vaccinated,
 ggplotly(p_cats)
 
 
+colnames(cats_cluster)
+cats_cluster=filter(cats,Quantity==1)
+cats_cluster=cats_cluster[c('StateID','BreedID2','BreedID1','Gender',
+                            'MaturitySize','FurLength','Vaccinated','Dewormed',
+                            'Sterilized','Health','State','Breed1','Breed2'                                    ,'AdoptionSpeed')]
+
+cats_cluster
 #dogs clusters
 
 dogs_cluster=filter(dogs,Quantity==1)

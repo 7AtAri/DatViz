@@ -18,13 +18,18 @@ library(gridExtra)
 library(grid) # needed?
 library(ggplotify) #needed?
 library(viridis) #needed?
- 
+
 # For the map
 library(rgdal)
 library(sp)
 library(leaflet)
 library(sf)
 library(base64enc)
+
+#for clustering
+library(cluster)
+library(plotly)
+library(Rtsne)
 
 # ---- Descriptions -----------------------------------------------------------
 

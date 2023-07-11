@@ -121,7 +121,6 @@ We can see the correlations of the numerical variables with their significance l
 
 # Data Exploration
 
-
 ## Maps for Locations of the Animals
 
 ```{r load_shape, include = FALSE}
@@ -367,7 +366,6 @@ htmlwidgets::onRender("
 
 ```
 
-
 ## Distribution of Catbreeds
 
 ```{r catbreeds, fig.width=10, fig.height=8, echo=FALSE}
@@ -464,11 +462,7 @@ title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'",
       adj=0.38)
 ```
 
-
-
-
-
-## Exploring Cats and Dogs regarding Sentiment Scores 
+## Exploring Cats and Dogs regarding Sentiment Scores
 
 ```{r, sentiment scores, fig.width=10, fig.height=17, echo=FALSE}
 # make the gradient background:
@@ -597,27 +591,130 @@ grid.arrange(p1, p2, p3,  p4, p5, p6, p7, p8, p9, p10,
 
 ```
 
-
-
 # Cluster and Neural Network Visuals
 
--   clustering (hierarchical for categorical variables)
+-   Pet data clustering is created using Kmedoids clustering followed by Rtsne.
+-   It was done based on the following variables: StateId, BreedID1, BreedID2 and Type.
+
+```{r, petdata_cluster}
+petdata_cluster=filter(petdata,Quantity==1)
+petdata_cluster=petdata_cluster[c('StateID','BreedID2','BreedID1',
+                                  'Type','State','AdoptionSpeed')]
+gower.dist.pets <- daisy(petdata_cluster[c('StateID','BreedID2','BreedID1','Type')]
+                         , metric = c("gower"))
+pam_fit <- pam(gower.dist.pets, diss = TRUE, k =5 )
+tsne_obj <- Rtsne(gower.dist.pets, is_distance = TRUE)
+tsne_data <- tsne_obj$Y %>%
+  data.frame() %>%
+  setNames(c("X", "Y")) %>%
+  mutate(cluster = factor(pam_fit$clustering), state=petdata_cluster$State,
+         adoptionSpeed=petdata_cluster$AdoptionSpeed,type=petdata_cluster$Type)
+p<-ggplot(aes(x = X, y = Y, type=type,adoptionSpeed=adoptionSpeed, state=state ), data = tsne_data) +
+  geom_point(aes(color = cluster))
+p<-p+theme(axis.title.x=element_blank(),
+         axis.text.x=element_blank(),
+         axis.ticks.x=element_blank(),
+         axis.title.y=element_blank(),
+         axis.text.y=element_blank(),
+         axis.ticks.y=element_blank(),
+         panel.border = element_blank(),
+         panel.grid.major = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.position = "none",
+         panel.background=element_rect(fill='white'))
+ggplotly(p)
+```
+
+```{r, cat_cluster}
+cats_cluster=filter(cats,Quantity==1)
+cats_cluster=cats_cluster[c('StateID','BreedID2','BreedID1','Gender',
+                            'MaturitySize','FurLength','Vaccinated','Dewormed',
+                            'Sterilized','Health','State','Breed1','Breed2'                                    ,'AdoptionSpeed')]
+gower.dist.cats <- daisy(cats_cluster[c('StateID','BreedID2','BreedID1','Gender',
+                                        'MaturitySize','FurLength','Vaccinated'                                             ,'Dewormed','Sterilized','Health')],                                               metric = c("gower"))
+pam_fit_cats <- pam(gower.dist.cats, diss = TRUE, k =6 )
+tsne_obj_cats <- Rtsne(gower.dist.cats, is_distance = TRUE)
+tsne_data_cats <- tsne_obj_cats$Y %>%
+  data.frame() %>%
+  setNames(c("X", "Y")) %>%
+  mutate(cluster = factor(pam_fit_cats$clustering)
+         ,AdoptionSpeed=cats_cluster$AdoptionSpeed
+         ,Vaccinated=cats_cluster$Vaccinated,Dewormed=cats_cluster$Dewormed
+         ,Sterilized=cats_cluster$Sterilized,State=cats_cluster$State,
+         Breed1=cats_cluster$Breed1,Breed2=cats_cluster$Breed2)
+p_cats<-ggplot(aes(x = X, y = Y, Vaccinated=Vaccinated,
+           Dewormed=Dewormed, Sterilized=Sterilized,AdoptionSpeed=AdoptionSpeed,
+           State=State,Breed1=Breed1), data = tsne_data_cats) +
+  geom_point(aes(color = cluster))
+p_cats<-p_cats+theme(axis.title.x=element_blank(),
+         axis.text.x=element_blank(),
+         axis.ticks.x=element_blank(),
+         axis.title.y=element_blank(),
+         axis.text.y=element_blank(),
+         axis.ticks.y=element_blank(),
+         panel.border = element_blank(),
+         panel.grid.major = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.position = "none",
+        panel.background=element_rect(fill='white'))
+ggplotly(p_cats)
+
+```
+
+```{r, dogs_cluster}
+dogs_cluster=filter(dogs,Quantity==1)
+dogs_cluster=dogs_cluster[c('StateID','BreedID2','BreedID1','Gender',
+                            'MaturitySize','FurLength','Vaccinated','Dewormed',
+                            'Sterilized','Health','State','Breed1','Breed2'                                    ,'AdoptionSpeed')]
+gower.dist.dogs <- daisy(dogs_cluster[c('StateID','BreedID2','BreedID1','Gender',
+                            'MaturitySize','FurLength','Vaccinated','Dewormed',
+                            'Sterilized','Health')], metric = c("gower"))
+pam_fit_dogs <- pam(gower.dist.dogs, diss = TRUE, k =6 )
+pam_results_dogs <- dogs_cluster %>%
+  mutate(cluster = pam_fit_dogs$clustering) %>%
+  group_by(cluster) %>%
+  do(the_summary = summary(.))
+
+tsne_obj_dogs <- Rtsne(gower.dist.dogs, is_distance = TRUE)
+
+tsne_data_dogs <- tsne_obj_dogs$Y %>%
+  data.frame() %>%
+  setNames(c("X", "Y")) %>%
+  mutate(cluster = factor(pam_fit_dogs$clustering)
+         ,AdoptionSpeed=dogs_cluster$AdoptionSpeed
+         ,Vaccinated=dogs_cluster$Vaccinated,Dewormed=dogs_cluster$Dewormed
+         ,Sterilized=dogs_cluster$Sterilized,State=dogs_cluster$State,
+         Breed1=dogs_cluster$Breed1,Breed2=dogs_cluster$Breed2)
+
+
+p_dogs<-ggplot(aes(x = X, y = Y, Vaccinated=Vaccinated,
+                   Dewormed=Dewormed, Sterilized=Sterilized
+                   ,AdoptionSpeed=AdoptionSpeed,State=State,Breed1=Breed1)
+               , data = tsne_data_dogs) +
+  geom_point(aes(color = cluster))
+p_dogs<-p_dogs+theme(axis.title.x=element_blank(),
+         axis.text.x=element_blank(),
+         axis.ticks.x=element_blank(),
+         axis.title.y=element_blank(),
+         axis.text.y=element_blank(),
+         axis.ticks.y=element_blank(),
+         panel.border = element_blank(),
+         panel.grid.major = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.position = "none",
+        panel.background=element_rect(fill='white'))
+ggplotly(p_dogs)
+```
 
 ![R-TSNE plot for 2000 samples of the petdata images.](plots/tsne-2000.png)
 
-We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with r-tsne. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even has captured some similarities that are common to both types in the middle, for example the spot where pictures of animals in cages are displayed. 
+We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with r-tsne. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even has captured some similarities that are common to both types in the middle, for example the spot where pictures of animals in cages are displayed.
 
-The necessary python code was adapted from: 
-- <https://learnopencv.com/t-sne-for-feature-visualization/>
-- <https://github.com/spmallick/learnopencv/tree/master/TSNE>
-
-
-
+The necessary python code was adapted from: - <https://learnopencv.com/t-sne-for-feature-visualization/> - <https://github.com/spmallick/learnopencv/tree/master/TSNE>
 
 # Summary/Findings
 
 ------------- THE REST IS ONLY FOR KNOW HOW ON R-MARKDOWN ----------------------
-
 
 ```{r pressure, echo=FALSE, fig.cap="A caption", out.width = '100%'}
 # knitr::include_graphics("temp.png")
