@@ -33,15 +33,15 @@ For our data visualization project we were searching for a dataset that not only
 
 # The Dataset
 
-todo: describe the dataset:
-- character variables and variables that are not in the categorical or numerical variables plots: "Description", "Name", "RescuerID",...
--   number and properties of variables
--   for our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
--   amount of data points
+-   For our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
+-   number of variables: 27 
+-   amount of data points: 14993
 -   When accessing the dataset, we realized it also already had sentiment analysis data which was run on the description column.
--   necessary preprocessing
+-   necessary preprocessing: to include sentiment scores and magnitudes in data frame
+-   factorize categorical variables, research and include more data for maps (coordinates, population numbers, GDP)
+-   character variables and variables that are not in the categorical or numerical variables plots: "Description", "Name", "RescuerID",...
 
-```{r variables overview, echo=FALSE}
+```{r variables overview, echo=FALSE, include=FALSE}
 na_ratio<-sum(is.na(petdata)==TRUE)/(dim(petdata)[1]*dim(petdata)[2])# ratio of NAs among all datapoints
 print(na_ratio*100)
 print("% of NAs among all datapoints")# percentage of NAs in data
@@ -591,7 +591,7 @@ grid.arrange(p1, p2, p3,  p4, p5, p6, p7, p8, p9, p10,
 
 ```
 
-# Cluster and Neural Network Visuals
+# Cluster Visualization using Tabular Data
 
 -   Pet data clustering is created using Kmedoids clustering followed by Rtsne.
 -   It was done based on the following variables: StateId, BreedID1, BreedID2 and Type.
@@ -706,68 +706,24 @@ p_dogs<-p_dogs+theme(axis.title.x=element_blank(),
 ggplotly(p_dogs)
 ```
 
+# Neural Network Feature Embeddings Visualization 
+
+- only with Pet Images
+- visualized with R-TSNE 
+- included thumbnail images on top of datapoints in tsne plot
+- this visual only uses 2000 of the total of 58311 images for better visibility
+
 ![R-TSNE plot for 2000 samples of the petdata images.](plots/tsne-2000.png)
 
 We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with r-tsne. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even has captured some similarities that are common to both types in the middle, for example the spot where pictures of animals in cages are displayed.
 
-The necessary python code was adapted from: - <https://learnopencv.com/t-sne-for-feature-visualization/> - <https://github.com/spmallick/learnopencv/tree/master/TSNE>
+The necessary python code was adapted from: 
 
-# Summary/Findings
+- <https://learnopencv.com/t-sne-for-feature-visualization/> 
+- <https://github.com/spmallick/learnopencv/tree/master/TSNE>
 
-------------- THE REST IS ONLY FOR KNOW HOW ON R-MARKDOWN ----------------------
-
-```{r pressure, echo=FALSE, fig.cap="A caption", out.width = '100%'}
-# knitr::include_graphics("temp.png")
+```{r rtsne 3d, echo=FALSE}
+htmltools::includeHTML("tsne_plot_hover2.html")
 ```
 
-# References
 
-The R package **bookdown** is documented in an online book by its author Yihui Xie (2023). In this brief demo, I demonstrate some basic aspects of the use of the R package **bookdown** that took me some more time to figure out from that documentation. The package **bookdown** is based on the package **knitr** (see, e.g., <https://yihui.org/knitr/>), and the possibilities of that package can also be used. For example, it is possible to incorporate not only R code (like in this demo), but also, e.g., Python or Julia code with the respective code chunks.
-
-In Chapter \@ref(sec:meinreflabel2) you find a figure with a simple caption that was created by the `fig.cap` entry in the chunk information, and a table that was created with function `knitr::kable`. In Chapter \@ref(sec:meinreflabel3) you find a figure whose caption contains underscores and a formula; because of these complications, the figure caption has to be defined as a reference (see above, "(ref:latexInCaption)") before it can be used in the chunk information; I have made it a personal convention to always define all such references at the top of the file. Such a reference can be used everywhere in the text. If you have more than one reference definition, always have an empty line between any two such definitions (there is only one here).
-
-You can have unnumbered chapters (while most chapters are numbered), see the appendix.
-
-With the **bookdown** package, it is easy to reference back an forth between sections, and to figures or tables that were created from code chunks. References to figures start with "fig:", references to tables with "tab:", and section references are entirely defined in the curly brackets after the heading, starting with "\#". The syntax for **bookdown** references is "\@ref(your reference target)", see examples in this file. They are translated to the appropriate way of referencing for pdf or html files, as appropriate.
-
-# Second chapter {#sec:meinreflabel2}
-
-Table \@ref(tab:cor) shows the correlations in the dataset `swiss`.
-
-```{r cor}
-knitr::kable(round(cor(swiss),4), caption="The correlation matrix of the `swiss` data", booktabs=TRUE, linesep="")
-```
-
-Figure \@ref(fig:kde) shows a kernel density estimate of the proportion of males involved in agricultural occupations.
-
-```{r kde, fig.cap="Proportion of males involved in agricultural occupations in 47 French speaking swiss provinces (1888). Kernel density estimate.", fig.height=3, fig.width=4}
-plot(density(swiss$Agriculture), xlab="Agriculture")
-```
-
-# Third chapter {#sec:meinreflabel3}
-
-Figure \@ref(fig:scat) shows a scatter plot with a more demanding figure caption.
-
-```{r scat, fig.cap="(ref:latexInCaption)", fig.height=3, fig.width=4}
-plot(Fertility~Agriculture, swiss)
-```
-
-# Final chapter
-
-Your final chapter \textendash like your introductury chapter \textendash will be read by every reader. Both these chapters are therefore particularly important.
-
-Please note that this brief text focused on how to implement a report with the help of R package **bookdown**. There was not content of specific relevance for data visualization.
-
-# References {.unnumbered}
-
-Xie, Y. (2023). bookdown: Authoring Books and Technical Documents with R Mardown. <https://bookdown.org/yihui/bookdown/> (Status: May 08, 2023).
-
-# Appendix A {.unnumbered}
-
-Example for an appendix
-
-The following listing shows the data (do not do that with a large data set!).
-
-```{r printdat}
-print(swiss)
-```
