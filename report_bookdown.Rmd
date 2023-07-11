@@ -34,7 +34,7 @@ For our data visualization project we were searching for a dataset that not only
 # The Dataset
 
 todo: describe the dataset:
-
+- character variables and variables that are not in the categorical or numerical variables plots: "Description", "Name", "RescuerID",...
 -   number and properties of variables
 -   for our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
 -   amount of data points
@@ -526,7 +526,7 @@ p5<-ggplot(data=subset(cats, !is.na(SentimentScore)),
            aes(SentimentScore, Color1)) +
   annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
   ggtitle("Cats - Influence of color on Sentiment Score") +
-  geom_boxplot(alpha=0)+
+  geom_boxplot(alpha=0.2)+
   ylab("Maturity Size")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
@@ -538,7 +538,7 @@ p6<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
   ggtitle("Dogs - Influence of color on Sentiment Score") +
-  geom_boxplot(alpha=0)+
+  geom_boxplot(alpha=0.2)+
   ylab("Maturity Size")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
@@ -548,7 +548,7 @@ p7<-ggplot(data=subset(cats, !is.na(SentimentScore)),
            aes(SentimentScore, Sterilized)) +
   annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
   ggtitle("Cats - Sterilized Influence on Sentiment Score") +
-  geom_boxplot(alpha=0)+
+  geom_boxplot(alpha=0.2)+
   ylab("State")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
@@ -558,7 +558,7 @@ p8<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
            aes(SentimentScore, Sterilized)) +
   annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
   ggtitle("Dogs - Sterilized Influence on Sentiment Score") +
-  geom_boxplot(alpha=0)+
+  geom_boxplot(alpha=0.2)+
   ylab("State")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
@@ -568,7 +568,7 @@ p9<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   aes(SentimentScore, State)) +
   annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
   ggtitle("Cats - Sentiment Score in States") +
-  geom_boxplot(alpha=0)+
+  geom_boxplot(alpha=0.2)+
   ylab("State")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
@@ -578,7 +578,7 @@ p10<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
             aes(SentimentScore, State)) +
   annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
   ggtitle("Dogs - Sentiment Score in States") +
-  geom_boxplot(alpha=0)+
+  geom_boxplot(alpha=0.2)+
   ylab("State")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
