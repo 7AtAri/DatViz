@@ -4,10 +4,7 @@ TODOs:
 
 - [pictures for neural network](https://drive.google.com/file/d/16tPNceHdB2oQOTaknP35rJQr_Bsa98Jq/view?usp=share_link)
 
-* Legend for pairs.panel plot -> orange: cats, purple: dogs -> legend plot underneath the plot in rmarkdown
-* make bars in sentiment plots more visible [ARI]
 * 3d plot of tsne datapoints with clickable information [ARI]
-* refine maps -> add population and/or income data -> log scale to numbers -> hover info [Vipin]
 * take the highest influencing variables from regression summary to do some interesting stuff with them 
 * maybe also visualize interactions between variables (check regression output)
 * facet plot?
