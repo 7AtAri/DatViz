@@ -1,14 +1,6 @@
 # DatViz - Pet Adoption Dataset
 
-TODOs:
-
 - [pictures for neural network](https://drive.google.com/file/d/16tPNceHdB2oQOTaknP35rJQr_Bsa98Jq/view?usp=share_link)
-
-* 3d plot of tsne datapoints with clickable information [ARI]
-* take the highest influencing variables from regression summary to do some interesting stuff with them 
-* maybe also visualize interactions between variables (check regression output)
-* facet plot?
-* develop a narrative / story through our data and plots for presentation -> see rmarkdown
 
 our dataset:
 https://www.kaggle.com/competitions/petfinder-adoption-prediction/data
