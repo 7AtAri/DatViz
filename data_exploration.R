@@ -254,139 +254,141 @@ g <- make_gradient(
 
 # ----plots with gradient ---------------------
 
-
-p2<-ggplot(data=subset(petdata, !is.na(SentimentScore)), 
-           aes(SentimentScore, fct_rev(Health))) +
-  annotation_custom(
-    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
-  ) + 
-  ggtitle("Pets Health Status for Sentiment Score") +
-  geom_boxplot(alpha=0.2)+
-  ylab("Health")+
-  xlab("Sentiment Score")+
-  xlim(-1.0,1.0)+
+theme_settings<-
   theme(
     plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
     plot.title = element_text(color="black", size=10, face="bold"),
     axis.title.x = element_text(color="black", size=8),
-    axis.title.y = element_text(color="black", size=8)
-  )
+    axis.title.y = element_text(color="black", size=8))
 
-
-p4<-ggplot(data=subset(petdata, !is.na(SentimentScore)), 
-           aes(SentimentScore, fct_rev(AdoptionSpeed_fac))) +
+p3<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
+           aes(SentimentScore, fct_rev(Health))) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
+  ggtitle("Cats Health Status for Sentiment Score") +
+  geom_boxplot(alpha=0.2)+
+  ylab("Health")+
+  xlab("Sentiment Score")+
+  xlim(-1.0,1.0)+
+  theme_settings
+  
+
+p4<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+           aes(SentimentScore, fct_rev(Health))) +
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf ) + 
+  ggtitle("Dogs Health Status for Sentiment Score") +
+  geom_boxplot(alpha=0.2)+
+  ylab("Health")+
+  xlab("Sentiment Score")+
+  xlim(-1.0,1.0)+
+  theme_settings
+
+p10<-ggplot(data=subset(petdata, !is.na(SentimentScore)), 
+           aes(SentimentScore, fct_rev(AdoptionSpeed_fac))) +
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
   ggtitle("Pets Adoption Speed for Sentiment Score") +
   geom_violin(alpha=0)+
   ylab("Adoption Speed")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
-  theme(
-    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
-    plot.title = element_text(color="black", size=10, face="bold"),
-    axis.title.x = element_text(color="black", size=8),
-    axis.title.y = element_text(color="black", size=8)
-  )
+  theme_settings
 
   
-p3<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
+p2<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
            aes(SentimentScore)) +
-  annotation_custom(
-    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
-  ) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
   ggtitle("Dogs - Sentiment Scores Frequencies") +
-  geom_bar()+
+  geom_bar(fill="black")+
   xlab("Sentiment Score")+
-  theme(
-    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
-    plot.title = element_text(color="black", size=10, face="bold"),
-    axis.title.x = element_text(color="black", size=8,),
-    axis.title.y = element_text(color="black", size=8,)
-  )
+  theme_settings
 
 p1<-ggplot(data=subset(cats, !is.na(SentimentScore)),
            aes(SentimentScore))+
-               #fill=Gender,
-               #group=Gender)) +
-  #scale_fill_brewer(palette="Greys")+
-  annotation_custom(
-    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
-  ) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
   ggtitle("Cats - Sentiment Scores Frequencies") +
-  geom_bar()+
+  geom_bar(fill="black")+
   xlab("Sentiment Score")+
   labs(fill = "Gender")+
-  theme(
-    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
-    plot.title = element_text(color="black", size=10, face="bold"),
-    axis.title.x = element_text(color="black", size=8),
-    axis.title.y = element_text(color="black", size=8),
-    legend.key.size = unit(0.5, 'cm'), #change legend key size
-    legend.key.height = unit(0.5, 'cm'), #change legend key height
-    legend.key.width = unit(0.5, 'cm'), #change legend key width
-    legend.title = element_text(size=7), #change legend title font size
-    legend.text = element_text(size=7), #change legend text font size
-    legend.direction = "horizontal",
-    legend.position = "bottom"
-  )
+  theme_settings
 
 
-p5<-ggplot(data=subset(petdata, !is.na(SentimentScore)), 
-           aes(SentimentScore, MaturitySize)) +
+p5<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
+           aes(SentimentScore, Color1)) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
-  ggtitle("Pets Maturity Size for Sentiment Score") +
-  geom_violin(alpha=0)+
+  ggtitle("Cats - Influence of color on Sentiment Score") +
+  geom_boxplot(alpha=0)+
   ylab("Maturity Size")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
-  theme(
-    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
-    plot.title = element_text(color="black", size=10, face="bold"),
-    axis.title.x = element_text(color="black", size=8),
-    axis.title.y = element_text(color="black", size=8),
-  )
+  theme_settings
 
-p6<-ggplot(data=subset(petdata, !is.na(SentimentScore)), 
-           aes(SentimentScore, Age)) +
+p6<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+           aes(SentimentScore, Color1)) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
-  ggtitle("Pets Age for Sentiment Score") +
-  geom_jitter(alpha=0.3)+
-  ylab("Age in Months")+
+  ggtitle("Dogs - Influence of color on Sentiment Score") +
+  geom_boxplot(alpha=0)+
+  ylab("Maturity Size")+
   xlab("Sentiment Score")+
-  theme(
-    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
-    plot.title = element_text(color="black", size=10, face="bold"),
-    axis.title.x = element_text(color="black", size=8),
-    axis.title.y = element_text(color="black", size=8)
-  )
+  xlim(-1.0,1.0)+
+  theme_settings
 
-
-p7<-ggplot(data=subset(petdata, !is.na(SentimentScore)), 
+p18<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
   aes(SentimentScore, State)) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
   ) + 
-  ggtitle("Pet's State for Sentiment Score") +
+  ggtitle("Cats - Sentiment Score in States") +
   geom_boxplot(alpha=0)+
   ylab("State")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
-  theme(
-    plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
-    plot.title = element_text(color="black", size=10, face="bold"),
-    axis.title.x = element_text(color="black", size=8),
-    axis.title.y = element_text(color="black", size=8)
-  )
+  theme_settings
 
-grid.arrange(p1, p2, p3, p5, p6, p7,
+p19<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+            aes(SentimentScore, State)) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  ggtitle("Dogs - Sentiment Score in States") +
+  geom_boxplot(alpha=0)+
+  ylab("State")+
+  xlab("Sentiment Score")+
+  xlim(-1.0,1.0)+
+  theme_settings
+
+p9<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
+           aes(SentimentScore, Sterilized)) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  ggtitle("Cats - Sterilized Influence on Sentiment Score") +
+  geom_boxplot(alpha=0)+
+  ylab("State")+
+  xlab("Sentiment Score")+
+  xlim(-1.0,1.0)+
+  theme_settings
+
+p10<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+           aes(SentimentScore, Sterilized)) +
+  annotation_custom(
+    grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
+  ) + 
+  ggtitle("Dogs - Sterilized Influence on Sentiment Score") +
+  geom_boxplot(alpha=0)+
+  ylab("State")+
+  xlab("Sentiment Score")+
+  xlim(-1.0,1.0)+
+  theme_settings
+
+
+grid.arrange(p1, p2, p3,  p4, p9, p10,
              nrow=3, ncol=2, 
-             top = "Exploring Sentiment in Descriptions",
+             top = "Exploring Sentiment in Descriptions for Cats and Dogs",
              vp=viewport(width=0.9, height=0.9))
 
 # --- sentiment + other variables -----

@@ -6,6 +6,7 @@ library(readr)
 library(corrplot)
 library(ggplot2)
 library(stringr)
+library(plyr)
 library(dplyr)
 library(psych)
 library(inspectdf)
@@ -17,7 +18,13 @@ library(gridExtra)
 library(grid) # needed?
 library(ggplotify) #needed?
 library(viridis) #needed?
-
+ 
+# For the map
+library(rgdal)
+library(sp)
+library(leaflet)
+library(sf)
+library(base64enc)
 
 # ---- Descriptions -----------------------------------------------------------
 
@@ -202,7 +209,7 @@ make_gradient <- function(deg = 45, n = 100, cols = blues9) {
 }
 
 
-
+?colorRampPalette
 # ---- Clean up the environment -----------------------------------------------
 
 

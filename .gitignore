@@ -53,3 +53,6 @@ petdata/
 
 # Misc Mac stuff
 .DS_Store
+
+# Bookdown misc
+report_bookdown_files/
