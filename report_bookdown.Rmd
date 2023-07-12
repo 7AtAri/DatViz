@@ -722,7 +722,13 @@ The necessary python code was adapted from:
 - <https://learnopencv.com/t-sne-for-feature-visualization/> 
 - <https://github.com/spmallick/learnopencv/tree/master/TSNE>
 
-```{r rtsne 3d, echo=FALSE}
+
+```{r rtsne 3d clear, echo=FALSE}
+htmltools::includeHTML("tsne_plot_hover-clear.html")
+```
+
+
+```{r rtsne 3d, echo=FALSE, include=FALSE}
 htmltools::includeHTML("tsne_plot_hover-2.html")
 ```
 
