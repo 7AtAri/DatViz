@@ -194,6 +194,7 @@ def visualize_tsne(tsne, images, labels, plot_size=2000, max_image_size=200):
     visualize_tsne_images(tx, ty, images, labels, plot_size=plot_size, max_image_size=max_image_size)
 
 
+
 def main():
     parser = argparse.ArgumentParser()
 
