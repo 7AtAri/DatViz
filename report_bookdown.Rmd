@@ -117,7 +117,7 @@ legend("topleft", legend =c('Dogs', 'Cats'), pch=16, pt.cex=1.5, cex=0.8, bty='n
 
 Some categorical variables were used with their numeric representations, since these can be read numerically. For example Adoption Speed, that is an ordinal variable with 5 factors and Color ID1, since the color scale goes from dark to light colors.
 
-We can see the correlations of the numerical variables with their significance levels displayed as stars next to the numbers. On the diagonal, we see the histograms of the displayed variables. Most of them seem to be power law distributions. The pairs plots in the lower half are displaying scatterplots. Its purple points are the dogs, while the orange points are the cats. This makes it possible to see some differences between the two pet types of our dataset, for example that the cats seem to not get as old as the dogs. Also we can see some structural conspicuities between some variables, for example that the fee gets lower if the animals are older. Or that animals with a very fast adoption speed have almost no negative sentiment scores.
+We can see the correlations of the numerical variables with their significance levels displayed as stars next to the numbers. On the diagonal, we see the histograms of the displayed variables. Most of them seem to be power law distributions. The pairs plots in the lower half are displaying scatterplots. Its red points are the dogs, while the blue points are the cats. This makes it possible to assume some differences between the two pet types of our dataset, for example that the cats seem to not get as old as the dogs. Also we can see some structural conspicuities between some variables, for example that the fee seems to get lower if the animals are older. Or that animals with a very fast adoption speed seem to have almost no negative sentiment scores.
 
 # Data Exploration
 
@@ -400,7 +400,7 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5 & df_catbreeds$Var1!="Domestic Sho
         cex.axis=0.7,
         names=df_catbreeds$Var1[df_catbreeds$Freq>5& df_catbreeds$Var1!="Domestic Short Hair"& df_catbreeds$Var1!="Domestic Medium Hair"],
         col="#3f8ded",
-        border="#3f8ded",
+        border="#3f8ded",  
         #main="Frequencies (>5) of Cat Breeds in the Petdata Dataset")
 )
 
@@ -723,7 +723,7 @@ The necessary python code was adapted from:
 - <https://github.com/spmallick/learnopencv/tree/master/TSNE>
 
 ```{r rtsne 3d, echo=FALSE}
-htmltools::includeHTML("tsne_plot_hover2.html")
+htmltools::includeHTML("tsne_plot_hover-2.html")
 ```
 
 
