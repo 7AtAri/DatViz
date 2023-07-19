@@ -1,5 +1,5 @@
 ---
-title: "Report"
+title: "Report on Petdata Visualization"
 header-includes:
   - \usepackage[ngerman]{babel}
   - \DeclareUnicodeCharacter{308}{oe}  
@@ -54,8 +54,8 @@ To get an overview, we used a frequency plot for the levels of categorical varia
 
 ```{r categorical variables frequencies, fig.width=10, fig.height=8, echo= FALSE}
 
-inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID"))])%>% 
-  show_plot(label_size=0.1, col_palette=5,label_color="black") +
+inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID", "SentimentScore_fac", "AdoptionSpeed_fac"))])%>% 
+  show_plot(label_size=0.8, col_palette=5,label_color="black") +
   labs(title = "Frequency in categorical levels in Petdata",
        subtitle = "Grey segments are NAs") +
   theme(plot.title = element_text(face = "bold"),
@@ -63,7 +63,7 @@ inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","Pet
     panel.grid.major = element_line(color = "white"),
     #panel.border=element_rect(margin(0.9,0,0,0)),
     strip.background = element_blank(),
-    axis.text.y.left=element_text(size = 11, hjust=1),
+    axis.text.y.left=element_text(size = 13, hjust=1),
     plot.margin = margin(21,17,17,17))
 ```
 
@@ -465,6 +465,10 @@ title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'",
 ## Exploring Cats and Dogs regarding Sentiment Scores
 
 ```{r, sentiment scores, fig.width=10, fig.height=17, echo=FALSE}
+
+# reset par
+par(mfrow=c(1,1))
+
 # make the gradient background:
 
 # Define a custom palette:
@@ -480,8 +484,8 @@ theme_settings<-
   theme(
     plot.margin=unit(c(0.6,0.8,0.8,0.6),"cm"),
     plot.title = element_text(color="black", size=10, face="bold"),
-    axis.title.x = element_text(color="black", size=8),
-    axis.title.y = element_text(color="black", size=8))
+    axis.title.x = element_text(color="black", size=9),
+    axis.title.y = element_text(color="black", size=9))
 
 # ----plots with gradient ---------------------
 
@@ -527,7 +531,7 @@ p5<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
   ggtitle("Cats - Influence of color on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
-  ylab("Maturity Size")+
+  ylab("Color")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
   theme_settings
@@ -539,7 +543,7 @@ p6<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
   ) + 
   ggtitle("Dogs - Influence of color on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
-  ylab("Maturity Size")+
+  ylab("Color")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
   theme_settings
@@ -549,7 +553,7 @@ p7<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
   ggtitle("Cats - Sterilized Influence on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
-  ylab("State")+
+  ylab("Sterilized")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
   theme_settings
@@ -559,7 +563,7 @@ p8<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
   annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
   ggtitle("Dogs - Sterilized Influence on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
-  ylab("State")+
+  ylab("Sterilized")+
   xlab("Sentiment Score")+
   xlim(-1.0,1.0)+
   theme_settings
@@ -587,7 +591,7 @@ p10<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
 grid.arrange(p1, p2, p3,  p4, p5, p6, p7, p8, p9, p10,
              nrow=5, ncol=2, 
              #top = "Exploring Sentiment in Descriptions for Cats and Dogs",
-             vp=viewport(width=0.9, height=0.9))
+             vp=viewport(width=0.99, height=0.99))
 
 ```
 
@@ -706,14 +710,18 @@ p_dogs<-p_dogs+theme(axis.title.x=element_blank(),
 ggplotly(p_dogs)
 ```
 
-# Neural Network Feature Embeddings Visualization 
+# Neural Network Pet Images Embeddings Visualization 
+
+The Neural Network Embeddings Visualization has been done in Python and the various needed codefiles can be found in the Folder "neural network files". Since the html output of our report file was already huge and already took a very long time to knit, we decided not to try to embed that code into the report, but only use its outputs instead. 
+
+## TSNE plot with Images as Thumbnails
 
 - only with Pet Images
 - visualized with R-TSNE 
 - included thumbnail images on top of datapoints in tsne plot
 - this visual only uses 2000 of the total of 58311 images for better visibility
 
-![R-TSNE plot for 2000 samples of the petdata images.](plots/tsne-2000.png)
+![ ](plots/tsne-2000.png)
 
 We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with r-tsne. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even has captured some similarities that are common to both types in the middle, for example the spot where pictures of animals in cages are displayed.
 
@@ -722,14 +730,18 @@ The necessary python code was adapted from:
 - <https://learnopencv.com/t-sne-for-feature-visualization/> 
 - <https://github.com/spmallick/learnopencv/tree/master/TSNE>
 
+## TSNE 3D scatterplot without images as thumbnails
+
+- cats pictures embeddings are displayed with blue dots and dogs pictures embeddings are displayed with red dots
+- the hover over shows the Pet Id and the image number connected with a hyphen
+- with the help of the Pet Ids the neural network image embeddings can be connected with the tabular data
+
 
 ```{r rtsne 3d clear, echo=FALSE}
 htmltools::includeHTML("tsne_plot_hover-clear.html")
 ```
 
 
-```{r rtsne 3d, echo=FALSE, include=FALSE}
-htmltools::includeHTML("tsne_plot_hover-2.html")
-```
+
 
 
