@@ -25,14 +25,13 @@ rm(list = ls(all.names = TRUE)) # reset the environment
 source("Setup.R")
 ```
 
-(ref:latexInCaption) A caption can contain *underscores* and $\sqrt v$ formulae.
-
 # Introduction
 
-For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge.
+For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia’s leading animal welfare platform since 2008, with a database of more than 150,000 animals."
 
 # The Dataset
 
+-   The dataset includes data from all 14 States in Malaysia.
 -   For our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
 -   number of variables: 27 
 -   amount of data points: 14993
@@ -115,7 +114,7 @@ legend("topleft", legend =c('Dogs', 'Cats'), pch=16, pt.cex=1.5, cex=0.8, bty='n
    col = c('#f76060', 'blue'), horiz = TRUE)
 ```
 
-Some categorical variables were used with their numeric representations, since these can be read numerically. For example Adoption Speed, that is an ordinal variable with 5 factors and Color ID1, since the color scale goes from dark to light colors.
+Some categorical variables were used with their numeric representations since these can be read numerically. For example, Adoption Speed is an ordinal variable with 5 factors and Color ID1, since the color scale goes from dark to light colors.
 
 We can see the correlations of the numerical variables with their significance levels displayed as stars next to the numbers. On the diagonal, we see the histograms of the displayed variables. Most of them seem to be power law distributions. The pairs plots in the lower half are displaying scatterplots. Its red points are the dogs, while the blue points are the cats. This makes it possible to assume some differences between the two pet types of our dataset, for example that the cats seem to not get as old as the dogs. Also we can see some structural conspicuities between some variables, for example that the fee seems to get lower if the animals are older. Or that animals with a very fast adoption speed seem to have almost no negative sentiment scores.
 
@@ -366,7 +365,7 @@ htmlwidgets::onRender("
 
 ```
 
-## Distribution of Catbreeds
+## Distribution of Cat Breeds
 
 ```{r catbreeds, fig.width=10, fig.height=8, echo=FALSE}
 par(mfrow=c(1,2))
@@ -414,7 +413,7 @@ title(main = "Cat Breeds - Frequencies (>5) and without Domestic Short and Mediu
 
 ```
 
-## Distribution of Dogbreeds
+## Distribution of Dog Breeds
 
 ```{r dogbreeds,fig.width=10, fig.height=10,echo=FALSE}
 par(mfrow=c(1,2))
@@ -462,7 +461,7 @@ title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'",
       adj=0.38)
 ```
 
-## Exploring Cats and Dogs regarding Sentiment Scores
+## Exploring Cats and Dogs Regarding Sentiment Scores
 
 ```{r, sentiment scores, fig.width=10, fig.height=17, echo=FALSE}
 
@@ -597,6 +596,8 @@ grid.arrange(p1, p2, p3,  p4, p5, p6, p7, p8, p9, p10,
 
 # Cluster Visualization using Tabular Data
 
+## Pets' Data Clustering
+
 -   Pet data clustering is created using Kmedoids clustering followed by Rtsne.
 -   It was done based on the following variables: StateId, BreedID1, BreedID2 and Type.
 
@@ -628,6 +629,10 @@ p<-p+theme(axis.title.x=element_blank(),
          panel.background=element_rect(fill='white'))
 ggplotly(p)
 ```
+
+## Cats' Features Clustering
+
+- additional Features used
 
 ```{r, cat_cluster}
 cats_cluster=filter(cats,Quantity==1)
@@ -664,6 +669,10 @@ p_cats<-p_cats+theme(axis.title.x=element_blank(),
 ggplotly(p_cats)
 
 ```
+
+## Dogs' Features Clustering
+
+- additional Features used
 
 ```{r, dogs_cluster}
 dogs_cluster=filter(dogs,Quantity==1)
@@ -733,7 +742,7 @@ The necessary python code was adapted from:
 ## TSNE 3D scatterplot without images as thumbnails
 
 - cats pictures embeddings are displayed with blue dots and dogs pictures embeddings are displayed with red dots
-- the hover over shows the Pet Id and the image number connected with a hyphen
+- the hover-over shows the Pet Id and the image number connected with a hyphen
 - with the help of the Pet Ids the neural network image embeddings can be connected with the tabular data
 
 
@@ -741,6 +750,9 @@ The necessary python code was adapted from:
 htmltools::includeHTML("tsne_plot_hover-clear.html")
 ```
 
+# Conclusions - What we have learned about our data
+
+Using various methods, we tried to gain insights into the Pet Dataset. Having to deal with highly imbalanced data was one of the challenges, we had to face. To adequately display the data, we used for example log transformations for frequencies and heat map colorings, as well as boxplots for bivariate analysis. Our visualisations could be the basis for further analyzing the possible relationships between the sentiment score and pet's health, sentiment score and states, sentiment score and sterilization status, all with regards to the differences between the pet types. Another possible relationship might exist between the color of the dogs and the sentiement scores and between the Pets States and their population, which seems to be reasonable. The clustering for each pet type attributes a lot to the categorical variables Vaccinated, Sterilized, Health and Dewormed. Visualizing the embeddings of the animals images in a Resnet-101 Neural Network, we learned how the network structures the images by type, animal color and as well as common settings like cages. Our visual exploration and analysis of the dataset could be used to help predict the adoption speed of the pets, which was the original purpose of the Kaggle challenge. Another possible further investigation would be to compare this data to pet data from other locations, since our data is only from Malaysia.  
 
 
 
