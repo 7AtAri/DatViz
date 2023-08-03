@@ -30,7 +30,7 @@ library(base64enc)
 library(cluster)
 library(plotly)
 library(Rtsne)
-
+library(factoextra)
 # ---- Descriptions -----------------------------------------------------------
 
 

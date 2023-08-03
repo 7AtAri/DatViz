@@ -7,7 +7,7 @@ author: "Nourhan Omar, Vipin Singh, Sara Wahl"
 date: "`r Sys.Date()`"
 
 encoding: utf8
-output: 
+output:
   bookdown::html_document2:
     css: style.css
     toc: true
@@ -54,7 +54,7 @@ To get an overview, we used a frequency plot for the levels of categorical varia
 
 ```{r categorical variables frequencies, fig.width=10, fig.height=8, echo= FALSE}
 
-inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID", "SentimentScore_fac", "AdoptionSpeed_fac"))])%>% 
+inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID", "SentimentScore_fac", "AdoptionSpeed_fac"))])%>%
   show_plot(label_size=0.8, col_palette=5,label_color="black") +
   labs(title = "Frequency in categorical levels in Petdata",
        subtitle = "Grey segments are NAs") +
@@ -78,12 +78,12 @@ petdata$ColorID1_num<-as.numeric(petdata$ColorID1)
 
 par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
 pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
-                       "SentimentMagnitude", "AdoptionSpeed", "SentimentScore", "ColorID1_num")], 
+                       "SentimentMagnitude", "AdoptionSpeed", "SentimentScore", "ColorID1_num")],
              hist.col="darkblue",
              pch=23,
              main = "Pairs and Correlation Plot of Numeric Variables",
-             cex.cor=0.6, 
-             cex=0.6, 
+             cex.cor=0.6,
+             cex=0.6,
              cex.labels=0.85,
              jiggle=TRUE,
              factor=1,
@@ -91,7 +91,7 @@ pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
              smooth= FALSE,
              density = FALSE,
              rug=FALSE,
-             stars=TRUE, 
+             stars=TRUE,
              #bg=c("yellow","orange","red","purple","blue")[petdata$AdoptionSpeed],
              bg=c("#f76060","blue")[petdata$Type], # #f76060","#3f8ded
              #bg=c("green","red","yellow")[petdata$Gender],
@@ -216,7 +216,7 @@ for (i in seq_len(nrow(choropleth_data))) {
             pieplots[current_state, "pieplot"] <- paste0("<img src='data:image/png;base64,", encoded_png, "' />")
         }
     }
-    
+
     # Add population to choropleth_data
     for (j in seq_len(nrow(population_2018))) {
         if (current_state == population_2018[j, "state_name"]) {
@@ -385,8 +385,8 @@ max_breed_cats<-max(table(cats$Breed1))
 barplot(df_catbreeds$Freq[df_catbreeds$Freq>5],
         las = 1,
         #cex.lab = 1,
-        horiz = TRUE, 
-        cex.names=0.7, 
+        horiz = TRUE,
+        cex.names=0.7,
         xlim = c(0, 4000),
         cex.axis=0.7,
         names=df_catbreeds$Var1[df_catbreeds$Freq>5],
@@ -398,8 +398,8 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5],
 barplot(df_catbreeds$Freq[df_catbreeds$Freq>5 & df_catbreeds$Var1!="Domestic Short Hair" & df_catbreeds$Var1!="Domestic Medium Hair"],
         las = 1,
         #cex.lab = 1,
-        horiz = TRUE, 
-        cex.names=0.7, 
+        horiz = TRUE,
+        cex.names=0.7,
         xlim = c(0, 400),
         cex.axis=0.7,
         names=df_catbreeds$Var1[df_catbreeds$Freq>5& df_catbreeds$Var1!="Domestic Short Hair"& df_catbreeds$Var1!="Domestic Medium Hair"],
@@ -408,8 +408,8 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5 & df_catbreeds$Var1!="Domestic Sho
         #main="Frequencies (>5) of Cat Breeds in the Petdata Dataset")
 )
 
-title(main = "Cat Breeds - Frequencies (>5) and without Domestic Short and Medium Hair", 
-      line = -1, 
+title(main = "Cat Breeds - Frequencies (>5) and without Domestic Short and Medium Hair",
+      line = -1,
       cex.main=1,
       font.main=2,
       #col.main="darkorange",
@@ -433,8 +433,8 @@ max_table<-max(table(dogs$Breed1))
 barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5],
         las = 1,
         cex.lab = 1,
-        horiz = TRUE, 
-        cex.names=0.7, 
+        horiz = TRUE,
+        cex.names=0.7,
         xlim = c(0, 7000),
         cex.axis=0.75,
         names=df_dogbreeds$Var1[df_dogbreeds$Freq>5],
@@ -446,8 +446,8 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5],
 barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"],
         las = 1,
         #cex.lab = 1,
-        horiz = TRUE, 
-        cex.names=0.7, 
+        horiz = TRUE,
+        cex.names=0.7,
         xlim = c(0, 250),
         cex.axis=0.8,
         #bg="lightgrey",
@@ -457,8 +457,8 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"
         #cex.main=1,
         #main="Frequencies (>5) of Dog Breeds in the Petdata Dataset")
 )
-title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'", 
-      line = -1, 
+title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'",
+      line = -1,
       cex.main=1.1,
       font.main=2,
       #col.main="darkorange",
@@ -476,7 +476,7 @@ par(mfrow=c(1,1))
 # make the gradient background:
 
 # Define a custom palette:
-BuOr <- colorRampPalette(c("#014f6e", "white", "#FF7F00"))(9)  #085794 
+BuOr <- colorRampPalette(c("#014f6e", "white", "#FF7F00"))(9)  #085794
 
 
 g <- make_gradient(
@@ -495,7 +495,7 @@ theme_settings<-
 
 p1<-ggplot(data=subset(cats, !is.na(SentimentScore)),
            aes(SentimentScore))+
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Cats - Sentiment Scores Frequencies") +
   geom_bar(fill="black")+
   xlab("Sentiment Score")+
@@ -504,15 +504,15 @@ p1<-ggplot(data=subset(cats, !is.na(SentimentScore)),
 
 p2<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
            aes(SentimentScore)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Dogs - Sentiment Scores Frequencies") +
   geom_bar(fill="black")+
   xlab("Sentiment Score")+
   theme_settings
 
-p3<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
+p3<-ggplot(data=subset(cats, !is.na(SentimentScore)),
            aes(SentimentScore, fct_rev(Health))) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Cats Health Status for Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Health")+
@@ -520,9 +520,9 @@ p3<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p4<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+p4<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
            aes(SentimentScore, fct_rev(Health))) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Dogs Health Status for Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Health")+
@@ -530,9 +530,9 @@ p4<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p5<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
+p5<-ggplot(data=subset(cats, !is.na(SentimentScore)),
            aes(SentimentScore, Color1)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Cats - Influence of color on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Color")+
@@ -540,11 +540,11 @@ p5<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p6<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+p6<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
            aes(SentimentScore, Color1)) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
-  ) + 
+  ) +
   ggtitle("Dogs - Influence of color on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Color")+
@@ -552,9 +552,9 @@ p6<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p7<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
+p7<-ggplot(data=subset(cats, !is.na(SentimentScore)),
            aes(SentimentScore, Sterilized)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Cats - Sterilized Influence on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Sterilized")+
@@ -562,9 +562,9 @@ p7<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p8<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+p8<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
            aes(SentimentScore, Sterilized)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Dogs - Sterilized Influence on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Sterilized")+
@@ -572,9 +572,9 @@ p8<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p9<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
+p9<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   aes(SentimentScore, State)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Cats - Sentiment Score in States") +
   geom_boxplot(alpha=0.2)+
   ylab("State")+
@@ -582,9 +582,9 @@ p9<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p10<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+p10<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
             aes(SentimentScore, State)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Dogs - Sentiment Score in States") +
   geom_boxplot(alpha=0.2)+
   ylab("State")+
@@ -593,7 +593,7 @@ p10<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
   theme_settings
 
 grid.arrange(p1, p2, p3,  p4, p5, p6, p7, p8, p9, p10,
-             nrow=5, ncol=2, 
+             nrow=5, ncol=2,
              #top = "Exploring Sentiment in Descriptions for Cats and Dogs",
              vp=viewport(width=0.99, height=0.99))
 
@@ -603,8 +603,8 @@ grid.arrange(p1, p2, p3,  p4, p5, p6, p7, p8, p9, p10,
 
 ## Pets' Data Clustering
 
--   Pet data clustering is created using Kmedoids clustering followed by Rtsne.
--   It was done based on the following variables: StateId, BreedID1, BreedID2 and Type.
+- Pet data clustering is created using K-medoids clustering followed by t-sne.
+- It was done based on the following variables: StateId, BreedID1, BreedID2 and Type.
 
 ```{r, petdata_cluster}
 petdata_cluster=filter(petdata,Quantity==1)
@@ -637,15 +637,15 @@ ggplotly(p)
 
 ## Cats' Features Clustering
 
--   additional Features used
+- cat data clustering is created using K-medoids clustering followed by t-sne.
+- It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized and Health.
 
 ```{r, cat_cluster}
 cats_cluster=filter(cats,Quantity==1)
 cats_cluster=cats_cluster[c('StateID','BreedID2','BreedID1','Gender',
                             'MaturitySize','FurLength','Vaccinated','Dewormed',
                             'Sterilized','Health','State','Breed1','Breed2'                                    ,'AdoptionSpeed')]
-gower.dist.cats <- daisy(cats_cluster[c('StateID','BreedID2','BreedID1','Gender',
-                                        'MaturitySize','FurLength','Vaccinated'                                             ,'Dewormed','Sterilized','Health')],                                               metric = c("gower"))
+gower.dist.cats <- daisy(cats_cluster[c('StateID','BreedID2','BreedID1','Gender','MaturitySize','FurLength','Vaccinated'                            ,'Dewormed','Sterilized','Health')],                                               metric = c("gower"))
 pam_fit_cats <- pam(gower.dist.cats, diss = TRUE, k =6 )
 tsne_obj_cats <- Rtsne(gower.dist.cats, is_distance = TRUE)
 tsne_data_cats <- tsne_obj_cats$Y %>%
@@ -677,16 +677,16 @@ ggplotly(p_cats)
 
 ## Dogs' Features Clustering
 
--   additional Features used
+- dog data clustering is created using K-medoids clustering followed by t-sne.
+- It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized and Health.
+
 
 ```{r, dogs_cluster}
 dogs_cluster=filter(dogs,Quantity==1)
 dogs_cluster=dogs_cluster[c('StateID','BreedID2','BreedID1','Gender',
                             'MaturitySize','FurLength','Vaccinated','Dewormed',
                             'Sterilized','Health','State','Breed1','Breed2'                                    ,'AdoptionSpeed')]
-gower.dist.dogs <- daisy(dogs_cluster[c('StateID','BreedID2','BreedID1','Gender',
-                            'MaturitySize','FurLength','Vaccinated','Dewormed',
-                            'Sterilized','Health')], metric = c("gower"))
+gower.dist.dogs <- daisy(dogs_cluster[c('StateID','BreedID2','BreedID1','Gender','MaturitySize','FurLength','Vaccinated','Dewormed',                      'Sterilized','Health')], metric = c("gower"))
 pam_fit_dogs <- pam(gower.dist.dogs, diss = TRUE, k =6 )
 pam_results_dogs <- dogs_cluster %>%
   mutate(cluster = pam_fit_dogs$clustering) %>%
