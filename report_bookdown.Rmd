@@ -7,7 +7,7 @@ author: "Nourhan Omar, Vipin Singh, Sara Wahl"
 date: "`r Sys.Date()`"
 
 encoding: utf8
-output: 
+output:
   bookdown::html_document2:
     css: style.css
     toc: true
@@ -27,13 +27,14 @@ source("Setup.R")
 
 # Introduction
 
-For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia’s leading animal welfare platform since 2008, with a database of more than 150,000 animals."
+For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia's leading animal welfare platform since 2008, with a database of more than 150,000 animals."
 
 # The Dataset
 
+-   The dataset can be found at <https://www.kaggle.com/competitions/petfinder-adoption-prediction/data>.
 -   The dataset includes data from all 14 States in Malaysia.
 -   For our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
--   number of variables: 27 
+-   number of variables: 27
 -   amount of data points: 14993
 -   When accessing the dataset, we realized it also already had sentiment analysis data which was run on the description column.
 -   necessary preprocessing: to include sentiment scores and magnitudes in data frame
@@ -53,7 +54,7 @@ To get an overview, we used a frequency plot for the levels of categorical varia
 
 ```{r categorical variables frequencies, fig.width=10, fig.height=8, echo= FALSE}
 
-inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID", "SentimentScore_fac", "AdoptionSpeed_fac"))])%>% 
+inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID", "SentimentScore_fac", "AdoptionSpeed_fac"))])%>%
   show_plot(label_size=0.8, col_palette=5,label_color="black") +
   labs(title = "Frequency in categorical levels in Petdata",
        subtitle = "Grey segments are NAs") +
@@ -77,12 +78,12 @@ petdata$ColorID1_num<-as.numeric(petdata$ColorID1)
 
 par(mgp=c(0,0.3,0),mar=c(0,0,0,0)+0.1)
 pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
-                       "SentimentMagnitude", "AdoptionSpeed", "SentimentScore", "ColorID1_num")], 
+                       "SentimentMagnitude", "AdoptionSpeed", "SentimentScore", "ColorID1_num")],
              hist.col="darkblue",
              pch=23,
              main = "Pairs and Correlation Plot of Numeric Variables",
-             cex.cor=0.6, 
-             cex=0.6, 
+             cex.cor=0.6,
+             cex=0.6,
              cex.labels=0.85,
              jiggle=TRUE,
              factor=1,
@@ -90,7 +91,7 @@ pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
              smooth= FALSE,
              density = FALSE,
              rug=FALSE,
-             stars=TRUE, 
+             stars=TRUE,
              #bg=c("yellow","orange","red","purple","blue")[petdata$AdoptionSpeed],
              bg=c("#f76060","blue")[petdata$Type], # #f76060","#3f8ded
              #bg=c("green","red","yellow")[petdata$Gender],
@@ -121,6 +122,10 @@ We can see the correlations of the numerical variables with their significance l
 # Data Exploration
 
 ## Maps for Locations of the Animals
+
+To visualize the geographical location of the pets in our data, we decided to create an interactive map. Using a choropleth map on top of the map we visualize the distribution of the pets across Malaysia. Since we deal with skewed data which is also apparent in the map we use a log scale for the pet distributions. To get a better understanding of the locations we decided to include the population and GDP per capita in the map. With the interactivity of the map we also found a possibility to also plot the distribution of cats and dogs for each state using a pie chart.
+
+To interact with the map one can click on the single states of Malaysia that are outlined and see their details such as the number of pets, population, GDP per capita and the distribution of cats and dogs in a pie chart. With the layer icon one can select the information that the choropleth map shows. The options are the number of pets, the population and the GDP per capita.
 
 ```{r load_shape, include = FALSE}
 # Read shape here because output of the read should not be included
@@ -211,7 +216,7 @@ for (i in seq_len(nrow(choropleth_data))) {
             pieplots[current_state, "pieplot"] <- paste0("<img src='data:image/png;base64,", encoded_png, "' />")
         }
     }
-    
+
     # Add population to choropleth_data
     for (j in seq_len(nrow(population_2018))) {
         if (current_state == population_2018[j, "state_name"]) {
@@ -380,8 +385,8 @@ max_breed_cats<-max(table(cats$Breed1))
 barplot(df_catbreeds$Freq[df_catbreeds$Freq>5],
         las = 1,
         #cex.lab = 1,
-        horiz = TRUE, 
-        cex.names=0.7, 
+        horiz = TRUE,
+        cex.names=0.7,
         xlim = c(0, 4000),
         cex.axis=0.7,
         names=df_catbreeds$Var1[df_catbreeds$Freq>5],
@@ -393,8 +398,8 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5],
 barplot(df_catbreeds$Freq[df_catbreeds$Freq>5 & df_catbreeds$Var1!="Domestic Short Hair" & df_catbreeds$Var1!="Domestic Medium Hair"],
         las = 1,
         #cex.lab = 1,
-        horiz = TRUE, 
-        cex.names=0.7, 
+        horiz = TRUE,
+        cex.names=0.7,
         xlim = c(0, 400),
         cex.axis=0.7,
         names=df_catbreeds$Var1[df_catbreeds$Freq>5& df_catbreeds$Var1!="Domestic Short Hair"& df_catbreeds$Var1!="Domestic Medium Hair"],
@@ -403,8 +408,8 @@ barplot(df_catbreeds$Freq[df_catbreeds$Freq>5 & df_catbreeds$Var1!="Domestic Sho
         #main="Frequencies (>5) of Cat Breeds in the Petdata Dataset")
 )
 
-title(main = "Cat Breeds - Frequencies (>5) and without Domestic Short and Medium Hair", 
-      line = -1, 
+title(main = "Cat Breeds - Frequencies (>5) and without Domestic Short and Medium Hair",
+      line = -1,
       cex.main=1,
       font.main=2,
       #col.main="darkorange",
@@ -428,8 +433,8 @@ max_table<-max(table(dogs$Breed1))
 barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5],
         las = 1,
         cex.lab = 1,
-        horiz = TRUE, 
-        cex.names=0.7, 
+        horiz = TRUE,
+        cex.names=0.7,
         xlim = c(0, 7000),
         cex.axis=0.75,
         names=df_dogbreeds$Var1[df_dogbreeds$Freq>5],
@@ -441,8 +446,8 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5],
 barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"],
         las = 1,
         #cex.lab = 1,
-        horiz = TRUE, 
-        cex.names=0.7, 
+        horiz = TRUE,
+        cex.names=0.7,
         xlim = c(0, 250),
         cex.axis=0.8,
         #bg="lightgrey",
@@ -452,8 +457,8 @@ barplot(df_dogbreeds$Freq[df_dogbreeds$Freq>5 & df_dogbreeds$Var1!="Mixed Breed"
         #cex.main=1,
         #main="Frequencies (>5) of Dog Breeds in the Petdata Dataset")
 )
-title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'", 
-      line = -1, 
+title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'",
+      line = -1,
       cex.main=1.1,
       font.main=2,
       #col.main="darkorange",
@@ -471,7 +476,7 @@ par(mfrow=c(1,1))
 # make the gradient background:
 
 # Define a custom palette:
-BuOr <- colorRampPalette(c("#014f6e", "white", "#FF7F00"))(9)  #085794 
+BuOr <- colorRampPalette(c("#014f6e", "white", "#FF7F00"))(9)  #085794
 
 
 g <- make_gradient(
@@ -490,7 +495,7 @@ theme_settings<-
 
 p1<-ggplot(data=subset(cats, !is.na(SentimentScore)),
            aes(SentimentScore))+
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Cats - Sentiment Scores Frequencies") +
   geom_bar(fill="black")+
   xlab("Sentiment Score")+
@@ -499,15 +504,15 @@ p1<-ggplot(data=subset(cats, !is.na(SentimentScore)),
 
 p2<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
            aes(SentimentScore)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Dogs - Sentiment Scores Frequencies") +
   geom_bar(fill="black")+
   xlab("Sentiment Score")+
   theme_settings
 
-p3<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
+p3<-ggplot(data=subset(cats, !is.na(SentimentScore)),
            aes(SentimentScore, fct_rev(Health))) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Cats Health Status for Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Health")+
@@ -515,9 +520,9 @@ p3<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p4<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+p4<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
            aes(SentimentScore, fct_rev(Health))) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Dogs Health Status for Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Health")+
@@ -525,9 +530,9 @@ p4<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p5<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
+p5<-ggplot(data=subset(cats, !is.na(SentimentScore)),
            aes(SentimentScore, Color1)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Cats - Influence of color on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Color")+
@@ -535,11 +540,11 @@ p5<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p6<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+p6<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
            aes(SentimentScore, Color1)) +
   annotation_custom(
     grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf
-  ) + 
+  ) +
   ggtitle("Dogs - Influence of color on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Color")+
@@ -547,9 +552,9 @@ p6<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p7<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
+p7<-ggplot(data=subset(cats, !is.na(SentimentScore)),
            aes(SentimentScore, Sterilized)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Cats - Sterilized Influence on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Sterilized")+
@@ -557,9 +562,9 @@ p7<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p8<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+p8<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
            aes(SentimentScore, Sterilized)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Dogs - Sterilized Influence on Sentiment Score") +
   geom_boxplot(alpha=0.2)+
   ylab("Sterilized")+
@@ -567,9 +572,9 @@ p8<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p9<-ggplot(data=subset(cats, !is.na(SentimentScore)), 
+p9<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   aes(SentimentScore, State)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Cats - Sentiment Score in States") +
   geom_boxplot(alpha=0.2)+
   ylab("State")+
@@ -577,9 +582,9 @@ p9<-ggplot(data=subset(cats, !is.na(SentimentScore)),
   xlim(-1.0,1.0)+
   theme_settings
 
-p10<-ggplot(data=subset(dogs, !is.na(SentimentScore)), 
+p10<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
             aes(SentimentScore, State)) +
-  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) + 
+  annotation_custom(grob = g, xmin = Inf, xmax = -Inf, ymin = Inf, ymax = -Inf) +
   ggtitle("Dogs - Sentiment Score in States") +
   geom_boxplot(alpha=0.2)+
   ylab("State")+
@@ -588,7 +593,7 @@ p10<-ggplot(data=subset(dogs, !is.na(SentimentScore)),
   theme_settings
 
 grid.arrange(p1, p2, p3,  p4, p5, p6, p7, p8, p9, p10,
-             nrow=5, ncol=2, 
+             nrow=5, ncol=2,
              #top = "Exploring Sentiment in Descriptions for Cats and Dogs",
              vp=viewport(width=0.99, height=0.99))
 
@@ -719,32 +724,31 @@ p_dogs<-p_dogs+theme(axis.title.x=element_blank(),
 ggplotly(p_dogs)
 ```
 
-# Neural Network Pet Images Embeddings Visualization 
+# Neural Network Pet Images Embeddings Visualization
 
-The Neural Network Embeddings Visualization has been done in Python and the various needed codefiles can be found in the Folder "neural network files". Since the html output of our report file was already huge and already took a very long time to knit, we decided not to try to embed that code into the report, but only use its outputs instead. 
+The Neural Network Embeddings Visualization has been done in Python and the various needed codefiles can be found in the Folder "neural network files". Since the html output of our report file was already huge and already took a very long time to knit, we decided not to try to embed that code into the report, but only use its outputs instead.
 
 ## TSNE plot with Images as Thumbnails
 
-- only with Pet Images
-- visualized with R-TSNE 
-- included thumbnail images on top of datapoints in tsne plot
-- this visual only uses 2000 of the total of 58311 images for better visibility
+-   only with Pet Images
+-   visualized with R-TSNE
+-   included thumbnail images on top of datapoints in tsne plot
+-   this visual only uses 2000 of the total of 58311 images for better visibility
 
-![ ](plots/tsne-2000.png)
+![](plots/tsne-2000.png)
 
 We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with r-tsne. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even has captured some similarities that are common to both types in the middle, for example the spot where pictures of animals in cages are displayed.
 
-The necessary python code was adapted from: 
+The necessary python code was adapted from:
 
-- <https://learnopencv.com/t-sne-for-feature-visualization/> 
-- <https://github.com/spmallick/learnopencv/tree/master/TSNE>
+-   <https://learnopencv.com/t-sne-for-feature-visualization/>
+-   <https://github.com/spmallick/learnopencv/tree/master/TSNE>
 
 ## TSNE 3D scatterplot without images as thumbnails
 
-- cats pictures embeddings are displayed with blue dots and dogs pictures embeddings are displayed with red dots
-- the hover-over shows the Pet Id and the image number connected with a hyphen
-- with the help of the Pet Ids the neural network image embeddings can be connected with the tabular data
-
+-   cats pictures embeddings are displayed with blue dots and dogs pictures embeddings are displayed with red dots
+-   the hover-over shows the Pet Id and the image number connected with a hyphen
+-   with the help of the Pet Ids the neural network image embeddings can be connected with the tabular data
 
 ```{r rtsne 3d clear, echo=FALSE}
 htmltools::includeHTML("tsne_plot_hover-clear.html")
@@ -752,8 +756,4 @@ htmltools::includeHTML("tsne_plot_hover-clear.html")
 
 # Conclusions - What we have learned about our data
 
-Using various methods, we tried to gain insights into the Pet Dataset. Having to deal with highly imbalanced data was one of the challenges, we had to face. To adequately display the data, we used for example log transformations for frequencies and heat map colorings, as well as boxplots for bivariate analysis. Our visualisations could be the basis for further analyzing the possible relationships between the sentiment score and pet's health, sentiment score and states, sentiment score and sterilization status, all with regards to the differences between the pet types. Another possible relationship might exist between the color of the dogs and the sentiement scores and between the Pets States and their population, which seems to be reasonable. The clustering for each pet type attributes a lot to the categorical variables Vaccinated, Sterilized, Health and Dewormed. Visualizing the embeddings of the animals images in a Resnet-101 Neural Network, we learned how the network structures the images by type, animal color and as well as common settings like cages. Our visual exploration and analysis of the dataset could be used to help predict the adoption speed of the pets, which was the original purpose of the Kaggle challenge. Another possible further investigation would be to compare this data to pet data from other locations, since our data is only from Malaysia.  
-
-
-
-
+Using various methods, we tried to gain insights into the Pet Dataset. Having to deal with highly imbalanced data was one of the challenges, we had to face. To adequately display the data, we used for example log transformations for frequencies and heat map colorings, as well as boxplots for bivariate analysis. Our visualisations could be the basis for further analyzing the possible relationships between the sentiment score and pet's health, sentiment score and states, sentiment score and sterilization status, all with regards to the differences between the pet types. Another possible relationship might exist between the color of the dogs and the sentiement scores and between the Pets States and their population, which seems to be reasonable. The clustering for each pet type attributes a lot to the categorical variables Vaccinated, Sterilized, Health and Dewormed. Visualizing the embeddings of the animals images in a Resnet-101 Neural Network, we learned how the network structures the images by type, animal color and as well as common settings like cages. Our visual exploration and analysis of the dataset could be used to help predict the adoption speed of the pets, which was the original purpose of the Kaggle challenge. Another possible further investigation would be to compare this data to pet data from other locations, since our data is only from Malaysia.
