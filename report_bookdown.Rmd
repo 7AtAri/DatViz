@@ -41,7 +41,7 @@ For our data visualization project we were searching for a dataset that not only
 -   factorize categorical variables, research and include more data for maps (coordinates, population numbers, GDP)
 -   character variables and variables that are not in the categorical or numerical variables plots: "Description", "Name", "RescuerID",...
 
-```{r variables overview, echo=FALSE, include=FALSE}
+```{r variables overview, include=FALSE}
 na_ratio<-sum(is.na(petdata)==TRUE)/(dim(petdata)[1]*dim(petdata)[2])# ratio of NAs among all datapoints
 print(na_ratio*100)
 print("% of NAs among all datapoints")# percentage of NAs in data
@@ -52,7 +52,7 @@ print("% of NAs among all datapoints")# percentage of NAs in data
 
 To get an overview, we used a frequency plot for the levels of categorical variables and a pairs plot with scatterplots and correlations, as well as histograms on the diagonal.
 
-```{r categorical variables frequencies, fig.width=10, fig.height=8, echo= FALSE}
+```{r categorical variables frequencies, fig.width=10, fig.height=8}
 
 inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","PetID", "Name", "Description", "RescuerID", "StateID", "SentimentScore_fac", "AdoptionSpeed_fac"))])%>%
   show_plot(label_size=0.8, col_palette=5,label_color="black") +
@@ -69,7 +69,7 @@ inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","Pet
 
 Therefore the Sentiment Scores and the Adoption Speed variable were factorized, and in the case of the Sentiment Scores also binned (see source file) from 0.1 steps to the five factors negative, moderately negative, neutral, moderately positive, and positive. Categorical variables that contain IDs and names as well as descriptions were dropped.
 
-```{r numerical variables pairs plot,fig.width=10, fig.height=8, echo= FALSE}
+```{r numerical variables pairs plot,fig.width=10, fig.height=8}
 
 petdata$ColorID1_num<-as.numeric(petdata$ColorID1)
 
@@ -108,7 +108,7 @@ pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
 
 ```
 
-```{r legend, fig.width=10, fig.height=1, echo=FALSE}
+```{r legend, fig.width=10, fig.height=1}
 par(mgp=c(0,0,0),mar=c(0,1,0.8,0)+0.1)
 plot(NULL ,xaxt='n',yaxt='n',bty='n',ylab='',xlab='', xlim=0:1, ylim=0:1)
 legend("topleft", legend =c('Dogs', 'Cats'), pch=16, pt.cex=1.5, cex=0.8, bty='n',
@@ -127,6 +127,8 @@ To visualize the geographical location of the pets in our data, we decided to cr
 
 To interact with the map one can click on the single states of Malaysia that are outlined and see their details such as the number of pets, population, GDP per capita and the distribution of cats and dogs in a pie chart. With the layer icon one can select the information that the choropleth map shows. The options are the number of pets, the population and the GDP per capita.
 
+The shape data for the outline of the districts was retrieved by the International Steering Committee for Global Mapping [[1]](#1).
+
 ```{r load_shape, include = FALSE}
 # Read shape here because output of the read should not be included
 
@@ -134,7 +136,7 @@ To interact with the map one can click on the single states of Malaysia that are
 malaysia_shape <- st_read(dsn = "misc/shape_data/polbnda_mys.shp")[, c("nam", "geometry")]
 ```
 
-```{r maps, fig.width=9, fig.height=6, echo=FALSE, error = FALSE, warning=FALSE, message = FALSE, comment = FALSE}
+```{r maps, fig.width=9, fig.height=6, error = FALSE, warning=FALSE, message = FALSE, comment = FALSE}
 # Change nam WILAYAH PERSEKUTUAN LABUAN to LABUAN
 malaysia_shape$nam[malaysia_shape$nam == "WILAYAH PERSEKUTUAN LABUAN"] <- "LABUAN"
 
@@ -360,19 +362,11 @@ htmlwidgets::onRender("
       this.on('baselayerchange', e => updateLegend());
     }"
 )
-
-# Citation for the shape data
-
-# International Steering Committee for Global Mapping. Malaysia.
-# Jabatan Ukur dan Pemetaan. (2012). Districts, Malaysia, 2013.
-# [Shapefile]. International Steering Committee for Global Mapping.
-# Retrieved from https://earthworks.stanford.edu/catalog/stanford-zd362bc5680```
-
 ```
 
 ## Distribution of Cat Breeds
 
-```{r catbreeds, fig.width=10, fig.height=8, echo=FALSE}
+```{r catbreeds, fig.width=10, fig.height=8}
 par(mfrow=c(1,2))
 par(mar = c(1, 7, 1, 1)+0.1, mgp=c(0,0.3,-0.2), oma = c(3, 1, 1, 1))
 
@@ -420,7 +414,7 @@ title(main = "Cat Breeds - Frequencies (>5) and without Domestic Short and Mediu
 
 ## Distribution of Dog Breeds
 
-```{r dogbreeds,fig.width=10, fig.height=10,echo=FALSE}
+```{r dogbreeds,fig.width=10, fig.height=10}
 par(mfrow=c(1,2))
 par(mar = c(1, 7, 1, 1)+0.1, mgp=c(0,0.3,-0.2), oma = c(3, 1, 1, 1))
 
@@ -468,7 +462,7 @@ title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'",
 
 ## Exploring Cats and Dogs Regarding Sentiment Scores
 
-```{r, sentiment scores, fig.width=10, fig.height=17, echo=FALSE}
+```{r, sentiment scores, fig.width=10, fig.height=17}
 
 # reset par
 par(mfrow=c(1,1))
@@ -603,8 +597,8 @@ grid.arrange(p1, p2, p3,  p4, p5, p6, p7, p8, p9, p10,
 
 ## Pets' Data Clustering
 
-- Pet data clustering is created using K-medoids clustering followed by t-sne.
-- It was done based on the following variables: StateId, BreedID1, BreedID2 and Type.
+-   Pet data clustering is created using K-medoids clustering followed by t-sne.
+-   It was done based on the following variables: StateId, BreedID1, BreedID2 and Type.
 
 ```{r, petdata_cluster}
 petdata_cluster=filter(petdata,Quantity==1)
@@ -637,8 +631,8 @@ ggplotly(p)
 
 ## Cats' Features Clustering
 
-- cat data clustering is created using K-medoids clustering followed by t-sne.
-- It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized and Health.
+-   cat data clustering is created using K-medoids clustering followed by t-sne.
+-   It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized and Health.
 
 ```{r, cat_cluster}
 cats_cluster=filter(cats,Quantity==1)
@@ -677,9 +671,8 @@ ggplotly(p_cats)
 
 ## Dogs' Features Clustering
 
-- dog data clustering is created using K-medoids clustering followed by t-sne.
-- It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized and Health.
-
+-   dog data clustering is created using K-medoids clustering followed by t-sne.
+-   It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized and Health.
 
 ```{r, dogs_cluster}
 dogs_cluster=filter(dogs,Quantity==1)
@@ -757,3 +750,7 @@ htmltools::includeHTML("tsne_plot_hover-clear.html")
 # Conclusions - What we have learned about our data
 
 Using various methods, we tried to gain insights into the Pet Dataset. Having to deal with highly imbalanced data was one of the challenges, we had to face. To adequately display the data, we used for example log transformations for frequencies and heat map colorings, as well as boxplots for bivariate analysis. Our visualisations could be the basis for further analyzing the possible relationships between the sentiment score and pet's health, sentiment score and states, sentiment score and sterilization status, all with regards to the differences between the pet types. Another possible relationship might exist between the color of the dogs and the sentiement scores and between the Pets States and their population, which seems to be reasonable. The clustering for each pet type attributes a lot to the categorical variables Vaccinated, Sterilized, Health and Dewormed. Visualizing the embeddings of the animals images in a Resnet-101 Neural Network, we learned how the network structures the images by type, animal color and as well as common settings like cages. Our visual exploration and analysis of the dataset could be used to help predict the adoption speed of the pets, which was the original purpose of the Kaggle challenge. Another possible further investigation would be to compare this data to pet data from other locations, since our data is only from Malaysia.
+
+# References
+
+> <a id="1">[1]</a> International Steering Committee for Global Mapping. Malaysia. Jabatan Ukur dan Pemetaan. (2012). Districts, Malaysia, 2013. [Shapefile]. International Steering Committee for Global Mapping. Retrieved from <https://earthworks.stanford.edu/catalog/stanford-zd362bc5680>
