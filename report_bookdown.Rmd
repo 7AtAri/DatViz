@@ -27,8 +27,11 @@ source("Setup.R")
 
 # Introduction
 
+This project was developed as part of the course *Data Visualization* at the BHT by Nourhan Omar, Vipin Singh, and Sara Wahl.
+The development and all files (except the data) can be found in the [GitHub repository](https://github.com/7AtAri/DatViz).
+
 For our data visualization project, we searched for a dataset that 
-holds tabular data and images. The idea was to use image data to visualize the latent space of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle and originally was used for the *[PetFinder.my](https://www.petfinder.my) Adoption Prediction* challenge. "PetFinder.my has been Malaysia's leading animal welfare platform since 2008, with a database of more than 150,000 animals"[[1]](#1).
+holds tabular data and images. The idea was to use image data to visualize the latent space of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle and originally was used for the *[PetFinder.my](https://www.petfinder.my) Adoption Prediction* challenge. "PetFinder.my has been Malaysia's leading animal welfare platform since 2008, with a database of more than 150,000 animals" [[1]](#1).
 
 # The Dataset
 
