@@ -27,10 +27,11 @@ source("Setup.R")
 
 # Introduction
 
-For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia’s leading animal welfare platform since 2008, with a database of more than 150,000 animals."
+For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia’s leading animal welfare platform since 2008, with a database of more than 150,000 animals." 
 
 # The Dataset
 
+-   The dataset can be found at <https://www.kaggle.com/competitions/petfinder-adoption-prediction/data>.
 -   The dataset includes data from all 14 States in Malaysia.
 -   For our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
 -   number of variables: 27 
