@@ -464,6 +464,9 @@ title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'",
 
 ## Exploring Cats and Dogs Regarding Sentiment Scores
 
+The sentiment scores found in the dataset as JSON files were transformed into a column and added to the tabular data. The score was calculated for the description column in the pet dataset, which means it analyzes the sentiment of the descriptions of the pets. To get more insight into how the sentiment score relates to the rest of the data, its distribution, and some bivariate statistics are plotted by pet type. The background gradient relates cold and warm colors to the range of the sentiment score, which goes from negative (-1) to positive (+1) sentiments. The necessary code for the background gradient was adapted from Stackoverflow [[2]](#2).
+
+
 ```{r, sentiment scores, fig.width=10, fig.height=17}
 
 # reset par
@@ -594,6 +597,8 @@ grid.arrange(p1, p2, p3,  p4, p5, p6, p7, p8, p9, p10,
              vp=viewport(width=0.99, height=0.99))
 
 ```
+
+
 
 # Cluster Visualization using Tabular Data
 
@@ -733,10 +738,8 @@ The Neural Network Embeddings Visualization has been done in Python and the vari
 ![](plots/tsne-2000.png)
 
 We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with r-tsne. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even has captured some similarities that are common to both types in the middle, for example the spot where pictures of animals in cages are displayed.
-The necessary code [[2]](#8_References) was adapted and can be found in the neural network files folder. It was too big to be integrated as a python code junk.
+The necessary code [[3]](#3) was adapted and can be found in the neural network files folder. It was too big to be intsegrated as a python code junk.
 
--   <https://learnopencv.com/t-sne-for-feature-visualization/>
--   <https://github.com/spmallick/learnopencv/tree/master/TSNE>
 
 ## TSNE 3D scatterplot without images as thumbnails
 
@@ -754,4 +757,10 @@ Using various methods, we tried to gain insights into the Pet Dataset. Having to
 
 # References
 
-> <a id="1">[1]</a> International Steering Committee for Global Mapping. Malaysia. Jabatan Ukur dan Pemetaan. (2012). Districts, Malaysia, 2013. [Shapefile]. International Steering Committee for Global Mapping. Retrieved from <https://earthworks.stanford.edu/catalog/stanford-zd362bc5680>
+> <a id="id_1">[1]</a> International Steering Committee for Global Mapping. Malaysia. Jabatan Ukur dan Pemetaan. (2012). Districts, Malaysia, 2013. [Shapefile]. International Steering Committee for Global Mapping. Retrieved from <https://earthworks.stanford.edu/catalog/stanford-zd362bc5680>
+
+
+> <a id="id_2">[2]</a> <https://stackoverflow.com/questions/30136725/plot-background-colour-in-gradient> 
+
+> <a id="id_3">[3]</a> <https://learnopencv.com/t-sne-for-feature-visualization/> and
+ <https://github.com/spmallick/learnopencv/tree/master/TSNE>
