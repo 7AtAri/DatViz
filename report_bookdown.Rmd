@@ -598,8 +598,8 @@ grid.arrange(p1, p2, p3,  p4, p5, p6, p7, p8, p9, p10,
 
 ## Pets' Data Clustering
 
--   Pet data clustering is created using Kmedoids clustering followed by Rtsne.
--   It was done based on the following variables: StateId, BreedID1, BreedID2 and Type.
+- Pet data clustering is created using K-medoids clustering followed by t-sne.
+- It was done based on the following variables: StateId, BreedID1, BreedID2 and Type.
 
 ```{r, petdata_cluster}
 petdata_cluster=filter(petdata,Quantity==1)
@@ -632,15 +632,15 @@ ggplotly(p)
 
 ## Cats' Features Clustering
 
-- additional Features used
+- cat data clustering is created using K-medoids clustering followed by t-sne.
+- It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized and Health.
 
 ```{r, cat_cluster}
 cats_cluster=filter(cats,Quantity==1)
 cats_cluster=cats_cluster[c('StateID','BreedID2','BreedID1','Gender',
                             'MaturitySize','FurLength','Vaccinated','Dewormed',
                             'Sterilized','Health','State','Breed1','Breed2'                                    ,'AdoptionSpeed')]
-gower.dist.cats <- daisy(cats_cluster[c('StateID','BreedID2','BreedID1','Gender',
-                                        'MaturitySize','FurLength','Vaccinated'                                             ,'Dewormed','Sterilized','Health')],                                               metric = c("gower"))
+gower.dist.cats <- daisy(cats_cluster[c('StateID','BreedID2','BreedID1','Gender','MaturitySize','FurLength','Vaccinated'                            ,'Dewormed','Sterilized','Health')],                                               metric = c("gower"))
 pam_fit_cats <- pam(gower.dist.cats, diss = TRUE, k =6 )
 tsne_obj_cats <- Rtsne(gower.dist.cats, is_distance = TRUE)
 tsne_data_cats <- tsne_obj_cats$Y %>%
@@ -672,16 +672,16 @@ ggplotly(p_cats)
 
 ## Dogs' Features Clustering
 
-- additional Features used
+- dog data clustering is created using K-medoids clustering followed by t-sne.
+- It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized and Health.
+
 
 ```{r, dogs_cluster}
 dogs_cluster=filter(dogs,Quantity==1)
 dogs_cluster=dogs_cluster[c('StateID','BreedID2','BreedID1','Gender',
                             'MaturitySize','FurLength','Vaccinated','Dewormed',
                             'Sterilized','Health','State','Breed1','Breed2'                                    ,'AdoptionSpeed')]
-gower.dist.dogs <- daisy(dogs_cluster[c('StateID','BreedID2','BreedID1','Gender',
-                            'MaturitySize','FurLength','Vaccinated','Dewormed',
-                            'Sterilized','Health')], metric = c("gower"))
+gower.dist.dogs <- daisy(dogs_cluster[c('StateID','BreedID2','BreedID1','Gender','MaturitySize','FurLength','Vaccinated','Dewormed',                      'Sterilized','Health')], metric = c("gower"))
 pam_fit_dogs <- pam(gower.dist.dogs, diss = TRUE, k =6 )
 pam_results_dogs <- dogs_cluster %>%
   mutate(cluster = pam_fit_dogs$clustering) %>%
