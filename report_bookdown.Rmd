@@ -616,7 +616,7 @@ could be viewed.
 ```{r, petdata_cluster}
 petdata_cluster=filter(petdata,Quantity==1)
 petdata_cluster=petdata_cluster[c('StateID','BreedID2','BreedID1',
-                                  'Type','State','AdoptionSpeed')]
+                                  'Type', 'State', 'AdoptionSpeed')]
 gower.dist.pets <- daisy(petdata_cluster[c('StateID','BreedID2','BreedID1','Type')]
                          , metric = c("gower"))
 pam_fit <- pam(gower.dist.pets, diss = TRUE, k =5 )
