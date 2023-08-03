@@ -27,14 +27,18 @@ source("Setup.R")
 
 # Introduction
 
+<<<<<<< HEAD
 For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia’s leading animal welfare platform since 2008, with a database of more than 150,000 animals." 
+=======
+For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia's leading animal welfare platform since 2008, with a database of more than 150,000 animals."
+>>>>>>> d6e93112840b7431b3d00ae24f06f184ccc8569e
 
 # The Dataset
 
 -   The dataset can be found at <https://www.kaggle.com/competitions/petfinder-adoption-prediction/data>.
 -   The dataset includes data from all 14 States in Malaysia.
 -   For our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
--   number of variables: 27 
+-   number of variables: 27
 -   amount of data points: 14993
 -   When accessing the dataset, we realized it also already had sentiment analysis data which was run on the description column.
 -   necessary preprocessing: to include sentiment scores and magnitudes in data frame
@@ -122,6 +126,10 @@ We can see the correlations of the numerical variables with their significance l
 # Data Exploration
 
 ## Maps for Locations of the Animals
+
+To visualize the geographical location of the pets in our data, we decided to create an interactive map. Using a choropleth map on top of the map we visualize the distribution of the pets across Malaysia. Since we deal with skewed data which is also apparent in the map we use a log scale for the pet distributions. To get a better understanding of the locations we decided to include the population and GDP per capita in the map. With the interactivity of the map we also found a possibility to also plot the distribution of cats and dogs for each state using a pie chart.
+
+To interact with the map one can click on the single states of Malaysia that are outlined and see their details such as the number of pets, population, GDP per capita and the distribution of cats and dogs in a pie chart. With the layer icon one can select the information that the choropleth map shows. The options are the number of pets, the population and the GDP per capita.
 
 ```{r load_shape, include = FALSE}
 # Read shape here because output of the read should not be included
@@ -633,7 +641,7 @@ ggplotly(p)
 
 ## Cats' Features Clustering
 
-- additional Features used
+-   additional Features used
 
 ```{r, cat_cluster}
 cats_cluster=filter(cats,Quantity==1)
@@ -673,7 +681,7 @@ ggplotly(p_cats)
 
 ## Dogs' Features Clustering
 
-- additional Features used
+-   additional Features used
 
 ```{r, dogs_cluster}
 dogs_cluster=filter(dogs,Quantity==1)
@@ -720,32 +728,31 @@ p_dogs<-p_dogs+theme(axis.title.x=element_blank(),
 ggplotly(p_dogs)
 ```
 
-# Neural Network Pet Images Embeddings Visualization 
+# Neural Network Pet Images Embeddings Visualization
 
-The Neural Network Embeddings Visualization has been done in Python and the various needed codefiles can be found in the Folder "neural network files". Since the html output of our report file was already huge and already took a very long time to knit, we decided not to try to embed that code into the report, but only use its outputs instead. 
+The Neural Network Embeddings Visualization has been done in Python and the various needed codefiles can be found in the Folder "neural network files". Since the html output of our report file was already huge and already took a very long time to knit, we decided not to try to embed that code into the report, but only use its outputs instead.
 
 ## TSNE plot with Images as Thumbnails
 
-- only with Pet Images
-- visualized with R-TSNE 
-- included thumbnail images on top of datapoints in tsne plot
-- this visual only uses 2000 of the total of 58311 images for better visibility
+-   only with Pet Images
+-   visualized with R-TSNE
+-   included thumbnail images on top of datapoints in tsne plot
+-   this visual only uses 2000 of the total of 58311 images for better visibility
 
-![ ](plots/tsne-2000.png)
+![](plots/tsne-2000.png)
 
 We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with r-tsne. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even has captured some similarities that are common to both types in the middle, for example the spot where pictures of animals in cages are displayed.
 
-The necessary python code was adapted from: 
+The necessary python code was adapted from:
 
-- <https://learnopencv.com/t-sne-for-feature-visualization/> 
-- <https://github.com/spmallick/learnopencv/tree/master/TSNE>
+-   <https://learnopencv.com/t-sne-for-feature-visualization/>
+-   <https://github.com/spmallick/learnopencv/tree/master/TSNE>
 
 ## TSNE 3D scatterplot without images as thumbnails
 
-- cats pictures embeddings are displayed with blue dots and dogs pictures embeddings are displayed with red dots
-- the hover-over shows the Pet Id and the image number connected with a hyphen
-- with the help of the Pet Ids the neural network image embeddings can be connected with the tabular data
-
+-   cats pictures embeddings are displayed with blue dots and dogs pictures embeddings are displayed with red dots
+-   the hover-over shows the Pet Id and the image number connected with a hyphen
+-   with the help of the Pet Ids the neural network image embeddings can be connected with the tabular data
 
 ```{r rtsne 3d clear, echo=FALSE}
 htmltools::includeHTML("tsne_plot_hover-clear.html")
@@ -753,8 +760,4 @@ htmltools::includeHTML("tsne_plot_hover-clear.html")
 
 # Conclusions - What we have learned about our data
 
-Using various methods, we tried to gain insights into the Pet Dataset. Having to deal with highly imbalanced data was one of the challenges, we had to face. To adequately display the data, we used for example log transformations for frequencies and heat map colorings, as well as boxplots for bivariate analysis. Our visualisations could be the basis for further analyzing the possible relationships between the sentiment score and pet's health, sentiment score and states, sentiment score and sterilization status, all with regards to the differences between the pet types. Another possible relationship might exist between the color of the dogs and the sentiement scores and between the Pets States and their population, which seems to be reasonable. The clustering for each pet type attributes a lot to the categorical variables Vaccinated, Sterilized, Health and Dewormed. Visualizing the embeddings of the animals images in a Resnet-101 Neural Network, we learned how the network structures the images by type, animal color and as well as common settings like cages. Our visual exploration and analysis of the dataset could be used to help predict the adoption speed of the pets, which was the original purpose of the Kaggle challenge. Another possible further investigation would be to compare this data to pet data from other locations, since our data is only from Malaysia.  
-
-
-
-
+Using various methods, we tried to gain insights into the Pet Dataset. Having to deal with highly imbalanced data was one of the challenges, we had to face. To adequately display the data, we used for example log transformations for frequencies and heat map colorings, as well as boxplots for bivariate analysis. Our visualisations could be the basis for further analyzing the possible relationships between the sentiment score and pet's health, sentiment score and states, sentiment score and sterilization status, all with regards to the differences between the pet types. Another possible relationship might exist between the color of the dogs and the sentiement scores and between the Pets States and their population, which seems to be reasonable. The clustering for each pet type attributes a lot to the categorical variables Vaccinated, Sterilized, Health and Dewormed. Visualizing the embeddings of the animals images in a Resnet-101 Neural Network, we learned how the network structures the images by type, animal color and as well as common settings like cages. Our visual exploration and analysis of the dataset could be used to help predict the adoption speed of the pets, which was the original purpose of the Kaggle challenge. Another possible further investigation would be to compare this data to pet data from other locations, since our data is only from Malaysia.
