@@ -735,16 +735,16 @@ ggplotly(p_dogs)
 
 The Neural Network Embeddings Visualization has been done in Python and the various needed codefiles can be found in the Folder "neural network files". Since the html output of our report file was already huge and already took a very long time to knit, we decided not to try to embed that code into the report, but only use its outputs instead.
 
-## TSNE plot with Images as Thumbnails
+## T-SNE plot with Images as Thumbnails
 
 -   only with Pet Images
--   visualized with R-TSNE
--   included thumbnail images on top of datapoints in tsne plot
+-   visualized with t-SNE
+-   included thumbnail images on top of datapoints in t-sne plot
 -   this visual only uses 2000 of the total of 58311 images for better visibility
 
 ![](plots/tsne-2000.png)
 
-We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with T-SNE. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even captured some similarities that are common to both types in the middle, for example, the spot where pictures of animals in cages are displayed.
+We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with t-SNE. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even captured some similarities that are common to both types in the middle, for example, the spot where pictures of animals in cages are displayed.
 The necessary code [[3]](#3) was adapted and can be found in the neural network files folder. It was too big to be integrated as a python code junk.
 
 
