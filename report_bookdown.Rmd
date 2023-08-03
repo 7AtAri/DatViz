@@ -604,8 +604,8 @@ grid.arrange(p1, p2, p3,  p4, p5, p6, p7, p8, p9, p10,
 
 ## Pets' Data Clustering
 
--   Pet data clustering is created using K-medoids clustering followed by t-sne.
--   It was done based on the following variables: StateId, BreedID1, BreedID2 and Type.
+-   Pet data clustering is created using K-medoids clustering followed by T-SNE.
+-   It was done based on the following variables: StateId, BreedID1, BreedID2, and Type.
 
 ```{r, petdata_cluster}
 petdata_cluster=filter(petdata,Quantity==1)
@@ -638,8 +638,8 @@ ggplotly(p)
 
 ## Cats' Features Clustering
 
--   cat data clustering is created using K-medoids clustering followed by t-sne.
--   It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized and Health.
+-   cat data clustering is created using K-medoids clustering followed by T-SNE.
+-   It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized, and Health.
 
 ```{r, cat_cluster}
 cats_cluster=filter(cats,Quantity==1)
@@ -678,8 +678,8 @@ ggplotly(p_cats)
 
 ## Dogs' Features Clustering
 
--   dog data clustering is created using K-medoids clustering followed by t-sne.
--   It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized and Health.
+-   dog data clustering is created using K-medoids clustering followed by T-SNE.
+-   It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized, and Health.
 
 ```{r, dogs_cluster}
 dogs_cluster=filter(dogs,Quantity==1)
