@@ -610,9 +610,10 @@ could be viewed.
 
 ## Pets' Data Clustering
 
--   Pet data clustering is created using K medoids clustering followed by t-SNE
+-   Pet data clustering is created using K-medoids clustering followed by t-SNE
 -   It was done based on the following variables: StateId, BreedID1, BreedID2, and Type
 
+- The code was based on [[4]](#4)
 ```{r, petdata_cluster}
 petdata_cluster=filter(petdata,Quantity==1)
 petdata_cluster=petdata_cluster[c('StateID','BreedID2','BreedID1',
@@ -644,7 +645,7 @@ ggplotly(p)
 
 ## Cats' Features Clustering
 
--   cat data clustering is created using K medoids clustering followed by t-SNE
+-   cat data clustering is created using K-medoids clustering followed by t-SNE
 -   It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized, and Health
 
 ```{r, cat_cluster}
@@ -684,7 +685,7 @@ ggplotly(p_cats)
 
 ## Dogs' Features Clustering
 
--   dog data clustering is created using K medoids clustering followed by t-SNE
+-   dog data clustering is created using K-medoids clustering followed by t-SNE
 -   It was done based on the following variables: StateId, BreedID1, BreedID2, Gender, MaturitySize, FurLength, Vaccinated, Dewormed, Sterilized, and Health
 
 ```{r, dogs_cluster}
@@ -769,3 +770,5 @@ Using various methods, we tried to gain insights into the Pet Dataset. Having to
 
 > <a id="id_3">[3]</a> <https://learnopencv.com/t-sne-for-feature-visualization/> and
  <https://github.com/spmallick/learnopencv/tree/master/TSNE>
+ 
+> <a id="id_2">[4]</a> <https://www.r-bloggers.com/2016/06/clustering-mixed-data-types-in-r/> 
