@@ -33,6 +33,7 @@ holds tabular data and images. The idea was to use image data to visualize the l
 # The Dataset
 
 -   The dataset can be found at <https://www.kaggle.com/competitions/petfinder-adoption-prediction/data>.
+    We also copied it to our google drive for a quick access: <https://drive.google.com/file/d/16tPNceHdB2oQOTaknP35rJQr_Bsa98Jq/view?usp=share_link>
 -   The dataset includes data from 14 out of 15 States in Malaysia.
 -   For our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
 -   number of variables: 27
