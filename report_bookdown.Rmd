@@ -27,12 +27,13 @@ source("Setup.R")
 
 # Introduction
 
-For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia's leading animal welfare platform since 2008, with a database of more than 150,000 animals."
+For our data visualization project, we were searching for a dataset that 
+holds tabular data and images. The idea was to use image data to visualize the latent space of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia's leading animal welfare platform since 2008, with a database of more than 150,000 animals."
 
 # The Dataset
 
 -   The dataset can be found at <https://www.kaggle.com/competitions/petfinder-adoption-prediction/data>.
--   The dataset includes data from all 14 States in Malaysia.
+-   The dataset includes data from 14 out of 15 States in Malaysia.
 -   For our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
 -   number of variables: 27
 -   amount of data points: 14993
@@ -738,8 +739,7 @@ The Neural Network Embeddings Visualization has been done in Python and the vari
 ![](plots/tsne-2000.png)
 
 We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with r-tsne. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even has captured some similarities that are common to both types in the middle, for example the spot where pictures of animals in cages are displayed.
-
-The necessary python code was adapted from:
+The necessary code [[2]](#8_References) was adapted and can be found in the neural network files folder. It was too big to be integrated as a python code junk.
 
 -   <https://learnopencv.com/t-sne-for-feature-visualization/>
 -   <https://github.com/spmallick/learnopencv/tree/master/TSNE>
