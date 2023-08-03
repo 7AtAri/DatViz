@@ -765,7 +765,6 @@ Using various methods, we tried to gain insights into the Pet Dataset. Having to
 
 > <a id="id_1">[1]</a> International Steering Committee for Global Mapping. Malaysia. Jabatan Ukur dan Pemetaan. (2012). Districts, Malaysia, 2013. [Shapefile]. International Steering Committee for Global Mapping. Retrieved from <https://earthworks.stanford.edu/catalog/stanford-zd362bc5680>
 
-
 > <a id="id_2">[2]</a> <https://stackoverflow.com/questions/30136725/plot-background-colour-in-gradient> 
 
 > <a id="id_3">[3]</a> <https://learnopencv.com/t-sne-for-feature-visualization/> and
