@@ -27,11 +27,7 @@ source("Setup.R")
 
 # Introduction
 
-<<<<<<< HEAD
-For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia’s leading animal welfare platform since 2008, with a database of more than 150,000 animals." 
-=======
 For our data visualization project we were searching for a dataset that not only holds tabular data but also images. The idea was to use image data to train and visualize the insides of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle, and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia's leading animal welfare platform since 2008, with a database of more than 150,000 animals."
->>>>>>> d6e93112840b7431b3d00ae24f06f184ccc8569e
 
 # The Dataset
 
