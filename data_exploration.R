@@ -4,7 +4,8 @@
 source("Setup.R")
 
 # --- summaries -----------------------------------------------------------
-summary(petdata)
+summary(petdata$StateID)
+
 skim(petdata) # nicer summary
 
 
