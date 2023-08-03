@@ -27,21 +27,22 @@ source("Setup.R")
 
 # Introduction
 
-For our data visualization project, we were searching for a dataset that 
-holds tabular data and images. The idea was to use image data to visualize the latent space of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle and originally was used for the *PetFinder.my Adoption Prediction* challenge. "PetFinder.my has been Malaysia's leading animal welfare platform since 2008, with a database of more than 150,000 animals."
+For our data visualization project, we searched for a dataset that 
+holds tabular data and images. The idea was to use image data to visualize the latent space of a neural network but also investigate relationships in tabular data and connect or compare the findings. We were happy to find a dataset that fit our wishes on Kaggle and originally was used for the *[PetFinder.my](PetFinder.my) Adoption Prediction* challenge. "PetFinder.my has been Malaysia's leading animal welfare platform since 2008, with a database of more than 150,000 animals"[[1]](#1).
 
 # The Dataset
 
 -   The dataset can be found at <https://www.kaggle.com/competitions/petfinder-adoption-prediction/data>.
-    We also copied it to our google drive for a quick access: <https://drive.google.com/file/d/16tPNceHdB2oQOTaknP35rJQr_Bsa98Jq/view?usp=share_link>
--   The dataset includes data from 14 out of 15 States in Malaysia.
--   For our project, we only used the train data because the test data does not have the AdoptionSpeed column, since this had to be predicted in the challenge the dataset was originally used for.
+    We also copied it to our [google drive](https://drive.google.com/file/d/16tPNceHdB2oQOTaknP35rJQr_Bsa98Jq/view?usp=share_link) for a quick access. 
+-   We only used the train data for our project because the test data does not have the AdoptionSpeed column since this had to be predicted in the challenge the dataset was initially used for.
 -   number of variables: 27
 -   amount of data points: 14993
+-   The dataset includes data from 14 out of 15 States in Malaysia.
 -   When accessing the dataset, we realized it also already had sentiment analysis data which was run on the description column.
--   necessary preprocessing: to include sentiment scores and magnitudes in data frame
--   factorize categorical variables, research and include more data for maps (coordinates, population numbers, GDP)
--   character variables and variables that are not in the categorical or numerical variables plots: "Description", "Name", "RescuerID",...
+-   The necessary preprocessing to utilize the sentiment data was to include sentiment scores and magnitudes in data frame.
+-   Categorical variables were factorized
+-   Additional data was researched and included for maps visualization (coordinates, population numbers, GDP)
+-   Some variables are not in the categorical or numerical variables plots: "Description", "Name", "RescuerID",...because they are character or ID variables. 
 
 ```{r variables overview, include=FALSE}
 na_ratio<-sum(is.na(petdata)==TRUE)/(dim(petdata)[1]*dim(petdata)[2])# ratio of NAs among all datapoints
@@ -52,7 +53,8 @@ print("% of NAs among all datapoints")# percentage of NAs in data
 
 # Distribution of Variables and their Correlations
 
-To get an overview, we used a frequency plot for the levels of categorical variables and a pairs plot with scatterplots and correlations, as well as histograms on the diagonal.
+To get an overview of our data, we used a frequency plot for the categorical variables and a pairs plot with scatterplots and correlations that uses histograms of the variable on the diagonal. Categorical variables that contain IDs, names, or descriptions were not included.
+
 
 ```{r categorical variables frequencies, fig.width=10, fig.height=8}
 
@@ -69,7 +71,6 @@ inspect_cat(petdata[,!(names(petdata)%in%c("ColorID1","ColorID2","ColorID3","Pet
     plot.margin = margin(21,17,17,17))
 ```
 
-Therefore the Sentiment Scores and the Adoption Speed variable were factorized, and in the case of the Sentiment Scores also binned (see source file) from 0.1 steps to the five factors negative, moderately negative, neutral, moderately positive, and positive. Categorical variables that contain IDs and names as well as descriptions were dropped.
 
 ```{r numerical variables pairs plot,fig.width=10, fig.height=8}
 
@@ -112,9 +113,9 @@ legend("topleft", legend =c('Dogs', 'Cats'), pch=16, pt.cex=1.5, cex=0.8, bty='n
    col = c('#f76060', 'blue'), horiz = TRUE)
 ```
 
-Some categorical variables were used with their numeric representations since these can be read numerically. For example, Adoption Speed is an ordinal variable with 5 factors and Color ID1, since the color scale goes from dark to light colors.
+Some categorical variables were used with their numerical representations in the pairs plot since these can be read numerically. For example, Adoption Speed is an ordinal variable with five factors and Color ID1, since the color scale goes from dark to light colors.
 
-We can see the correlations of the numerical variables with their significance levels displayed as stars next to the numbers. On the diagonal, we see the histograms of the displayed variables. Most of them seem to be power law distributions. The pairs plots in the lower half are displaying scatterplots. Its red points are the dogs, while the blue points are the cats. This makes it possible to assume some differences between the two pet types of our dataset, for example that the cats seem to not get as old as the dogs. Also we can see some structural conspicuities between some variables, for example that the fee seems to get lower if the animals are older. Or that animals with a very fast adoption speed seem to have almost no negative sentiment scores.
+We can see the correlations of the numerical variables with their significance levels displayed as stars next to the numbers. On the diagonal, we see the histograms of the displayed variables. Visually we can conclude that most of them are power law distributions. The pairs plot in the lower left half of the matrix displays scatterplots of the variables. Its red points are the dogs, while the blue points are the cats. The coloring shows possible differences between cats and dogs. For example, cats seem not to get as old as dogs. Also we can see some structural conspicuities between some variables. For example, older animals seem to have lower fees and animals with a very fast adoption speeds seem to have almost no negative sentiment scores.
 
 # Data Exploration
 
@@ -124,7 +125,7 @@ To visualize the geographical location of the pets in our data, we decided to cr
 
 To interact with the map one can click on the single states of Malaysia that are outlined and see their details such as the number of pets, population, GDP per capita and the distribution of cats and dogs in a pie chart. With the layer icon one can select the information that the choropleth map shows. The options are the number of pets, the population and the GDP per capita.
 
-The shape data for the outline of the districts was retrieved by the International Steering Committee for Global Mapping [[1]](#1).
+The shape data for the outline of the districts was retrieved by the International Steering Committee for Global Mapping [[2]](#2).
 
 ```{r load_shape, include = FALSE}
 # Read shape here because output of the read should not be included
@@ -459,7 +460,7 @@ title(main = "Dog Breeds - Frequencies (>5) / and without 'Mixed Breed'",
 
 ## Exploring Cats and Dogs Regarding Sentiment Scores
 
-The sentiment scores found in the dataset as JSON files were transformed into a column and added to the tabular data. The score was calculated for the description column in the pet dataset, which means it analyzes the sentiment of the descriptions of the pets. To get more insight into how the sentiment score relates to the rest of the data, its distribution, and some bivariate statistics are plotted by pet type. The background gradient relates cold and warm colors to the range of the sentiment score, which goes from negative (-1) to positive (+1) sentiments. The necessary code for the background gradient was adapted from Stackoverflow [[2]](#2).
+The sentiment scores found in the dataset as JSON files were transformed into a column and added to the tabular data. The score was calculated for the description column in the pet dataset, which means it analyzes the sentiment of the descriptions of the pets. To get more insight into how the sentiment score relates to the rest of the data, its distribution, and some bivariate statistics are plotted by pet type. The background gradient relates cold and warm colors to the range of the sentiment score, which goes from negative (-1) to positive (+1) sentiments. The necessary code for the background gradient was adapted from Stackoverflow [[3]](#3).
 
 
 ```{r, sentiment scores, fig.width=10, fig.height=17}
@@ -608,7 +609,7 @@ could be viewed.
 -   Pet data clustering is created using K-medoids clustering followed by t-SNE
 -   It was done based on the following variables: StateId, BreedID1, BreedID2, and Type
 
-- The code was based on [[3]](#3)
+- The code was based on [[4]](#4)
 ```{r, petdata_cluster}
 petdata_cluster=filter(petdata,Quantity==1)
 petdata_cluster=petdata_cluster[c('StateID','BreedID2','BreedID1',
@@ -728,19 +729,19 @@ ggplotly(p_dogs)
 
 # Neural Network Pet Images Embeddings Visualization
 
-The Neural Network Embeddings Visualization has been done in Python and the various needed codefiles can be found in the Folder "neural network files". Since the html output of our report file was already huge and already took a very long time to knit, we decided not to try to embed that code into the report, but only use its outputs instead.
+The Neural Network Embeddings Visualization has been done in Python and the various needed codefiles can be found in the "neural network files" Folder. Since the html output of our report file was already huge and took a very long time to knit, we decided not to try to embed that code into the report, but only use its outputs instead.
 
 ## T-SNE plot with Images as Thumbnails
 
 -   only with Pet Images
 -   visualized with t-SNE
--   included thumbnail images on top of datapoints in t-sne plot
+-   included thumbnail images on top of data points in the t-sne plot
 -   this visual only uses 2000 of the total of 58311 images for better visibility
 
 ![](plots/tsne-2000.png)
 
 We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with t-SNE. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even captured some similarities that are common to both types in the middle, for example, the spot where pictures of animals in cages are displayed.
-The necessary code [[4]](#4) was adapted and can be found in the neural network files folder. It was too big to be integrated as a Python code junk.
+The necessary code [[5]](#5) was adapted and can be found in the neural network files folder. It was too big to be integrated as a Python code junk.
 
 
 ## T-SNE 3D scatterplot without images as thumbnails
@@ -755,15 +756,17 @@ htmltools::includeHTML("tsne_plot_hover-clear.html")
 
 # Conclusions - What we have learned about our data
 
-Using various methods, we tried to gain insights into the Pet Dataset. Having to deal with highly imbalanced data was one of the challenges, we had to face. To adequately display the data, we used for example log transformations for frequencies and heat map colorings, as well as boxplots for bivariate analysis. Our visualisations could be the basis for further analyzing the possible relationships between the sentiment score and pet's health, sentiment score and states, sentiment score and sterilization status, all with regards to the differences between the pet types. Another possible relationship might exist between the color of the dogs and the sentiement scores and between the Pets States and their population, which seems to be reasonable. The clustering for each pet type attributes a lot to the categorical variables Vaccinated, Sterilized, Health and Dewormed. Visualizing the embeddings of the animals images in a Resnet-101 Neural Network, we learned how the network structures the images by type, animal color and as well as common settings like cages. Our visual exploration and analysis of the dataset could be used to help predict the adoption speed of the pets, which was the original purpose of the Kaggle challenge. Another possible further investigation would be to compare this data to pet data from other locations, since our data is only from Malaysia.
+Using various methods, we tried to gain insights into the Pet Dataset. Having to deal with highly imbalanced data was one of the challenges, we had to face. To adequately display the data, we used for example log transformations for frequencies and heat map colorings, as well as boxplots for bivariate analysis. Our visualizations could be the basis for further analyzing the possible relationships between the sentiment score and pet's health, sentiment score and states, sentiment score and sterilization status, all with regards to the differences between the pet types. Another possible relationship might exist between the color of the dogs and the sentiment scores and between the Pet's States and their population, which seems to be reasonable. The clustering for each pet type attributes a lot to the categorical variables Vaccinated, Sterilized, Health and Dewormed. Visualizing the embeddings of the pet images in a Resnet-101 Neural Network, we learned how the network structures the images by type, animal color and as well as common settings like cages. Our visual exploration and analysis of the dataset could be used to help predict the adoption speed of the pets, which was the original purpose of the Kaggle challenge. Another possible further investigation would be to compare this data to pet data from other locations, since our data is only from Malaysia.
 
 # References
 
-> <a id="id_1">[1]</a> International Steering Committee for Global Mapping. Malaysia. Jabatan Ukur dan Pemetaan. (2012). Districts, Malaysia, 2013. [Shapefile]. International Steering Committee for Global Mapping. Retrieved from <https://earthworks.stanford.edu/catalog/stanford-zd362bc5680>
+> <a id="id_1">[1]</a> <https://www.kaggle.com/competitions/petfinder-adoption-prediction/overview>
 
-> <a id="id_2">[2]</a> <https://stackoverflow.com/questions/30136725/plot-background-colour-in-gradient> 
+> <a id="id_2">[2]</a> International Steering Committee for Global Mapping. Malaysia. Jabatan Ukur dan Pemetaan. (2012). Districts, Malaysia, 2013. [Shapefile]. International Steering Committee for Global Mapping. Retrieved from <https://earthworks.stanford.edu/catalog/stanford-zd362bc5680>
 
-> <a id="id_3">[3]</a> <https://www.r-bloggers.com/2016/06/clustering-mixed-data-types-in-r/> 
+> <a id="id_3">[3]</a> <https://stackoverflow.com/questions/30136725/plot-background-colour-in-gradient> 
  
-> <a id="id_4">[4]</a> <https://learnopencv.com/t-sne-for-feature-visualization/> and
+> <a id="id_4">[4]</a> <https://www.r-bloggers.com/2016/06/clustering-mixed-data-types-in-r/> 
+ 
+> <a id="id_5">[5]</a> <https://learnopencv.com/t-sne-for-feature-visualization/> and
  <https://github.com/spmallick/learnopencv/tree/master/TSNE>
