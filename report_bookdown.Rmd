@@ -743,11 +743,11 @@ The Neural Network Embeddings Visualization has been done in Python and the vari
 
 ![](plots/tsne-2000.png)
 
-We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with r-tsne. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even has captured some similarities that are common to both types in the middle, for example the spot where pictures of animals in cages are displayed.
-The necessary code [[3]](#3) was adapted and can be found in the neural network files folder. It was too big to be intsegrated as a python code junk.
+We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with T-SNE. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even captured some similarities that are common to both types in the middle, for example, the spot where pictures of animals in cages are displayed.
+The necessary code [[3]](#3) was adapted and can be found in the neural network files folder. It was too big to be integrated as a python code junk.
 
 
-## TSNE 3D scatterplot without images as thumbnails
+## T-SNE 3D scatterplot without images as thumbnails
 
 -   cats pictures embeddings are displayed with blue dots and dogs pictures embeddings are displayed with red dots
 -   the hover-over shows the Pet Id and the image number connected with a hyphen
