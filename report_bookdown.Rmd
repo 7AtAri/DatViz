@@ -103,11 +103,6 @@ pairs.panels(petdata[c("Age", "Fee", "Quantity", "VideoAmt", "PhotoAmt",
              las=1,
              oma=c(1,1.5,8,2))
 
-# save the file:
-#dev.off()
-#getOption("device")
-#dev.cur()
-
 ```
 
 ```{r legend, fig.width=10, fig.height=1}
@@ -613,7 +608,7 @@ could be viewed.
 -   Pet data clustering is created using K-medoids clustering followed by t-SNE
 -   It was done based on the following variables: StateId, BreedID1, BreedID2, and Type
 
-- The code was based on [[4]](#4)
+- The code was based on [[3]](#3)
 ```{r, petdata_cluster}
 petdata_cluster=filter(petdata,Quantity==1)
 petdata_cluster=petdata_cluster[c('StateID','BreedID2','BreedID1',
@@ -745,7 +740,7 @@ The Neural Network Embeddings Visualization has been done in Python and the vari
 ![](plots/tsne-2000.png)
 
 We ran the images that come with the pet data through a Resnet-101 Network and visualized the embeddings with t-SNE. It clustered the cats and dogs very well (left/red: dogs, right/blue: cats), but also sorted the animals by color (top: light fur, bottom: dark fur) and even captured some similarities that are common to both types in the middle, for example, the spot where pictures of animals in cages are displayed.
-The necessary code [[3]](#3) was adapted and can be found in the neural network files folder. It was too big to be integrated as a python code junk.
+The necessary code [[4]](#4) was adapted and can be found in the neural network files folder. It was too big to be integrated as a Python code junk.
 
 
 ## T-SNE 3D scatterplot without images as thumbnails
@@ -768,7 +763,7 @@ Using various methods, we tried to gain insights into the Pet Dataset. Having to
 
 > <a id="id_2">[2]</a> <https://stackoverflow.com/questions/30136725/plot-background-colour-in-gradient> 
 
-> <a id="id_3">[3]</a> <https://learnopencv.com/t-sne-for-feature-visualization/> and
- <https://github.com/spmallick/learnopencv/tree/master/TSNE>
+> <a id="id_3">[3]</a> <https://www.r-bloggers.com/2016/06/clustering-mixed-data-types-in-r/> 
  
-> <a id="id_2">[4]</a> <https://www.r-bloggers.com/2016/06/clustering-mixed-data-types-in-r/> 
+> <a id="id_4">[4]</a> <https://learnopencv.com/t-sne-for-feature-visualization/> and
+ <https://github.com/spmallick/learnopencv/tree/master/TSNE>
