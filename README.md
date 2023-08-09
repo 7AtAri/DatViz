@@ -1,11 +1,11 @@
 # DatViz - Pet Adoption Dataset
 
-- [pictures for neural network](https://drive.google.com/file/d/16tPNceHdB2oQOTaknP35rJQr_Bsa98Jq/view?usp=share_link)
+- [Pictures for Neural Network](https://drive.google.com/file/d/16tPNceHdB2oQOTaknP35rJQr_Bsa98Jq/view?usp=share_link)
+- [Dataset on BHT cloud](https://cloud.bht-berlin.de/index.php/s/RceX5asZKgcejop)
 
 our dataset:
 https://www.kaggle.com/competitions/petfinder-adoption-prediction/data
 
-+ sentiment analysis data as json files -> converted to data frame in the data_exploration.R file
 + images -> neural network -> embedding -> visualize clusters with r-tsne
 
 Data Fields in train and test data:

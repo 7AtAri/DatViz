@@ -36,7 +36,7 @@ holds tabular data and images. The idea was to use image data to visualize the l
 # The Dataset
 
 -   The dataset can be found at <https://www.kaggle.com/competitions/petfinder-adoption-prediction/data>.
-    We also copied it to our [google drive](https://drive.google.com/file/d/16tPNceHdB2oQOTaknP35rJQr_Bsa98Jq/view?usp=share_link) for a quick access. 
+    We also uploaded the zipped dataset to the [BHT cloud](https://cloud.bht-berlin.de/index.php/s/RceX5asZKgcejop) (zipped: ~1.9GB, unzipped: ~2.6GB) for a quick access.
 -   We only used the train data for our project because the test data does not have the AdoptionSpeed column since this had to be predicted in the challenge the dataset was initially used for.
 -   number of variables: 27
 -   amount of data points: 14993
