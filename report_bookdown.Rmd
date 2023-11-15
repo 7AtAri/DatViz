@@ -760,16 +760,6 @@ The necessary code [[5]](#5) was adapted and can be found in the neural [neural 
 It was too big to be integrated as a Python code chunk.
 
 
-## T-SNE 3D scatterplot without images as thumbnails
-
--   Cat picture embeddings are displayed with blue dots and dog picture embeddings are displayed with red dots
--   The hover-over shows the Pet ID and the image number connected with a hyphen
--   With the help of the Pet IDs the neural network image embeddings can be connected with the tabular data
-
-```{r rtsne 3d clear, echo=FALSE}
-htmltools::includeHTML("tsne_plot_hover-clear.html")
-```
-
 # Conclusions - What we have learned about our data
 
 Using various methods, we tried to gain insights into the pet dataset.
